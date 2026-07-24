@@ -1,0 +1,70 @@
+---
+page-layout: full
+---
+
+::: {.hero}
+::: {.hero-kicker}
+k4v1t · MATHEMATICS · AI · SCIENCE
+:::
+
+# Working things out, visually
+
+I explore mathematics, machine learning and scientific inference through visual explanations and interactive experiments.
+
+After 12 years in asset management, I stepped away to study Artificial Intelligence and Machine Learning in Science. I am now preparing to begin a PhD and continuing to learn how mathematical and computational tools can help us understand complex systems. 
+
+This website is where I work through ideas in public. Some pieces explain concepts that I have found useful, while others explore questions I am still trying to understand.
+
+[Explore the visual essays](essays.qmd){.btn .btn-primary .btn-lg}
+:::
+
+## What you'll find here
+
+::: {.featured-grid}
+::: {.featured-card}
+
+### Visual explanations
+
+Intuitive explorations of mathematical and machine learning ideas, with an emphasis on what the equations and models are actually doing.
+
+Mathematics · Machine Learning · Visualisation
+:::
+
+::: {.featured-card}
+
+### Interactive experiments
+
+Small simulations that let you change assumptions, adjust parameters and observe how the behaviour changes.
+
+Interactive · Computation · Scientific Inference
+:::
+:::
+
+## Selected work
+
+::: {.featured-grid}
+::: {.featured-card}
+### [When different black hole binaries look the same](posts/mbhb-redundancies/index.qmd)
+
+An interactive exploration of parameter degeneracies in gravitational wave inference and what they reveal about the limits of machine learning.
+
+Gravitational Waves · Inverse Problems · Interactive
+:::
+
+::: {.featured-card}
+
+### More explorations to come
+
+This site will grow gradually as I turn research questions, mathematical ideas and useful explanations into interactive essays.
+
+Work In Progress · Learning in Public
+:::
+:::
+
+## Current direction
+
+My current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help make those limitations easier to see.
+
+I am more interested in developing better questions than presenting polished answers.
+
+[More about me](about.qmd)

@@ -1,0 +1,19 @@
+---
+title: "Why different black hole binaries look the same"
+description: "An interactive exploration of parameter degeneracies in gravitational wave inference."
+date: 2026-07-24
+categories: [Gravitational Waves, Inverse Problems, Interactive]
+image-alt: "An interactive exploration of parameter degeneracies in gravitational wave inference."
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: false
+    echo: false
+---
+
+WIP
+
+## WIP
+
+WIP
