@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I am Kavit Tolia (Kav).\nI spent 12 years in asset management, working on quantitative models, data, uncertainty and investment portfolios.\nOver time, I found myself increasingly interested in the mathematics and mechanics beneath the decisions: how models represent the world, what information they preserve, and where their assumptions begin to break down.\nThat curiosity is what led me to step away from finance and pursue an MSc in Artifical Intelligence and Machine Learning in Science. My dissertation explored gravitational wave inference for massive black hole binaries, and I will shortly begin a PhD"
+  },
+  {
+    "objectID": "about.html#why-this-site-exists",
+    "href": "about.html#why-this-site-exists",
+    "title": "About",
+    "section": "Why this site exists",
+    "text": "Why this site exists\nI enjoy trying to understand technical ideas from first principles and finding ways to make their underlying structure easier to see.\nThat does not necessarily mean making everything simple. Some ideas are genuinely difficult, and simplifying them too much can remove the part that makes them interesting. I am more interested in finding intuitive ways into a subject while keeping its uncertainty and nuance intact.\nThis website is a place for visual essays, interactive experiments, research notes and projects covering mathematics, machine learning and science.\nSome pieces will explain ideas that I have spent time understanding. Others will explore questions that I am still working through. I expect my thinking to change, and part of the purpose of the site is to show that process."
+  },
+  {
+    "objectID": "about.html#what-i-am-exploring",
+    "href": "about.html#what-i-am-exploring",
+    "title": "About",
+    "section": "What I am exploring",
+    "text": "What I am exploring\nMy current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help expose both the strengths and limitations of a model.\nThe aim is not to present a collection of finished answers. It is to investigate interesting questions carefully, explain what I learn as clearly as I can, and make the process useful to other curious people."
+  },
+  {
+    "objectID": "essays.html",
+    "href": "essays.html",
+    "title": "Visual essays",
+    "section": "",
+    "text": "Why different black hole binaries look the same\n\n\n\nGravitational Waves\n\nInverse Problems\n\nInteractive\n\n\n\nAn interactive exploration of parameter degeneracies in gravitational wave inference.\n\n\n\n\n\nJul 24, 2026\n\n\nKavit Tolia\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/mbhb-redundancies/index.html",
+    "href": "posts/mbhb-redundancies/index.html",
+    "title": "Why different black hole binaries look the same",
+    "section": "",
+    "text": "WIP"
+  },
+  {
+    "objectID": "posts/mbhb-redundancies/index.html#wip",
+    "href": "posts/mbhb-redundancies/index.html#wip",
+    "title": "Why different black hole binaries look the same",
+    "section": "WIP",
+    "text": "WIP\nWIP"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "index.html#what-youll-find-here",
+    "href": "index.html#what-youll-find-here",
+    "title": "",
+    "section": "What you’ll find here",
+    "text": "What you’ll find here\n\n\nVisual explanations\nIntuitive explorations of mathematical and machine learning ideas, with an emphasis on what the equations and models are actually doing.\nMathematics · Machine Learning · Visualisation\n\n\nInteractive experiments\nSmall simulations that let you change assumptions, adjust parameters and observe how the behaviour changes.\nInteractive · Computation · Scientific Inference"
+  },
+  {
+    "objectID": "index.html#selected-work",
+    "href": "index.html#selected-work",
+    "title": "",
+    "section": "Selected work",
+    "text": "Selected work\n\n\nWhen different black hole binaries look the same\nAn interactive exploration of parameter degeneracies in gravitational wave inference and what they reveal about the limits of machine learning.\nGravitational Waves · Inverse Problems · Interactive\n\n\nMore explorations to come\nThis site will grow gradually as I turn research questions, mathematical ideas and useful explanations into interactive essays.\nWork In Progress · Learning in Public"
+  },
+  {
+    "objectID": "index.html#current-direction",
+    "href": "index.html#current-direction",
+    "title": "",
+    "section": "Current direction",
+    "text": "Current direction\nMy current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help make those limitations easier to see.\nI am more interested in developing better questions than presenting polished answers.\nMore about me"
+  }
+]
