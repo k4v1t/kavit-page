@@ -4,26 +4,19 @@ page-layout: article
 toc: false
 ---
 
-I am Kavit Tolia (Kav).
+I spent 12 years in asset management, working with quantitative models, data, uncertainty and investment portfolios.
 
-I spent 12 years in asset management, working on quantitative models, data, uncertainty and investment portfolios.
+Over time, I found myself increasingly drawn to the mathematics and mechanics underneath the decisions: how models represent the world, what information they capture, and where their assumptions begin to break down.
 
-Over time, I found myself increasingly interested in the mathematics and mechanics beneath the decisions: how models represent the world, what information they preserve, and where their assumptions begin to break down.
+That curiosity eventually led me to step away from finance and pursue an MSc in Artificial Intelligence and Machine Learning in Science. I am now preparing to begin a PhD and continue exploring the relationship between mathematics, machine learning and scientific inference.
 
-That curiosity is what led me to step away from finance and pursue an MSc in Artifical Intelligence and Machine Learning in Science. My dissertation explored gravitational wave inference for massive black hole binaries, and I will shortly begin a PhD
+I enjoy trying to understand technical ideas from first principles and finding ways to make their underlying structure easier to see. I do not think difficult subjects need to be made artificially simple, but I do think they can often be explained more clearly.
 
-## Why this site exists
+My current interests include scientific machine learning and inverse problems. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help expose both the strengths and limitations of a model.
 
-I enjoy trying to understand technical ideas from first principles and finding ways to make their underlying structure easier to see.
+I am still learning, and I expect my understanding of many of these subjects to change. Part of the reason for building this site is to document that process.
 
-That does not necessarily mean making everything simple. Some ideas are genuinely difficult, and simplifying them too much can remove the part that makes them interesting. I am more interested in finding intuitive ways into a subject while keeping its uncertainty and nuance intact.
+## Elsewhere
 
-This website is a place for visual essays, interactive experiments, research notes and projects covering mathematics, machine learning and science.
-
-Some pieces will explain ideas that I have spent time understanding. Others will explore questions that I am still working through. I expect my thinking to change, and part of the purpose of the site is to show that process.
-
-## What I am exploring
-
-My current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help expose both the strengths and limitations of a model.
-
-The aim is not to present a collection of finished answers. It is to investigate interesting questions carefully, explain what I learn as clearly as I can, and make the process useful to other curious people.
+[LinkedIn](https://www.linkedin.com/in/kavittolia/){.btn .btn-outline-primary target="_blank"}
+[GitHub](https://github.com/k4v1t){.btn .btn-outline-primary target="_blank"}

@@ -9,11 +9,11 @@ k4v1t · MATHEMATICS · AI · SCIENCE
 
 # Working things out, visually
 
-I explore mathematics, machine learning and scientific inference through visual explanations and interactive experiments.
+This site is a collection of visual explanations, interactive experiments, research notes and projects exploring mathematics, machine learning and scientific inference.
 
-After 12 years in asset management, I stepped away to study Artificial Intelligence and Machine Learning in Science. I am now preparing to begin a PhD and continuing to learn how mathematical and computational tools can help us understand complex systems. 
+I am especially interested in what models are actually learning from data, where ambiguity remains, and how visualisation can make difficult ideas easier to reason about.
 
-This website is where I work through ideas in public. Some pieces explain concepts that I have found useful, while others explore questions I am still trying to understand.
+Some pieces explain ideas I have found useful; others are questions I am still working through.
 
 [Explore the visual essays](essays.qmd){.btn .btn-primary .btn-lg}
 :::
@@ -61,7 +61,7 @@ Work In Progress · Learning in Public
 :::
 :::
 
-## Current direction
+## What I'm exploring
 
 My current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help make those limitations easier to see.
 
