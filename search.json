@@ -4,21 +4,14 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "I am Kavit Tolia (Kav).\nI spent 12 years in asset management, working on quantitative models, data, uncertainty and investment portfolios.\nOver time, I found myself increasingly interested in the mathematics and mechanics beneath the decisions: how models represent the world, what information they preserve, and where their assumptions begin to break down.\nThat curiosity is what led me to step away from finance and pursue an MSc in Artifical Intelligence and Machine Learning in Science. My dissertation explored gravitational wave inference for massive black hole binaries, and I will shortly begin a PhD"
+    "text": "I spent 12 years in asset management, working with quantitative models, data, uncertainty and investment portfolios.\nOver time, I found myself increasingly drawn to the mathematics and mechanics underneath the decisions: how models represent the world, what information they capture, and where their assumptions begin to break down.\nThat curiosity eventually led me to step away from finance and pursue an MSc in Artificial Intelligence and Machine Learning in Science. I am now preparing to begin a PhD and continue exploring the relationship between mathematics, machine learning and scientific inference.\nI enjoy trying to understand technical ideas from first principles and finding ways to make their underlying structure easier to see. I do not think difficult subjects need to be made artificially simple, but I do think they can often be explained more clearly.\nMy current interests include scientific machine learning and inverse problems. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help expose both the strengths and limitations of a model.\nI am still learning, and I expect my understanding of many of these subjects to change. Part of the reason for building this site is to document that process."
   },
   {
-    "objectID": "about.html#why-this-site-exists",
-    "href": "about.html#why-this-site-exists",
+    "objectID": "about.html#elsewhere",
+    "href": "about.html#elsewhere",
     "title": "About",
-    "section": "Why this site exists",
-    "text": "Why this site exists\nI enjoy trying to understand technical ideas from first principles and finding ways to make their underlying structure easier to see.\nThat does not necessarily mean making everything simple. Some ideas are genuinely difficult, and simplifying them too much can remove the part that makes them interesting. I am more interested in finding intuitive ways into a subject while keeping its uncertainty and nuance intact.\nThis website is a place for visual essays, interactive experiments, research notes and projects covering mathematics, machine learning and science.\nSome pieces will explain ideas that I have spent time understanding. Others will explore questions that I am still working through. I expect my thinking to change, and part of the purpose of the site is to show that process."
-  },
-  {
-    "objectID": "about.html#what-i-am-exploring",
-    "href": "about.html#what-i-am-exploring",
-    "title": "About",
-    "section": "What I am exploring",
-    "text": "What I am exploring\nMy current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help expose both the strengths and limitations of a model.\nThe aim is not to present a collection of finished answers. It is to investigate interesting questions carefully, explain what I learn as clearly as I can, and make the process useful to other curious people."
+    "section": "Elsewhere",
+    "text": "Elsewhere\nLinkedIn GitHub"
   },
   {
     "objectID": "essays.html",
@@ -63,10 +56,10 @@
     "text": "Selected work\n\n\nWhen different black hole binaries look the same\nAn interactive exploration of parameter degeneracies in gravitational wave inference and what they reveal about the limits of machine learning.\nGravitational Waves · Inverse Problems · Interactive\n\n\nMore explorations to come\nThis site will grow gradually as I turn research questions, mathematical ideas and useful explanations into interactive essays.\nWork In Progress · Learning in Public"
   },
   {
-    "objectID": "index.html#current-direction",
-    "href": "index.html#current-direction",
+    "objectID": "index.html#what-im-exploring",
+    "href": "index.html#what-im-exploring",
     "title": "",
-    "section": "Current direction",
-    "text": "Current direction\nMy current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help make those limitations easier to see.\nI am more interested in developing better questions than presenting polished answers.\nMore about me"
+    "section": "What I’m exploring",
+    "text": "What I’m exploring\nMy current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help make those limitations easier to see.\nI am more interested in developing better questions than presenting polished answers.\nMore about me"
   }
 ]
