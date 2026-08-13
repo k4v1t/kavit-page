@@ -62,14 +62,23 @@ Code, technical experiments and shorter explorations of ideas that are still dev
 
 ::: {.featured-grid}
 ::: {.featured-card}
-### [When different black hole binaries look the same](posts/mbhb-redundancies/index.qmd)
 
-An interactive exploration of parameter degeneracies in gravitational wave inference and what they reveal about the limits of machine learning.
+### [Anonymous is not binary](posts/anonymity-budget/index.qmd)
 
-Gravitational Waves · Inverse Problems · Interactive
+Why workplace surveys spend an anonymity budget — and why the cost is not the same for everyone.
+
+`Information theory` · `Privacy` · `Interactive`
 :::
 
 ::: {.featured-card}
+
+### [When different black-hole binaries look the same](posts/mbhb-degeneracies/index.qmd)
+
+An interactive exploration of parameter degeneracies in gravitational-wave inference.
+
+`Gravitational waves` · `Inverse problems` · `Interactive`
+:::
+:::
 
 ### More explorations to come
 

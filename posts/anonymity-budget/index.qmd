@@ -1,0 +1,404 @@
+---
+title: "Anonymity is not binary"
+description: "Why workplace surveys spend an anonymity budget and why the cost is not the same for everyone."
+date: 2026-08-13
+categories:
+- Information theory
+- Privacy
+- Interactive
+---
+
+“This survey is anonymous.”
+
+That sounds binary: either your identity is known, or it is not.
+
+But anonymity is better thought of as a **budget**.
+
+Every piece of information you reveal narrows the set of people you could be. Some answers spend very little of that budget. Others spend a lot.
+
+## One bit at a time
+
+A bit can be thought of as one perfectly chosen yes-or-no question that cuts the remaining group in half.
+
+In a company of 500 people, there are only about nine halvings between the whole company and one person.
+
+That does not mean nine survey questions will automatically identify you. Real surveys involve aggregation, imperfect information and organisational safeguards.
+
+But it gives us a useful way to think about how quickly information accumulates.
+
+## Try it
+
+```{ojs}
+//| echo: false
+
+viewof companySize = Inputs.number({
+  label: "Company size",
+  value: 500,
+  min: 10,
+  max: 100000,
+  step: 10
+})
+
+viewof gender = Inputs.select(
+  ["Woman", "Man", "Non-binary / other", "Prefer not to say"],
+  {label: null}
+)
+
+viewof genderPct = Inputs.number({
+  label: null,
+  value: 40,
+  min: 0.1,
+  max: 100,
+  step: 0.1
+})
+
+viewof seniority = Inputs.select(
+  ["Junior", "Mid-level", "Senior", "Leadership", "Prefer not to say"],
+  {label: null}
+)
+
+viewof seniorityPct = Inputs.number({
+  label: null,
+  value: 25,
+  min: 0.1,
+  max: 100,
+  step: 0.1
+})
+
+viewof location = Inputs.select(
+  ["Head office", "Other office", "Remote", "Prefer not to say"],
+  {label: null}
+)
+
+viewof locationPct = Inputs.number({
+  label: null,
+  value: 50,
+  min: 0.1,
+  max: 100,
+  step: 0.1
+})
+
+viewof tenure = Inputs.select(
+  ["< 1 year", "1–3 years", "3–5 years", "5+ years", "Prefer not to say"],
+  {label: null}
+)
+
+viewof tenurePct = Inputs.number({
+  label: null,
+  value: 20,
+  min: 0.1,
+  max: 100,
+  step: 0.1
+})
+
+html`
+<div class="survey-box">
+
+  <div class="survey-heading">
+    <div>Attribute</div>
+    <div>Your answer</div>
+    <div>Share of company (%)</div>
+  </div>
+
+  <div class="survey-row">
+    <div class="survey-label">Gender</div>
+    <div>${viewof gender}</div>
+    <div class="survey-pct">${viewof genderPct}</div>
+  </div>
+
+  <div class="survey-row">
+    <div class="survey-label">Seniority</div>
+    <div>${viewof seniority}</div>
+    <div class="survey-pct">${viewof seniorityPct}</div>
+  </div>
+
+  <div class="survey-row">
+    <div class="survey-label">Location</div>
+    <div>${viewof location}</div>
+    <div class="survey-pct">${viewof locationPct}</div>
+  </div>
+
+  <div class="survey-row">
+    <div class="survey-label">Tenure</div>
+    <div>${viewof tenure}</div>
+    <div class="survey-pct">${viewof tenurePct}</div>
+  </div>
+
+</div>
+`
+
+answers = [
+  {name: "Gender", answer: gender, pct: genderPct},
+  {name: "Seniority", answer: seniority, pct: seniorityPct},
+  {name: "Location", answer: location, pct: locationPct},
+  {name: "Tenure", answer: tenure, pct: tenurePct}
+]
+
+results = answers.map(d => {
+  const skipped = d.answer === "Prefer not to say"
+
+  return {
+    ...d,
+    p: skipped ? 1 : d.pct / 100,
+    bits: skipped ? 0 : -Math.log2(d.pct / 100)
+  }
+})
+
+budget = Math.log2(companySize)
+
+totalBits = results.reduce(
+  (sum, d) => sum + d.bits,
+  0
+)
+
+remaining = companySize * results.reduce(
+  (product, d) => product * d.p,
+  1
+)
+
+verdict =
+  remaining > 20 ? "Broad profile" :
+  remaining > 5 ? "Narrow profile" :
+  remaining > 1 ? "Very narrow profile" :
+  "Unique in this simplified model"
+
+html`
+<div class="anonymity-summary">
+
+  <div class="metric">
+    <div class="metric-label">Anonymity budget</div>
+    <div class="metric-value">${budget.toFixed(2)}</div>
+    <div class="metric-unit">bits</div>
+  </div>
+
+  <div class="metric">
+    <div class="metric-label">Bits spent</div>
+    <div class="metric-value">${totalBits.toFixed(2)}</div>
+    <div class="metric-unit">bits</div>
+  </div>
+
+  <div class="metric">
+    <div class="metric-label">Expected people remaining</div>
+    <div class="metric-value">${remaining.toFixed(1)}</div>
+    <div class="metric-unit">people</div>
+  </div>
+
+</div>
+
+<div class="anonymity-verdict">
+  <strong>${verdict}</strong>
+</div>
+`
+
+order = ["Gender", "Seniority", "Location", "Tenure", "Total"]
+
+waterfall = results.map((d, i) => {
+  const start = results
+    .slice(0, i)
+    .reduce((sum, x) => sum + x.bits, 0)
+
+  return {
+    name: d.name,
+    start,
+    end: start + d.bits,
+    bits: d.bits
+  }
+})
+
+waterfallTotal = [{
+  name: "Total",
+  start: 0,
+  end: totalBits,
+  bits: totalBits
+}]
+
+chartMax = Math.max(totalBits * 1.18, totalBits + 1)
+
+Plot.plot({
+  height: 320,
+  marginLeft: 90,
+  marginRight: 60,
+  marginBottom: 55,
+
+  style: {
+    fontSize: "14px"
+  },
+
+  x: {
+    label: "Cumulative anonymity cost (bits)",
+    grid: true,
+    domain: [0, chartMax]
+  },
+
+  y: {
+    label: null,
+    domain: order
+  },
+
+  marks: [
+    Plot.barX(waterfall, {
+      y: "name",
+      x1: "start",
+      x2: "end",
+      tip: false
+    }),
+
+    Plot.text(waterfall, {
+      y: "name",
+      x: "end",
+      text: d => d.bits === 0
+        ? "0"
+        : `+${d.bits.toFixed(2)}`,
+      dx: 8,
+      textAnchor: "start"
+    }),
+
+    Plot.barX(waterfallTotal, {
+      y: "name",
+      x1: "start",
+      x2: "end"
+    }),
+
+    Plot.text(waterfallTotal, {
+      y: "name",
+      x: "end",
+      text: d => `${d.bits.toFixed(2)} bits`,
+      dx: 8,
+      textAnchor: "start",
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+
+stages = [
+  { label: "Company", people: companySize },
+  {
+    label: "Gender included",
+    people: companySize * results.slice(0, 1).reduce((prod, d) => prod * d.p, 1)
+  },
+  {
+    label: "Seniority included",
+    people: companySize * results.slice(0, 2).reduce((prod, d) => prod * d.p, 1)
+  },
+  {
+    label: "Location included",
+    people: companySize * results.slice(0, 3).reduce((prod, d) => prod * d.p, 1)
+  },
+  {
+    label: "Tenure included",
+    people: companySize * results.slice(0, 4).reduce((prod, d) => prod * d.p, 1)
+  }
+]
+
+maxWidth = 440
+minWidth = 60
+segmentHeight = 72
+svgWidth = 520
+svgHeight = stages.length * segmentHeight + 10
+
+widthFor = people =>
+  minWidth + (maxWidth - minWidth) * (people / companySize)
+
+colors = [
+  "#d96b63",
+  "#d89b48",
+  "#4da6d9",
+  "#5f8ee6",
+  "#46b39d"
+]
+
+segments = stages.map((d, i) => {
+  const topWidth = widthFor(d.people)
+  const bottomWidth =
+    i < stages.length - 1
+      ? widthFor(stages[i + 1].people)
+      : Math.max(minWidth * 0.75, widthFor(d.people) * 0.7)
+
+  const y0 = i * segmentHeight
+  const y1 = y0 + segmentHeight - 4
+
+  const x0l = (svgWidth - topWidth) / 2
+  const x0r = x0l + topWidth
+  const x1l = (svgWidth - bottomWidth) / 2
+  const x1r = x1l + bottomWidth
+
+  return {
+    ...d,
+    color: colors[i % colors.length],
+    points: `${x0l},${y0} ${x0r},${y0} ${x1r},${y1} ${x1l},${y1}`,
+    textX: svgWidth / 2,
+    valueY: y0 + segmentHeight * 0.40,
+    labelY: y0 + segmentHeight * 0.66
+  }
+})
+
+html`
+<div style="margin: 2rem 0 2.5rem;">
+  <div style="font-weight: 600; margin-bottom: 0.75rem;">
+    How the crowd shrinks
+  </div>
+
+  <svg viewBox="0 0 ${svgWidth} ${svgHeight}" width="100%" style="max-width: 560px; display: block; margin: 0 auto;">
+    ${segments.map(d => `
+      <polygon points="${d.points}" fill="${d.color}"></polygon>
+      <text x="${d.textX}" y="${d.valueY}" text-anchor="middle" fill="white" font-size="20" font-weight="700">
+        ${d.people >= 10 ? d.people.toFixed(0) : d.people.toFixed(1)}
+      </text>
+      <text x="${d.textX}" y="${d.labelY}" text-anchor="middle" fill="white" font-size="12">
+        ${d.label}
+      </text>
+    `).join("")}
+  </svg>
+</div>
+`
+```
+
+## Rarity changes the cost
+
+Not every answer reveals the same amount.
+
+If half the company gives the same answer as you, that answer costs about one bit.
+
+If only 1% of the company shares your answer, it reveals much more.
+
+That means the same dropdown can have a very different anonymity cost for different respondents.
+
+## Why demographics are difficult
+
+Demographic information is often the most revealing part of a survey.
+
+It is also often the information needed to detect inequities.
+
+That creates a genuine tension: the groups whose experiences matter most to measure can also be the groups that are easiest to identify.
+
+## What this does not mean
+
+Being identifiable in principle is not the same as being identified, and being identified is not the same as being harmed.
+
+Trust, governance, aggregation thresholds and organisational culture all matter.
+
+The point is simpler: anonymity is not a switch. It is something that erodes as information accumulates.
+
+## A useful consequence
+
+If only a small minority raises an issue, the issue itself can become identifying information.
+
+When more people raise the same genuine concern, that link weakens.
+
+In that sense, anonymity can sometimes be strengthened collectively: when enough people say the true thing, no single voice stands out.
+
+## What this calculator assumes
+
+This is an illustration, not a re-identification tool.
+
+The calculator assumes that the attributes you enter are independent, so it multiplies their population shares together. Real workplaces are messier: seniority, location, tenure and demographic characteristics can be correlated, sometimes strongly.
+
+The resulting “people remaining” number should therefore be read as a simple expected count under that assumption, not as the number of people who could actually be identified.
+
+It also ignores many things that matter in practice: aggregation thresholds, suppression of small groups, access controls, free-text responses, prior knowledge and the policies governing who can see the data.
+
+The useful quantity here is the **information revealed by a combination of answers**, rather than a claim that a particular survey respondent can or will be identified.

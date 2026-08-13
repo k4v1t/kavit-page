@@ -1,19 +1,60 @@
 ---
-title: "Why different black hole binaries look the same"
-description: "An interactive exploration of parameter degeneracies in gravitational wave inference."
-date: 2026-07-24
-categories: [Gravitational Waves, Inverse Problems, Interactive]
-image-alt: "An interactive exploration of parameter degeneracies in gravitational wave inference."
-format:
-  html:
-    toc: true
-    code-fold: false
-    code-tools: false
-    echo: false
+title: "When different black-hole binaries look the same"
+description: "An interactive exploration of parameter degeneracies in gravitational-wave inference."
+date: 2026-08-13
+categories:
+  - Gravitational waves
+  - Inverse problems
+  - Scientific machine learning
+  - Interactive
 ---
 
-WIP
+A gravitational-wave signal is an observation of a source, not a direct description of it.
 
-## WIP
+Different combinations of source parameters can sometimes produce very similar observed signals.
 
-WIP
+That makes gravitational-wave inference an inverse problem: we observe the waveform and try to infer the system that produced it.
+
+## The basic idea
+
+Suppose we observe a reference waveform.
+
+We then vary two source parameters and compare the resulting candidate waveform with the reference.
+
+Some combinations may look noticeably different.
+
+Others may be surprisingly similar.
+
+## Try it
+
+*Interactive waveform comparison goes here.*
+
+## A degeneracy
+
+If many different parameter combinations produce nearly the same observation, the inverse problem does not have one obvious answer.
+
+Instead, there can be a region of parameter space where many solutions are plausible.
+
+That structure is often described as a parameter degeneracy.
+
+## Why this matters for machine learning
+
+A model can only infer what is present in the data.
+
+If two physically different systems produce almost indistinguishable observations, a more complicated model does not automatically solve the problem.
+
+The ambiguity is partly in the data itself.
+
+## Breaking the degeneracy
+
+More information can help.
+
+Longer observations, additional waveform structure or richer detector information may distinguish systems that initially looked equivalent.
+
+The interesting question is therefore not only:
+
+**What can the model learn?**
+
+but also:
+
+**What does the observation make possible to learn in the first place?**
