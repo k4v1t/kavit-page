@@ -18,25 +18,43 @@ Some pieces explain ideas I have found useful; others are questions I am still w
 [Explore the visual essays](essays.qmd){.btn .btn-primary .btn-lg}
 :::
 
-## What you'll find here
+## Explore
 
 ::: {.featured-grid}
 ::: {.featured-card}
 
-### Visual explanations
+### Interactive essays
 
-Intuitive explorations of mathematical and machine learning ideas, with an emphasis on what the equations and models are actually doing.
+Visual explanations and experiments that let you adjust parameters, test assumptions and see how a system changes.
 
-Mathematics · Machine Learning · Visualisation
+[Browse the essays](essays.qmd)
 :::
 
 ::: {.featured-card}
 
-### Interactive experiments
+### Research
 
-Small simulations that let you change assumptions, adjust parameters and observe how the behaviour changes.
+Research on scientific machine learning, inverse problems and related areas.
 
-Interactive · Computation · Scientific Inference
+`Coming soon`
+:::
+
+::: {.featured-card}
+
+### Publications
+
+Papers, preprints and other formally published work.
+
+`Coming soon`
+:::
+
+::: {.featured-card}
+
+### Projects & notes
+
+Code, technical experiments and shorter explorations of ideas that are still developing.
+
+`Coming soon`
 :::
 :::
 
@@ -61,9 +79,9 @@ Work In Progress · Learning in Public
 :::
 :::
 
-## What I'm exploring
+## Current themes
 
-My current interests include scientific machine learning. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help make those limitations easier to see.
+The work here will mostly sit around scientific machine learning, inverse problems, mathematical intuition and the question of what can (or cannot) be learned from data.
 
 I am more interested in developing better questions than presenting polished answers.
 
