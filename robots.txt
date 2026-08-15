@@ -1,1 +1,1 @@
-Sitemap: https://k4v1t.github.io/kavit-page/sitemap.xml
+Sitemap: https://kavit.page/sitemap.xml
