@@ -345,10 +345,10 @@ html`
   <svg viewBox="0 0 ${svgWidth} ${svgHeight}" width="100%" style="max-width: 560px; display: block; margin: 0 auto;">
     ${segments.map(d => `
       <polygon points="${d.points}" fill="${d.color}"></polygon>
-      <text x="${d.textX}" y="${d.valueY}" text-anchor="middle" fill="white" font-size="20" font-weight="700">
+      <text x="${d.textX}" y="${d.valueY}" text-anchor="middle" fill="currentColor" font-size="20" font-weight="700">
         ${d.people >= 10 ? d.people.toFixed(0) : d.people.toFixed(1)}
       </text>
-      <text x="${d.textX}" y="${d.labelY}" text-anchor="middle" fill="white" font-size="12">
+      <text x="${d.textX}" y="${d.labelY}" text-anchor="middle" fill="currentColor" font-size="12">
         ${d.label}
       </text>
     `).join("")}
