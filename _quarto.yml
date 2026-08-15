@@ -7,6 +7,13 @@ project:
 website:
   title: "k4v1t"
   description: "Visual explorations of mathematics, artificial intelligence, and scientific discovery."
+  plausible-analytics: |
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-slY2aghacBEG1Or3oJ-7I.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
   navbar:
     left:
       - href: index.qmd
