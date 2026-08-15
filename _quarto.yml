@@ -1,5 +1,8 @@
 project:
   type: website
+  render:
+    - "*.qmd"
+    - "!posts/mbhb-redundancies/exploration.ipynb"
 
 website:
   title: "k4v1t"

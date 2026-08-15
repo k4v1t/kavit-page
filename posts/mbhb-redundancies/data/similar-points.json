@@ -1,0 +1,104 @@
+[
+  {
+    "distance": 1472.5,
+    "inclination": 0.45,
+    "difference": 0.019093039590833315,
+    "separation": 0.740592610341155
+  },
+  {
+    "distance": 1430.0,
+    "inclination": 0.4975,
+    "difference": 0.016975563613878565,
+    "separation": 0.6785599646466567
+  },
+  {
+    "distance": 1387.5,
+    "inclination": 0.545,
+    "difference": 0.01734978698823767,
+    "separation": 0.6165527092806363
+  },
+  {
+    "distance": 1345.0,
+    "inclination": 0.5925,
+    "difference": 0.019207990390253796,
+    "separation": 0.5545793609502503
+  },
+  {
+    "distance": 1302.5,
+    "inclination": 0.6875,
+    "difference": 0.017282908813835228,
+    "separation": 0.45769944925180084
+  },
+  {
+    "distance": 1260.0,
+    "inclination": 0.7350000000000001,
+    "difference": 0.014507216099478663,
+    "separation": 0.39557493579361214
+  },
+  {
+    "distance": 1217.5,
+    "inclination": 0.7825,
+    "difference": 0.011813174728634036,
+    "separation": 0.33346316195573
+  },
+  {
+    "distance": 1175.0,
+    "inclination": 0.8300000000000001,
+    "difference": 0.009062671052939035,
+    "separation": 0.2713728754050058
+  },
+  {
+    "distance": 1132.5,
+    "inclination": 0.8775,
+    "difference": 0.006346676434555272,
+    "separation": 0.20932319795073537
+  },
+  {
+    "distance": 1090.0,
+    "inclination": 0.925,
+    "difference": 0.005040587153413005,
+    "separation": 0.14736543511196593
+  },
+  {
+    "distance": 1047.5,
+    "inclination": 0.9724999999999999,
+    "difference": 0.008072357287320881,
+    "separation": 0.08569917328556814
+  },
+  {
+    "distance": 1005.0,
+    "inclination": 1.02,
+    "difference": 0.014680211423456673,
+    "separation": 0.026448661754331547
+  },
+  {
+    "distance": 1005.0,
+    "inclination": 1.0675000000000001,
+    "difference": 0.01924277030397754,
+    "separation": 0.02002178029134038
+  },
+  {
+    "distance": 962.5,
+    "inclination": 1.115,
+    "difference": 0.009553377155203309,
+    "separation": 0.07482224424694038
+  },
+  {
+    "distance": 920.0,
+    "inclination": 1.1625,
+    "difference": 0.005952141723437558,
+    "separation": 0.13610022539635036
+  },
+  {
+    "distance": 877.5,
+    "inclination": 1.2575,
+    "difference": 0.009575402483975018,
+    "separation": 0.23523721496085137
+  },
+  {
+    "distance": 835.0,
+    "inclination": 1.3525,
+    "difference": 0.010555768955150707,
+    "separation": 0.3349954470359799
+  }
+]

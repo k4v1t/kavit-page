@@ -1,7 +1,7 @@
 ---
 title: "When different black-hole binaries look the same"
 description: "An interactive exploration of parameter degeneracies in gravitational-wave inference."
-date: 2026-08-13
+date: 2026-08-15
 categories:
   - Gravitational waves
   - Inverse problems
@@ -11,50 +11,223 @@ categories:
 
 A gravitational-wave signal is an observation of a source, not a direct description of it.
 
-Different combinations of source parameters can sometimes produce very similar observed signals.
+Different source parameters can sometimes produce remarkably similar signals. That ambiguity is not necessarily a failure of the inference method. Sometimes it is built into the observation itself.
 
-That makes gravitational-wave inference an inverse problem: we observe the waveform and try to infer the system that produced it.
+In this example, we will look at two parameters of a massive black-hole binary:
 
-## The basic idea
+- its **luminosity distance**
+- its **inclination** relative to us
 
-Suppose we observe a reference waveform.
+Both affect the observed amplitude of the gravitational wave.
 
-We then vary two source parameters and compare the resulting candidate waveform with the reference.
+## One waveform, many possible sources
 
-Some combinations may look noticeably different.
+Suppose we observe a waveform from a binary at:
 
-Others may be surprisingly similar.
+- luminosity distance: **1000 Mpc**
+- inclination: **1.05 rad**
 
-## Try it
+We can then ask a simple inverse question:
 
-*Interactive waveform comparison goes here.*
+> What other combinations of distance and inclination could have produced something very similar?
 
-## A degeneracy
+## The degeneracy map
 
-If many different parameter combinations produce nearly the same observation, the inverse problem does not have one obvious answer.
+```{ojs}
+//| echo: false
 
-Instead, there can be a region of parameter space where many solutions are plausible.
+grid = FileAttachment("data/degeneracy-grid.json").json()
 
-That structure is often described as a parameter degeneracy.
+dx = grid.distances[1] - grid.distances[0]
+dy = grid.inclinations[1] - grid.inclinations[0]
 
-## Why this matters for machine learning
+surface = grid.inclinations.flatMap((inc, i) =>
+  grid.distances.map((dist, j) => ({
+    distance: dist,
+    inclination: inc,
+    difference: grid.difference[i][j],
+    x1: dist - dx / 2,
+    x2: dist + dx / 2,
+    y1: inc - dy / 2,
+    y2: inc + dy / 2
+  }))
+)
 
-A model can only infer what is present in the data.
+Plot.plot({
+  height: 480,
+  marginLeft: 70,
+  marginBottom: 60,
+  marginRight: 30,
 
-If two physically different systems produce almost indistinguishable observations, a more complicated model does not automatically solve the problem.
+  style: {
+    fontSize: "14px",
+    background: "transparent"
+  },
 
-The ambiguity is partly in the data itself.
+  x: {
+    label: "Luminosity distance (Mpc)"
+  },
 
-## Breaking the degeneracy
+  y: {
+    label: "Inclination (rad)"
+  },
 
-More information can help.
+  color: {
+    type: "sqrt",
+    scheme: "viridis",
+    reverse: true,
+    label: "Relative waveform difference",
+    legend: true,
+    style: {
+      background: "transparent"
+    }
+  },
 
-Longer observations, additional waveform structure or richer detector information may distinguish systems that initially looked equivalent.
+  marks: [
+    Plot.rect(surface, {
+      x1: "x1",
+      x2: "x2",
+      y1: "y1",
+      y2: "y2",
+      fill: "difference"
+    }),
 
-The interesting question is therefore not only:
+    Plot.dot(
+      [{
+        distance: grid.reference.distance,
+        inclination: grid.reference.inclination
+      }],
+      {
+        x: "distance",
+        y: "inclination",
+        r: 7,
+        symbol: "cross",
+        stroke: "red",
+        strokeWidth: 3
+      }
+    )
+  ]
+})
+```
 
-**What can the model learn?**
+## Why this matters
+
+A darker or lighter region on the map is not simply saying that one parameter is uncertain.
+
+The important feature is the **valley**: moving distance and inclination together can keep the waveform close to the reference.
+
+That means the inverse map is not one-to-one.
+
+Different physical systems can occupy different places in parameter space while producing nearly the same observation.
+
+## Different source, similar signal
+
+```{ojs}
+//| echo: false
+
+waveforms = FileAttachment("data/waveform-bank.json").json()
+
+reference = waveforms.find(d => d.label === "Reference")
+
+viewof selectedLabel = Inputs.select(
+  waveforms
+    .filter(d => d.label !== "Reference")
+    .map(d => d.label),
+  {
+    label: "Compare the reference with",
+    value: "Valley A"
+  }
+)
+
+selected = waveforms.find(d => d.label === selectedLabel)
+
+waveformData = [
+  ...reference.time.map((t, i) => ({
+    time: t / 3600,
+    strain: reference.strain[i] / 1e-17,
+    source: "Reference"
+  })),
+  ...selected.time.map((t, i) => ({
+    time: t / 3600,
+    strain: selected.strain[i] / 1e-17,
+    source: selected.label
+  }))
+]
+
+Plot.plot({
+  height: 400,
+  marginLeft: 75,
+  marginBottom: 60,
+
+  style: {
+    fontSize: "14px",
+    background: "transparent"
+  },
+
+  x: {
+    label: "Time since start of displayed segment (hours)"
+  },
+
+  y: {
+    label: "Strain h₊ (×10⁻¹⁷)",
+    grid: true
+  },
+
+  color: {
+    domain: ["Reference", selected.label],
+    range: ["#4c9be8", "#f28e2b"],
+    legend: true
+  },
+
+  marks: [
+    Plot.line(
+      waveformData.filter(d => d.source === "Reference"),
+      {
+        x: "time",
+        y: "strain",
+        stroke: "#4c9be8",
+        strokeWidth: 2.5
+      }
+    ),
+
+    Plot.line(
+      waveformData.filter(d => d.source !== "Reference"),
+      {
+        x: "time",
+        y: "strain",
+        stroke: "#f28e2b",
+        strokeWidth: 1.8,
+        strokeDasharray: "6,4"
+      }
+    )
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="metric-card">
+  <strong>${selected.label}</strong><br>
+  Distance: ${selected.distance.toFixed(0)} Mpc<br>
+  Inclination: ${selected.inclination.toFixed(2)} rad
+</div>
+`
+```
+
+## The lesson for machine learning
+
+A sufficiently flexible model can learn complex mappings from data.
+
+But it cannot recover information that the observation does not uniquely contain.
+
+If two different source configurations generate nearly indistinguishable signals, the ambiguity is structural. A larger neural network does not make that information suddenly appear.
+
+The useful question is therefore not only:
+
+**Can the model predict the parameters?**
 
 but also:
 
-**What does the observation make possible to learn in the first place?**
+**Which parameters are actually identifiable from the data?**
