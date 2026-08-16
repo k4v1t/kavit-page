@@ -9,16 +9,76 @@ categories:
   - Interactive
 ---
 
+Gravitational waves are ripples in spacetime produced when massive objects accelerate.
+
+Most of the time they are quite weak. But when compact objects such as black holes orbit one another, they can radiate enough energy in gravitational waves for those ripples to travel across the universe and eventually reach us.
+
+As the two objects lose orbital energy, they spiral closer together. Their orbital motion speeds up, the gravitational-wave frequency rises, and eventually the objects merge.
+
+The result is a characteristic waveform: a signal whose shape contains information about the system that produced it.
+
+For massive black-hole binaries, those signals are expected to be particularly important for **LISA**, the planned space-based gravitational-wave observatory.
+
+## Listening from space
+
+Ground-based detectors such as LIGO observe gravitational waves at relatively high frequencies.
+
+LISA will target much lower frequencies, around the millihertz regime, using three spacecraft separated by millions of kilometres. That makes it sensitive to systems that evolve on much longer timescales, including binaries containing massive black holes. 
+
+Some of these systems may be observed for days, weeks or even months as they spiral towards merger.
+
+But detecting a gravitational wave is only the beginning.
+
+What we really want to know is:
+
+> **What kind of system produced it?**
+
+## From a waveform to a black-hole binary
+
 A gravitational-wave signal is an observation of a source, not a direct description of it.
 
-Different source parameters can sometimes produce remarkably similar signals. That ambiguity is not necessarily a failure of the inference method. Sometimes it is built into the observation itself.
+The waveform depends on many properties of the binary: the black-hole masses and spins, its distance from us, its orientation, its position on the sky and other parameters describing the system.
 
-In this example, we will look at two parameters of a massive black-hole binary:
+Inference works in the opposite direction.
 
-- its **luminosity distance**
-- its **inclination** relative to us
+We observe the waveform and ask which combinations of physical parameters could plausibly have produced it.
 
-Both affect the observed amplitude of the gravitational wave.
+In practice, this is usually treated as a Bayesian inference problem.
+
+Traditional approaches such as Markov Chain Monte Carlo (MCMC) explore the parameter space and build up a posterior distribution describing which source configurations are supported by the data.
+
+More recently, simulation-based inference (SBI) methods use large collections of simulated gravitational-wave signals to learn parts of this inference process with neural networks.
+
+The computational machinery can become sophisticated, but the underlying question remains simple:
+
+> Given the signal we measured, what can we actually learn about the source?
+
+Those parameters are scientifically useful.
+
+Masses and spins tell us about how black holes formed and grew. Distance and sky position tell us where the event occurred. Populations of many such systems can help us study the history of massive black holes and galaxy evolution, while sufficiently precise signals can also provide tests of gravity itself.
+
+So recovering the source parameters accurately matters.
+
+But there is a catch.
+
+## When different sources look the same
+
+The mapping from source parameters to waveform is not always one-to-one.
+
+Different combinations of parameters can sometimes produce remarkably similar observations.
+
+That ambiguity is not necessarily a failure of the inference algorithm. It can be a property of the observation itself.
+
+One particularly intuitive example involves:
+
+- **luminosity distance**, roughly how far away the binary is;
+- **inclination**, the angle at which we view its orbit.
+
+Both affect the amplitude of the observed gravitational wave.
+
+A more distant binary appears weaker. But changing the orientation of the system can also change the amplitude.
+
+That creates the possibility of a trade-off: could a binary be farther away but oriented in such a way that its waveform still looks almost the same?
 
 ## One waveform, many possible sources
 
@@ -110,13 +170,13 @@ Plot.plot({
 })
 ```
 
-## Why this matters
+## A valley of possible answers
 
-A darker or lighter region on the map is not simply saying that one parameter is uncertain.
+The important feature is the **valley**.
 
-The important feature is the **valley**: moving distance and inclination together can keep the waveform close to the reference.
+Moving distance and inclination together can keep the waveform close to the reference. Rather than pointing to one unique solution, the observation is compatible with a family of nearby parameter combinations.
 
-That means the inverse map is not one-to-one.
+The inverse map is therefore not one-to-one.
 
 Different physical systems can occupy different places in parameter space while producing nearly the same observation.
 
@@ -218,11 +278,13 @@ html`
 
 ## The lesson for machine learning
 
-A sufficiently flexible model can learn complex mappings from data.
+A sufficiently flexible model can learn extremely complicated mappings from data.
 
-But it cannot recover information that the observation does not uniquely contain.
+But better prediction machinery does not automatically make an inverse problem identifiable.
 
-If two different source configurations generate nearly indistinguishable signals, the ambiguity is structural. A larger neural network does not make that information suddenly appear.
+If the observations supplied to a model contain almost the same signal for two different source configurations, distinguishing those configurations becomes intrinsically difficult.
+
+A larger neural network does not make that information suddenly appear.
 
 The useful question is therefore not only:
 
@@ -230,4 +292,40 @@ The useful question is therefore not only:
 
 but also:
 
-**Which parameters are actually identifiable from the data?**
+**Which parameters are actually identifiable from the information we have measured?**
+
+## Can the degeneracy be broken?
+
+Sometimes.
+
+A degeneracy does not necessarily mean that the parameters are fundamentally unknowable. It means that the information we are currently using does not distinguish them cleanly enough.
+
+More information can change that.
+
+**Richer waveform structure.**  
+Real gravitational-wave signals contain more than a single amplitude pattern. Higher-order modes, spin-induced precession and other waveform features depend on the source parameters in different ways. Those additional structures can help distinguish systems that otherwise appear similar.
+
+**The detector response.**  
+LISA will not observe a source from one fixed viewpoint. As the spacecraft constellation moves around the Sun, its response to the source changes. That time-dependent information can help constrain source orientation and sky position, reducing some degeneracies.
+
+**Independent observations.**  
+If an electromagnetic counterpart or host galaxy can be identified, external information may provide additional constraints on quantities such as sky position or distance.
+
+**Representing the ambiguity properly.**  
+Some degeneracy may remain even after all available information is included. In that case the solution is not to force the inference algorithm to produce one answer. The posterior should retain the range, correlation or multiple modes that remain compatible with the observation.
+
+That is an important part of scientific inference.
+
+Uncertainty is not always something an algorithm has failed to remove.
+
+Sometimes it is telling us something real about what the data can and cannot distinguish.
+
+## About this example
+
+This is deliberately a simplified illustration of the distance–inclination degeneracy rather than a full LISA parameter-estimation analysis.
+
+The waveforms here were generated with PyCBC using IMRPhenomXHM. The comparison uses the plus polarisation and a simple amplitude-sensitive relative difference between waveforms.
+
+A realistic LISA analysis would also include the detector response, instrumental noise, additional source parameters and a proper likelihood or posterior calculation.
+
+The point of the example is therefore not that these particular parameter combinations would remain indistinguishable in a complete LISA analysis. It is to show how parameter degeneracies arise when different physical configurations map to very similar observations.
