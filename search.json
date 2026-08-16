@@ -4,7 +4,28 @@
     "href": "posts/mbhb-redundancies/index.html",
     "title": "When different black-hole binaries look the same",
     "section": "",
-    "text": "A gravitational-wave signal is an observation of a source, not a direct description of it.\nDifferent source parameters can sometimes produce remarkably similar signals. That ambiguity is not necessarily a failure of the inference method. Sometimes it is built into the observation itself.\nIn this example, we will look at two parameters of a massive black-hole binary:\nBoth affect the observed amplitude of the gravitational wave."
+    "text": "Gravitational waves are ripples in spacetime produced when massive objects accelerate.\nMost of the time they are quite weak. But when compact objects such as black holes orbit one another, they can radiate enough energy in gravitational waves for those ripples to travel across the universe and eventually reach us.\nAs the two objects lose orbital energy, they spiral closer together. Their orbital motion speeds up, the gravitational-wave frequency rises, and eventually the objects merge.\nThe result is a characteristic waveform: a signal whose shape contains information about the system that produced it.\nFor massive black-hole binaries, those signals are expected to be particularly important for LISA, the planned space-based gravitational-wave observatory."
+  },
+  {
+    "objectID": "posts/mbhb-redundancies/index.html#listening-from-space",
+    "href": "posts/mbhb-redundancies/index.html#listening-from-space",
+    "title": "When different black-hole binaries look the same",
+    "section": "Listening from space",
+    "text": "Listening from space\nGround-based detectors such as LIGO observe gravitational waves at relatively high frequencies.\nLISA will target much lower frequencies, around the millihertz regime, using three spacecraft separated by millions of kilometres. That makes it sensitive to systems that evolve on much longer timescales, including binaries containing massive black holes.\nSome of these systems may be observed for days, weeks or even months as they spiral towards merger.\nBut detecting a gravitational wave is only the beginning.\nWhat we really want to know is:\n\nWhat kind of system produced it?"
+  },
+  {
+    "objectID": "posts/mbhb-redundancies/index.html#from-a-waveform-to-a-black-hole-binary",
+    "href": "posts/mbhb-redundancies/index.html#from-a-waveform-to-a-black-hole-binary",
+    "title": "When different black-hole binaries look the same",
+    "section": "From a waveform to a black-hole binary",
+    "text": "From a waveform to a black-hole binary\nA gravitational-wave signal is an observation of a source, not a direct description of it.\nThe waveform depends on many properties of the binary: the black-hole masses and spins, its distance from us, its orientation, its position on the sky and other parameters describing the system.\nInference works in the opposite direction.\nWe observe the waveform and ask which combinations of physical parameters could plausibly have produced it.\nIn practice, this is usually treated as a Bayesian inference problem.\nTraditional approaches such as Markov Chain Monte Carlo (MCMC) explore the parameter space and build up a posterior distribution describing which source configurations are supported by the data.\nMore recently, simulation-based inference (SBI) methods use large collections of simulated gravitational-wave signals to learn parts of this inference process with neural networks.\nThe computational machinery can become sophisticated, but the underlying question remains simple:\n\nGiven the signal we measured, what can we actually learn about the source?\n\nThose parameters are scientifically useful.\nMasses and spins tell us about how black holes formed and grew. Distance and sky position tell us where the event occurred. Populations of many such systems can help us study the history of massive black holes and galaxy evolution, while sufficiently precise signals can also provide tests of gravity itself.\nSo recovering the source parameters accurately matters.\nBut there is a catch."
+  },
+  {
+    "objectID": "posts/mbhb-redundancies/index.html#when-different-sources-look-the-same",
+    "href": "posts/mbhb-redundancies/index.html#when-different-sources-look-the-same",
+    "title": "When different black-hole binaries look the same",
+    "section": "When different sources look the same",
+    "text": "When different sources look the same\nThe mapping from source parameters to waveform is not always one-to-one.\nDifferent combinations of parameters can sometimes produce remarkably similar observations.\nThat ambiguity is not necessarily a failure of the inference algorithm. It can be a property of the observation itself.\nOne particularly intuitive example involves:\n\nluminosity distance, roughly how far away the binary is;\ninclination, the angle at which we view its orbit.\n\nBoth affect the amplitude of the observed gravitational wave.\nA more distant binary appears weaker. But changing the orientation of the system can also change the amplitude.\nThat creates the possibility of a trade-off: could a binary be farther away but oriented in such a way that its waveform still looks almost the same?"
   },
   {
     "objectID": "posts/mbhb-redundancies/index.html#one-waveform-many-possible-sources",
@@ -21,11 +42,11 @@
     "text": "The degeneracy map\n\n\nCode\ngrid = FileAttachment(\"data/degeneracy-grid.json\").json()\n\ndx = grid.distances[1] - grid.distances[0]\ndy = grid.inclinations[1] - grid.inclinations[0]\n\nsurface = grid.inclinations.flatMap((inc, i) =&gt;\n  grid.distances.map((dist, j) =&gt; ({\n    distance: dist,\n    inclination: inc,\n    difference: grid.difference[i][j],\n    x1: dist - dx / 2,\n    x2: dist + dx / 2,\n    y1: inc - dy / 2,\n    y2: inc + dy / 2\n  }))\n)\n\nPlot.plot({\n  height: 480,\n  marginLeft: 70,\n  marginBottom: 60,\n  marginRight: 30,\n\n  style: {\n    fontSize: \"14px\",\n    background: \"transparent\"\n  },\n\n  x: {\n    label: \"Luminosity distance (Mpc)\"\n  },\n\n  y: {\n    label: \"Inclination (rad)\"\n  },\n\n  color: {\n    type: \"sqrt\",\n    scheme: \"viridis\",\n    reverse: true,\n    label: \"Relative waveform difference\",\n    legend: true,\n    style: {\n      background: \"transparent\"\n    }\n  },\n\n  marks: [\n    Plot.rect(surface, {\n      x1: \"x1\",\n      x2: \"x2\",\n      y1: \"y1\",\n      y2: \"y2\",\n      fill: \"difference\"\n    }),\n\n    Plot.dot(\n      [{\n        distance: grid.reference.distance,\n        inclination: grid.reference.inclination\n      }],\n      {\n        x: \"distance\",\n        y: \"inclination\",\n        r: 7,\n        symbol: \"cross\",\n        stroke: \"red\",\n        strokeWidth: 3\n      }\n    )\n  ]\n})"
   },
   {
-    "objectID": "posts/mbhb-redundancies/index.html#why-this-matters",
-    "href": "posts/mbhb-redundancies/index.html#why-this-matters",
+    "objectID": "posts/mbhb-redundancies/index.html#a-valley-of-possible-answers",
+    "href": "posts/mbhb-redundancies/index.html#a-valley-of-possible-answers",
     "title": "When different black-hole binaries look the same",
-    "section": "Why this matters",
-    "text": "Why this matters\nA darker or lighter region on the map is not simply saying that one parameter is uncertain.\nThe important feature is the valley: moving distance and inclination together can keep the waveform close to the reference.\nThat means the inverse map is not one-to-one.\nDifferent physical systems can occupy different places in parameter space while producing nearly the same observation."
+    "section": "A valley of possible answers",
+    "text": "A valley of possible answers\nThe important feature is the valley.\nMoving distance and inclination together can keep the waveform close to the reference. Rather than pointing to one unique solution, the observation is compatible with a family of nearby parameter combinations.\nThe inverse map is therefore not one-to-one.\nDifferent physical systems can occupy different places in parameter space while producing nearly the same observation."
   },
   {
     "objectID": "posts/mbhb-redundancies/index.html#different-source-similar-signal",
@@ -39,7 +60,21 @@
     "href": "posts/mbhb-redundancies/index.html#the-lesson-for-machine-learning",
     "title": "When different black-hole binaries look the same",
     "section": "The lesson for machine learning",
-    "text": "The lesson for machine learning\nA sufficiently flexible model can learn complex mappings from data.\nBut it cannot recover information that the observation does not uniquely contain.\nIf two different source configurations generate nearly indistinguishable signals, the ambiguity is structural. A larger neural network does not make that information suddenly appear.\nThe useful question is therefore not only:\nCan the model predict the parameters?\nbut also:\nWhich parameters are actually identifiable from the data?"
+    "text": "The lesson for machine learning\nA sufficiently flexible model can learn extremely complicated mappings from data.\nBut better prediction machinery does not automatically make an inverse problem identifiable.\nIf the observations supplied to a model contain almost the same signal for two different source configurations, distinguishing those configurations becomes intrinsically difficult.\nA larger neural network does not make that information suddenly appear.\nThe useful question is therefore not only:\nCan the model predict the parameters?\nbut also:\nWhich parameters are actually identifiable from the information we have measured?"
+  },
+  {
+    "objectID": "posts/mbhb-redundancies/index.html#can-the-degeneracy-be-broken",
+    "href": "posts/mbhb-redundancies/index.html#can-the-degeneracy-be-broken",
+    "title": "When different black-hole binaries look the same",
+    "section": "Can the degeneracy be broken?",
+    "text": "Can the degeneracy be broken?\nSometimes.\nA degeneracy does not necessarily mean that the parameters are fundamentally unknowable. It means that the information we are currently using does not distinguish them cleanly enough.\nMore information can change that.\nRicher waveform structure.\nReal gravitational-wave signals contain more than a single amplitude pattern. Higher-order modes, spin-induced precession and other waveform features depend on the source parameters in different ways. Those additional structures can help distinguish systems that otherwise appear similar.\nThe detector response.\nLISA will not observe a source from one fixed viewpoint. As the spacecraft constellation moves around the Sun, its response to the source changes. That time-dependent information can help constrain source orientation and sky position, reducing some degeneracies.\nIndependent observations.\nIf an electromagnetic counterpart or host galaxy can be identified, external information may provide additional constraints on quantities such as sky position or distance.\nRepresenting the ambiguity properly.\nSome degeneracy may remain even after all available information is included. In that case the solution is not to force the inference algorithm to produce one answer. The posterior should retain the range, correlation or multiple modes that remain compatible with the observation.\nThat is an important part of scientific inference.\nUncertainty is not always something an algorithm has failed to remove.\nSometimes it is telling us something real about what the data can and cannot distinguish."
+  },
+  {
+    "objectID": "posts/mbhb-redundancies/index.html#about-this-example",
+    "href": "posts/mbhb-redundancies/index.html#about-this-example",
+    "title": "When different black-hole binaries look the same",
+    "section": "About this example",
+    "text": "About this example\nThis is deliberately a simplified illustration of the distance–inclination degeneracy rather than a full LISA parameter-estimation analysis.\nThe waveforms here were generated with PyCBC using IMRPhenomXHM. The comparison uses the plus polarisation and a simple amplitude-sensitive relative difference between waveforms.\nA realistic LISA analysis would also include the detector response, instrumental noise, additional source parameters and a proper likelihood or posterior calculation.\nThe point of the example is therefore not that these particular parameter combinations would remain indistinguishable in a complete LISA analysis. It is to show how parameter degeneracies arise when different physical configurations map to very similar observations."
   },
   {
     "objectID": "index.html",
