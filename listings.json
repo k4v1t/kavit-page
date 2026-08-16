@@ -2,6 +2,7 @@
   {
     "listing": "/essays.html",
     "items": [
+      "/posts/claude-watermark/index.html",
       "/posts/mbhb-redundancies/index.html",
       "/posts/anonymity-budget/index.html"
     ]
