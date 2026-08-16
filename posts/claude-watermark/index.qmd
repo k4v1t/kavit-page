@@ -1,0 +1,1107 @@
+---
+title: "There is no hidden text"
+description: "An interactive visual essay about how statistical watermarks can hide in the choices a language model makes."
+date: 2026-08-16
+categories:
+  - Artificial intelligence
+  - Language models
+  - Watermarking
+  - Interactive
+page-layout: article
+---
+
+A watermark sounds like something added *to* a piece of text.
+
+A hidden character. A tag. Some invisible metadata tucked between the words.
+
+But statistical text watermarking can work without adding any of those things.
+
+The text can look completely ordinary.
+
+So where is the watermark?
+
+> **Not in a secret character. In the pattern of choices that produced the text.**
+
+Anthropic recently announced that future Claude models will carry a statistical watermark.
+
+Claude is the example that motivated this essay, but the idea is broader. Statistical watermarking can be applied to other language models too.
+
+The interesting part is not simply that the text is marked.
+
+It is *how*.
+
+## A language model is constantly making choices
+
+A language model writes one token at a time.
+
+At each step, there is usually not one uniquely correct continuation. Several words may fit.
+
+Consider a deliberately simple example:
+
+> The weather today was cold and ...
+
+```{ojs}
+//| echo: false
+
+nextWords = [
+  {word: "grey", probability: 0.31},
+  {word: "overcast", probability: 0.27},
+  {word: "windy", probability: 0.19},
+  {word: "wet", probability: 0.15},
+  {word: "pleasant", probability: 0.07},
+  {word: "sugary", probability: 0.01}
+]
+
+Plot.plot({
+  height: 310,
+  marginLeft: 90,
+  marginBottom: 45,
+  style: {
+    fontSize: "14px",
+    background: "transparent"
+  },
+  x: {
+    domain: [0, 0.35],
+    label: "Illustrative next-token probability",
+    tickFormat: d => `${Math.round(d * 100)}%`
+  },
+  y: {
+    domain: nextWords.map(d => d.word),
+    label: null
+  },
+  marks: [
+    Plot.barX(nextWords, {
+      x: "probability",
+      y: "word",
+      tip: false
+    }),
+    Plot.ruleX([0])
+  ]
+})
+```
+
+The exact probabilities above are only illustrative.
+
+The important point is the shape of the problem: some continuations are plausible, some are very unlikely, and several plausible choices may say essentially the same thing.
+
+A watermark does not need to force the model to choose nonsense like **sugary**.
+
+It can operate in the low-stakes choices between reasonable alternatives.
+
+## The watermark lives in the randomness
+
+Normally, a sampling procedure turns those next-token probabilities into one actual choice.
+
+For the toy example below, imagine there are two equally sensible groups of words. A secret rule determines which group is favoured at each step.
+
+The reader never sees that rule.
+
+```{ojs}
+//| echo: false
+
+choiceRows = [
+  {context: "The result was", a: "surprising", b: "notable", keyed: "notable"},
+  {context: "The explanation is", a: "clear", b: "simple", keyed: "clear"},
+  {context: "The method seems", a: "useful", b: "practical", keyed: "practical"},
+  {context: "The change was", a: "small", b: "minor", keyed: "minor"},
+  {context: "The pattern looks", a: "stable", b: "consistent", keyed: "stable"},
+  {context: "The response felt", a: "natural", b: "fluent", keyed: "fluent"}
+]
+
+html`
+<div class="wm-choice-stack">
+  ${choiceRows.map(d => html`
+    <div class="wm-choice-row">
+      <span class="wm-context">${d.context}</span>
+      <span class="wm-chip ${d.a === d.keyed ? "wm-keyed" : ""}">${d.a}</span>
+      <span class="wm-chip ${d.b === d.keyed ? "wm-keyed" : ""}">${d.b}</span>
+    </div>
+  `)}
+</div>
+`
+```
+
+<div class="wm-note">
+The highlighted choices are a <strong>toy illustration</strong>, not Anthropic's implementation. Real schemes such as SynthID-Text are more sophisticated. The useful intuition is that the generation process can structure many ordinary sampling decisions so that they leave a detectable statistical pattern.
+</div>
+
+Nothing strange has to appear in any single sentence.
+
+That is what makes the idea easy to miss.
+
+## One choice proves almost nothing
+
+Suppose you knew the watermarking rule and inspected one word.
+
+Even if that word happened to agree with the rule, it would tell you almost nothing.
+
+An unwatermarked model could have made exactly the same choice by chance.
+
+But now imagine seeing many such choices.
+
+```{ojs}
+//| echo: false
+
+viewof nChoices = Inputs.range([1, 80], {
+  label: "Choices observed",
+  value: 12,
+  step: 1
+})
+
+// A deterministic toy watermarked sequence.
+// Each choice agrees with the hidden rule with probability 0.72.
+//
+// This is deliberately simple and is not an implementation
+// of Anthropic's watermark or SynthID-Text.
+
+toySequence = Array.from({length: 80}, (_, i) => {
+  const x = Math.sin((i + 1) * 12.9898) * 43758.5453
+  const u = x - Math.floor(x)
+
+  return {
+    i: i + 1,
+    agrees: u < 0.72
+  }
+})
+
+// Build cumulative evidence for every sample size.
+
+evidencePath = toySequence.map((d, i) => {
+  const n = i + 1
+  const k = toySequence
+    .slice(0, n)
+    .filter(x => x.agrees)
+    .length
+
+  // Under the no-watermark toy null hypothesis,
+  // each choice has a 50% probability of agreeing.
+  //
+  // z = (k - 0.5n) / sqrt(0.25n)
+
+  const zObserved = (k - 0.5 * n) / Math.sqrt(0.25 * n)
+
+  // If the true agreement probability is 0.72,
+  // the expected z-score rises as 0.44 * sqrt(n).
+
+  const zExpected = 0.44 * Math.sqrt(n)
+
+  return {
+    n,
+    k,
+    zObserved,
+    zExpected
+  }
+})
+
+visibleEvidence = evidencePath.slice(0, nChoices)
+
+currentEvidence = visibleEvidence[visibleEvidence.length - 1]
+
+observedChoices = toySequence.slice(0, nChoices)
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="wm-evidence-wrap">
+  <div class="wm-dots">
+    ${observedChoices.map(d => html`
+      <span
+        class="wm-dot ${d.agrees ? "wm-dot-hit" : "wm-dot-miss"}"
+        title="${d.agrees ? "Agrees with toy watermark rule" : "Does not agree with toy watermark rule"}">
+      </span>
+    `)}
+  </div>
+
+  <div class="wm-evidence-summary">
+    <div class="wm-view-kicker">OBSERVED STATISTICAL EVIDENCE</div>
+    <div class="wm-evidence-number">
+      Observed z-score: ${currentEvidence.zObserved.toFixed(2)}
+    </div>
+    <div class="wm-muted">
+      ${currentEvidence.k} of ${currentEvidence.n} choices agree with the toy rule
+    </div>
+  </div>
+</div>
+`
+```
+
+A useful way to quantify the evidence is to ask:
+
+> If there were no watermark, how surprising would this many agreements be?
+
+In this toy example, an unwatermarked sequence would agree with the hidden rule about half the time.
+
+If we observe $k$ agreements across $n$ choices, we can calculate:
+
+$$
+z = \frac{k - 0.5n}{\sqrt{0.25n}}
+$$
+
+A larger positive $z$-score means the observed sequence is increasingly difficult to explain as random 50:50 agreement.
+
+But there is an important subtlety.
+
+**The observed evidence does not have to increase every time we add another word.**
+
+The next choice might disagree with the watermarking rule.
+
+So the evidence can wobble.
+
+What matters is the overall trend.
+
+```{ojs}
+//| echo: false
+
+html`
+<div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
+  ↑ Evidence against chance (z-score)
+</div>
+`
+
+Plot.plot({
+  height: 330,
+  marginLeft: 90,
+  marginBottom: 50,
+  style: {
+    fontSize: "14px",
+    background: "transparent"
+  },
+  x: {
+    domain: [1, 80],
+    label: "Number of low-stakes choices observed"
+  },
+  y: {
+    domain: [-2, 5],
+    label: null,
+    grid: true
+  },
+  marks: [
+    Plot.ruleY([0]),
+
+    Plot.line(evidencePath, {
+      x: "n",
+      y: "zExpected",
+      strokeDasharray: "6,4"
+    }),
+
+    Plot.line(evidencePath, {
+      x: "n",
+      y: "zObserved",
+      strokeWidth: 2
+    }),
+
+    Plot.ruleX([nChoices], {
+      strokeOpacity: 0.25
+    }),
+
+    Plot.dot(
+      evidencePath.filter(d => d.n === nChoices),
+      {
+        x: "n",
+        y: "zObserved",
+        r: 5,
+        tip: false
+      }
+    )
+  ]
+})
+```
+
+The solid line is the evidence from this particular toy sequence.
+
+The dashed line is the **expected trend** if choices agree with the watermarking rule 72% of the time.
+
+The solid line can move backwards.
+
+The dashed line does not.
+
+This distinction matters because statistical evidence is noisy.
+
+More text gives the detector more information, but it does not guarantee that every additional token increases the score.
+
+The expected signal grows roughly with the square root of the number of usable choices:
+
+$$
+z_{\mathrm{expected}} \propto \sqrt{n}
+$$
+
+So longer passages generally provide stronger evidence, but the relationship is not simply "twice as much text means twice as much evidence".
+
+This is the central idea:
+
+> **The watermark does not need to be visible in any one word. Evidence emerges across many choices.**
+
+## The detector sees something different from the reader
+
+A reader sees prose.
+
+A detector with the right key can ask a different question:
+
+**Is this sequence of choices unusually consistent with the watermarking rule?**
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="wm-two-view">
+  <div class="wm-view-card">
+    <div class="wm-view-kicker">WHAT A READER SEES</div>
+    <p>
+      The result was notable. The explanation is clear.
+      The method seems practical, and the pattern looks stable.
+    </p>
+  </div>
+
+  <div class="wm-view-arrow">→</div>
+
+  <div class="wm-view-card">
+    <div class="wm-view-kicker">WHAT A KEYED DETECTOR CAN TEST</div>
+    <div class="wm-bitline">✓ ✓ ✓ · ✓ ✓ · ✓ ✓</div>
+    <p class="wm-muted">
+      Are these choices more consistent with the secret rule than we would expect by chance?
+    </p>
+  </div>
+</div>
+`
+```
+
+This is different from trying to recognise "AI style".
+
+A generic AI detector might look for linguistic patterns associated with language models.
+
+A watermark detector instead tests for a deliberately planted statistical signal produced by a particular generation procedure.
+
+## The text is public. The key does not have to be.
+
+This creates a slightly strange situation.
+
+The watermarked text can be completely public.
+
+Anyone can copy it.
+
+Anyone can inspect every character.
+
+But that does not mean everyone can verify the watermark.
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="wm-verifier-grid">
+
+  <div class="wm-view-card">
+    <div class="wm-view-kicker">PUBLIC TEXT</div>
+    <p>
+      The result was notable. The explanation is clear.
+      The method seems practical.
+    </p>
+    <p class="wm-muted">
+      Anyone can read, copy or publish it.
+    </p>
+  </div>
+
+  <div class="wm-view-card">
+    <div class="wm-view-kicker">OBSERVER WITHOUT THE KEY</div>
+    <p class="wm-bitline">?</p>
+    <p>
+      The sequence looks like ordinary prose.
+    </p>
+    <p class="wm-muted">
+      You do not know which token choices the watermarking rule would have favoured.
+    </p>
+  </div>
+
+  <div class="wm-view-card">
+    <div class="wm-view-kicker">VERIFIER WITH THE KEY</div>
+    <p class="wm-bitline">✓ ✓ · ✓ ✓ ✓ · ✓</p>
+    <p>
+      The same public text becomes statistically testable.
+    </p>
+    <p class="wm-muted">
+      The verifier knows which patterns to look for.
+    </p>
+  </div>
+
+</div>
+`
+```
+
+That distinction is easy to overlook.
+
+The watermark is present in text that everyone can see, but reliable verification can still depend on access to a private key, detector, or verification service.
+
+For Claude, Anthropic controls the watermarking mechanism and the corresponding verification capability.
+
+That means possessing a paragraph generated by Claude does not automatically give us the ability to independently test Anthropic's watermark.
+
+Anthropic can make verification available through a detector or API without revealing the underlying secret key.
+
+This creates an important separation:
+
+> **The evidence can be public while the ability to interpret it remains controlled.**
+
+Our experiments later in this essay will be different.
+
+We will control both sides.
+
+We will generate text using an open watermarking implementation, and we will also have access to the corresponding detector.
+
+That lets us inspect the mechanism rather than treating verification as a black box.
+
+## Can you erase it?
+
+The watermark is distributed across many token choices, so changing one word should not make it disappear.
+
+But changing enough of the text eventually removes information about the original generation process.
+
+The experiment below uses the open SynthID-style watermark we created for this essay. It does **not** test for Claude's watermark.
+
+<div class="wm-note">
+The first time this interactive loads, your browser downloads the GPT-2 tokenizer from Hugging Face. It does not download or run GPT-2 itself. Detection happens locally in your browser after that.
+</div>
+
+```{ojs}
+//| echo: false
+
+browserFixture = FileAttachment("data/watermark-demo-fixture-browser.json").json()
+```
+
+```{ojs}
+//| echo: false
+
+hfjs = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.0.1")
+
+browserTokenizer = await hfjs.AutoTokenizer.from_pretrained(
+  browserFixture.model_name
+)
+```
+
+```{ojs}
+//| echo: false
+
+MIN_USABLE_POSITIONS = 80
+
+WM_MULTIPLIER = 6364136223846793005n
+WM_INCREMENT = 1n
+
+function int64(x) {
+  return BigInt.asIntN(64, x)
+}
+
+function accumulateHash(currentHash, data) {
+  let h = int64(currentHash)
+
+  for (const value of data) {
+    h = int64(h + BigInt(value))
+    h = int64(h * WM_MULTIPLIER)
+    h = int64(h + WM_INCREMENT)
+  }
+
+  return h
+}
+
+function positiveMod(x, modulus) {
+  const m = BigInt(modulus)
+  const r = x % m
+  return Number(r >= 0n ? r : r + m)
+}
+
+function contextRepetitionMask(tokenIds, ngramLen, historySize) {
+  const contextLen = ngramLen - 1
+  const mask = []
+
+  const history = []
+  const counts = new Map()
+
+  for (let i = 0; i <= tokenIds.length - ngramLen; i++) {
+    const context = tokenIds.slice(i, i + contextLen)
+    const contextHash = accumulateHash(1n, context)
+    const key = contextHash.toString()
+
+    const repeated = (counts.get(key) ?? 0) > 0
+    mask.push(!repeated)
+
+    history.unshift(key)
+    counts.set(key, (counts.get(key) ?? 0) + 1)
+
+    if (history.length > historySize) {
+      const removed = history.pop()
+      const remaining = (counts.get(removed) ?? 1) - 1
+
+      if (remaining <= 0) {
+        counts.delete(removed)
+      } else {
+        counts.set(removed, remaining)
+      }
+    }
+  }
+
+  return mask
+}
+
+function keyedFeatures(tokenIds, fixture) {
+  const {
+    keys,
+    ngram_len,
+    sampling_table_size,
+    context_history_size,
+    sampling_table
+  } = fixture.watermark
+
+  if (tokenIds.length < ngram_len) {
+    return null
+  }
+
+  const mask = contextRepetitionMask(
+    tokenIds,
+    ngram_len,
+    context_history_size
+  )
+
+  const sums = Array(keys.length).fill(0)
+  let usable = 0
+
+  for (let i = 0; i <= tokenIds.length - ngram_len; i++) {
+    if (!mask[i]) continue
+
+    const ngram = tokenIds.slice(i, i + ngram_len)
+    const ngramHash = accumulateHash(1n, ngram)
+
+    for (let depth = 0; depth < keys.length; depth++) {
+      const keyedHash = accumulateHash(
+        ngramHash,
+        [keys[depth]]
+      )
+
+      const tableIndex = positiveMod(
+        keyedHash,
+        sampling_table_size
+      )
+
+      sums[depth] += sampling_table[tableIndex]
+    }
+
+    usable += 1
+  }
+
+  if (usable === 0) {
+    return null
+  }
+
+  return {
+    features: sums.map(x => x / usable),
+    usable_positions: usable
+  }
+}
+
+function sigmoid(x) {
+  if (x >= 0) {
+    const z = Math.exp(-x)
+    return 1 / (1 + z)
+  }
+
+  const z = Math.exp(x)
+  return z / (1 + z)
+}
+
+function detectorScore(features, detector) {
+  let logit = detector.bias
+
+  for (let i = 0; i < features.length; i++) {
+    const standardized =
+      (features[i] - detector.feature_mean[i]) /
+      detector.feature_sd[i]
+
+    logit += detector.weights[i] * standardized
+  }
+
+  return sigmoid(logit)
+}
+
+function tokenEditDistance(a, b) {
+  if (a.length === 0) return b.length
+  if (b.length === 0) return a.length
+
+  let previous = Array.from(
+    {length: b.length + 1},
+    (_, j) => j
+  )
+
+  for (let i = 1; i <= a.length; i++) {
+    const current = [i]
+
+    for (let j = 1; j <= b.length; j++) {
+      const substitutionCost = a[i - 1] === b[j - 1] ? 0 : 1
+
+      current[j] = Math.min(
+        previous[j] + 1,
+        current[j - 1] + 1,
+        previous[j - 1] + substitutionCost
+      )
+    }
+
+    previous = current
+  }
+
+  return previous[b.length]
+}
+
+async function browserTokenIds(text) {
+  const encoded = await browserTokenizer(
+    text,
+    {add_special_tokens: false}
+  )
+
+  return Array.from(
+    encoded.input_ids.data,
+    x => Number(x)
+  )
+}
+
+async function scoreBrowserText(text) {
+  const tokenIds = await browserTokenIds(text)
+
+  const keyed = keyedFeatures(
+    tokenIds,
+    browserFixture
+  )
+
+  if (keyed === null) {
+    return {
+      detector_score: NaN,
+      tokens: tokenIds.length,
+      usable_positions: 0,
+      token_ids: tokenIds
+    }
+  }
+
+  return {
+    detector_score: detectorScore(
+      keyed.features,
+      browserFixture.detector
+    ),
+    tokens: tokenIds.length,
+    usable_positions: keyed.usable_positions,
+    token_ids: tokenIds,
+    features: keyed.features
+  }
+}
+
+function displayableScore(result) {
+  if (!Number.isFinite(result.detector_score)) return NaN
+  if (result.usable_positions < MIN_USABLE_POSITIONS) return NaN
+  return result.detector_score
+}
+
+function evidenceLabel(score, usablePositions) {
+  if (!Number.isFinite(score) || usablePositions < MIN_USABLE_POSITIONS) {
+    return "Too little text"
+  }
+
+  if (score >= 0.90) return "Strong"
+  if (score >= 0.70) return "Moderate"
+  if (score >= 0.35) return "Unclear"
+  return "Weak"
+}
+
+function evidenceWidth(score, usablePositions) {
+  if (!Number.isFinite(score) || usablePositions < MIN_USABLE_POSITIONS) {
+    return 0
+  }
+
+  return Math.max(0, Math.min(100, score * 100))
+}
+
+function makeLightEdits(text) {
+  const edits = [
+    ["enable us to make assumptions", "let us make assumptions"],
+    ["predict the future", "anticipate what might happen"],
+    ["in a way that is compatible with", "in ways that fit"],
+    ["what we know about the past", "what we know from the past"],
+    ["we don't know what will happen in the future", "we cannot know exactly what will happen next"],
+
+    ["There is also an argument that", "It can also be argued that"],
+    ["people who are skeptical", "skeptical people"],
+    ["can sometimes be better off than", "may sometimes fare better than"],
+    ["those who are not", "people who are not"],
+    ["One reason is that", "One reason is"],
+
+    ["we can see ourselves as more skeptical", "we may think of ourselves as more skeptical"],
+    ["That can lead to problems", "That can create problems"],
+    ["If you're a skeptic", "If you are skeptical"],
+    ["you're more likely to go into a panic", "you may be more likely to panic"],
+    ["than a believer", "than someone who believes"],
+
+    ["You can sometimes feel afraid", "You may sometimes feel afraid"],
+    ["if you're at odds with a group", "if you find yourself at odds with a group"],
+    ["if you're worried about being skeptical", "if you worry about being skeptical"],
+    ["you probably have a tendency to go into a panic", "you may already be prone to panic"],
+    ["If you're not skeptical", "If you are not skeptical"]
+  ]
+
+  let edited = text
+
+  for (const [from, to] of edits) {
+    edited = edited.replace(from, to)
+  }
+
+  return edited
+}
+```
+
+```{ojs}
+//| echo: false
+
+viewof editorState = {
+
+  const container = html`
+    <div>
+      <div class="wm-button-row">
+        <button class="wm-action-button" type="button">Restore original</button>
+        <button class="wm-action-button wm-action-button-primary" type="button">Apply 20 light edits</button>
+      </div>
+      <textarea class="wm-editor" rows="15"></textarea>
+    </div>
+  `
+
+  const [restoreBtn, replaceBtn] = container.querySelectorAll("button")
+  const textarea = container.querySelector("textarea")
+
+  function currentOriginalText() {
+    return browserFixture.sample.text
+  }
+
+  function emit(originalText, editedText) {
+    textarea.value = editedText
+    container.value = {
+      originalText,
+      editedText
+    }
+    container.dispatchEvent(new Event("input", {bubbles: true}))
+  }
+
+  restoreBtn.onclick = () => {
+    emit(currentOriginalText(), currentOriginalText())
+  }
+
+  replaceBtn.onclick = () => {
+    const original = currentOriginalText()
+    const newText = makeLightEdits(original)
+    emit(original, newText)
+  }
+
+  textarea.addEventListener("input", () => {
+    container.value = {
+      originalText: currentOriginalText(),
+      editedText: textarea.value
+    }
+    container.dispatchEvent(new Event("input", {bubbles: true}))
+  })
+
+  emit(currentOriginalText(), currentOriginalText())
+  return container
+}
+```
+
+Try making a few edits yourself, or use **Apply 20 light edits** to see how a controlled rewrite affects the watermark evidence.
+
+```{ojs}
+//| echo: false
+
+originalResult = await scoreBrowserText(editorState.originalText)
+currentResult = await scoreBrowserText(editorState.editedText)
+
+originalTokenIds = originalResult.token_ids
+currentTokenIds = currentResult.token_ids
+
+editDistance = tokenEditDistance(
+  originalTokenIds,
+  currentTokenIds
+)
+
+fractionChanged = editDistance /
+  Math.max(
+    originalTokenIds.length,
+    currentTokenIds.length,
+    1
+  )
+
+percentChanged = Math.min(
+  100,
+  Math.round(fractionChanged * 100)
+)
+
+shownScore = displayableScore(currentResult)
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="wm-live-summary">
+
+  <div class="wm-live-score-card">
+    <div class="wm-view-kicker">WATERMARK EVIDENCE</div>
+
+    <div class="wm-live-score-label">
+      ${evidenceLabel(shownScore, currentResult.usable_positions)}
+    </div>
+
+    <div class="wm-live-meter">
+      <div
+        class="wm-live-meter-fill"
+        style="width: ${evidenceWidth(shownScore, currentResult.usable_positions)}%">
+      </div>
+    </div>
+
+    <div class="wm-muted">
+      ${
+        currentResult.usable_positions < MIN_USABLE_POSITIONS
+          ? `Not enough text to assess reliably. Need about ${MIN_USABLE_POSITIONS} usable watermark positions.`
+          : `Demo detector score: ${shownScore.toFixed(3)}`
+      }
+    </div>
+  </div>
+
+  <div class="wm-live-stat">
+    <div class="wm-view-kicker">TEXT CHANGED</div>
+    <div class="wm-live-stat-value">${percentChanged}%</div>
+    <div class="wm-muted">GPT-2 token edit distance</div>
+  </div>
+
+  <div class="wm-live-stat">
+    <div class="wm-view-kicker">TOKENS</div>
+    <div class="wm-live-stat-value">${currentResult.tokens}</div>
+    <div class="wm-muted">
+      ${currentResult.usable_positions} usable watermark positions
+    </div>
+  </div>
+
+</div>
+`
+```
+
+The number above is the output of **our demonstration detector**. It is not a calibrated probability that an AI wrote the passage.
+
+What matters is how the evidence changes as you disturb the token sequence.
+
+```{ojs}
+//| echo: false
+
+referenceTrajectory = browserFixture.edit_trajectory.map(d => ({
+  changed: d.fraction_changed * 100,
+  score: d.detector_score
+}))
+
+currentPoint = Number.isFinite(shownScore)
+  ? [{changed: percentChanged, score: shownScore}]
+  : []
+
+Plot.plot({
+  height: 330,
+  marginLeft: 65,
+  marginBottom: 45,
+  style: {
+    fontSize: "14px",
+    background: "transparent"
+  },
+  x: {
+    domain: [0, 55],
+    label: "Text changed (%)"
+  },
+  y: {
+    domain: [0, 1],
+    label: null,
+    grid: true
+  },
+  marks: [
+    Plot.line(referenceTrajectory, {
+      x: "changed",
+      y: "score",
+      strokeDasharray: "6,4"
+    }),
+
+    Plot.dot(currentPoint, {
+      x: "changed",
+      y: "score",
+      r: 6
+    }),
+
+    Plot.ruleX([percentChanged], {
+      strokeOpacity: 0.25
+    })
+  ]
+})
+```
+
+<div class="wm-note">
+The dashed curve is the controlled word-replacement experiment from the notebook. The circle is <strong>your current edit</strong>. Your path does not have to follow the dashed curve because different edits disturb different token contexts.
+</div>
+
+The watermark behaves less like a switch and more like accumulated evidence.
+
+A few edits can leave most of the signal intact. As more of the original token sequence is replaced, the detector eventually loses the pattern it was looking for.
+
+## Not all text leaves the same room for a watermark
+
+A watermark needs choices.
+
+Free-form prose gives a model many opportunities to choose between reasonable continuations.
+
+Other tasks can be much more constrained.
+
+Consider four broad cases:
+
+```{ojs}
+//| echo: false
+
+constraintExamples = [
+  {
+    type: "Creative prose",
+    freedom: 0.95,
+    description: "Many plausible ways to express the same idea"
+  },
+  {
+    type: "General explanation",
+    freedom: 0.72,
+    description: "Some freedom, but factual content constrains choices"
+  },
+  {
+    type: "Proofreading",
+    freedom: 0.32,
+    description: "Most of the original words may remain untouched"
+  },
+  {
+    type: "Exact code",
+    freedom: 0.14,
+    description: "Many tokens are determined by correctness or syntax"
+  }
+]
+
+Plot.plot({
+  height: 290,
+  marginLeft: 125,
+  marginBottom: 40,
+  style: {
+    fontSize: "14px",
+    background: "transparent"
+  },
+  x: {
+    domain: [0, 1],
+    label: "Illustrative freedom of choice",
+    tickFormat: d => `${Math.round(d * 100)}%`
+  },
+  y: {
+    domain: constraintExamples.map(d => d.type),
+    label: null
+  },
+  marks: [
+    Plot.barX(constraintExamples, {
+      x: "freedom",
+      y: "type",
+      tip: false,
+      title: d => d.description
+    }),
+    Plot.ruleX([0])
+  ]
+})
+```
+
+These numbers are illustrative, not measured quantities.
+
+The point is conceptual.
+
+If the model has very little freedom about what comes next, there may be fewer low-stakes choices available for a watermark to use.
+
+This gives us another experiment to run later:
+
+> **What happens to detectability as we constrain the model's freedom?**
+
+We can compare different types of text while controlling passage length and watermarking method.
+
+That gives us a way to separate two effects:
+
+1. how much text the detector receives;
+2. how many useful watermark-bearing decisions were available during generation.
+
+## So can this page tell whether Claude wrote something?
+
+No.
+
+And that is an important distinction.
+
+Claude motivated this essay, but the interactive detector we build here will know the key used by **our own demonstration watermark**.
+
+It will not know Anthropic's key.
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="wm-two-view">
+
+  <div class="wm-view-card">
+    <div class="wm-view-kicker">OUR DEMO</div>
+    <p class="wm-bitline">text + our key → testable</p>
+    <p class="wm-muted">
+      We control the generation rule and the detector.
+    </p>
+  </div>
+
+  <div class="wm-view-arrow">≠</div>
+
+  <div class="wm-view-card">
+    <div class="wm-view-kicker">CLAUDE</div>
+    <p class="wm-bitline">text + unknown key → ?</p>
+    <p class="wm-muted">
+      The text alone does not give us Anthropic's verification mechanism.
+    </p>
+  </div>
+
+</div>
+`
+```
+
+So if you paste arbitrary text into this page, it cannot truthfully tell you whether Claude generated it.
+
+It can only test for a watermark whose verification rule it actually knows.
+
+That is very different from saying:
+
+> "This text looks like Claude."
+
+## What a watermark can (and cannot) tell us
+
+A statistical watermark is evidence, not a visible stamp.
+
+Its strength can depend on:
+
+- how much text there is;
+- how many watermark-bearing choices were available;
+- what happened to the text afterwards;
+- which watermarking scheme was used;
+- whether the verifier has access to the corresponding detection mechanism.
+
+Even a positive detection does not necessarily settle conventional questions of authorship.
+
+Claude might have generated an entire passage.
+
+It might have heavily rewritten something written by a person.
+
+Or it might have contributed only part of a larger document.
+
+So the useful question is not simply:
+
+**Is this AI-generated?**
+
+It is closer to:
+
+> **How much statistical evidence is there that this text passed through a particular generation process?**
+
+That is a much stranger kind of watermark.
+
+There is no hidden text to find.
+
+The evidence is distributed through the choices that created it.
