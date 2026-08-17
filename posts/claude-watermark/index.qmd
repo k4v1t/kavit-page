@@ -805,6 +805,11 @@ viewof editorState = {
 }
 ```
 
+<div class="wm-note">
+<strong>Why does the passage start and end abruptly?</strong><br>
+This is the model's generated continuation rather than a polished piece of prose. It begins after a prompt that is not shown here and stops when the generation reaches its token limit. Keeping the original output unchanged means the detector, reference curve and editing experiment are all measuring the same text.
+</div>
+
 Try making a few edits yourself, or use **Apply 20 light edits** to see how a controlled rewrite affects the watermark evidence.
 
 ```{ojs}

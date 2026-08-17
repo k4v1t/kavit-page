@@ -678,3 +678,30 @@ body.quarto-dark {
     width: 100%;
   }
 }
+
+/* =========================================================
+   Essay listing polish
+   ========================================================= */
+
+/* Give the tags some space below the listing title */
+.quarto-listing .listing-categories {
+  margin-top: 0.55rem;
+}
+
+/* Mobile listing controls */
+@media (max-width: 760px) {
+  .quarto-listing .listing-actions-group {
+    width: 100%;
+  }
+
+  .quarto-listing .listing-actions-group .input-group {
+    width: 100%;
+    max-width: none;
+  }
+
+  .quarto-listing .listing-filter {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+  }
+}
