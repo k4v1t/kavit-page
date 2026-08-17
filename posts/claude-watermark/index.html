@@ -1406,34 +1406,37 @@ z_{\mathrm{expected}} \propto \sqrt{n}
 </div>
 </div>
 </div>
+<div class="wm-note">
+<p><strong>Why does the passage start and end abruptly?</strong><br> This is the model’s generated continuation rather than a polished piece of prose. It begins after a prompt that is not shown here and stops when the generation reaches its token limit. Keeping the original output unchanged means the detector, reference curve and editing experiment are all measuring the same text.</p>
+</div>
 <p>Try making a few edits yourself, or use <strong>Apply 20 light edits</strong> to see how a controlled rewrite affects the watermark evidence.</p>
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="813" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 812;"><span id="cb13-813"><a href="#cb13-813" aria-hidden="true" tabindex="-1"></a>originalResult <span class="op">=</span> <span class="cf">await</span> <span class="fu">scoreBrowserText</span>(editorState<span class="op">.</span><span class="at">originalText</span>)</span>
-<span id="cb13-814"><a href="#cb13-814" aria-hidden="true" tabindex="-1"></a>currentResult <span class="op">=</span> <span class="cf">await</span> <span class="fu">scoreBrowserText</span>(editorState<span class="op">.</span><span class="at">editedText</span>)</span>
-<span id="cb13-815"><a href="#cb13-815" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-816"><a href="#cb13-816" aria-hidden="true" tabindex="-1"></a>originalTokenIds <span class="op">=</span> originalResult<span class="op">.</span><span class="at">token_ids</span></span>
-<span id="cb13-817"><a href="#cb13-817" aria-hidden="true" tabindex="-1"></a>currentTokenIds <span class="op">=</span> currentResult<span class="op">.</span><span class="at">token_ids</span></span>
-<span id="cb13-818"><a href="#cb13-818" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-819"><a href="#cb13-819" aria-hidden="true" tabindex="-1"></a>editDistance <span class="op">=</span> <span class="fu">tokenEditDistance</span>(</span>
-<span id="cb13-820"><a href="#cb13-820" aria-hidden="true" tabindex="-1"></a>  originalTokenIds<span class="op">,</span></span>
-<span id="cb13-821"><a href="#cb13-821" aria-hidden="true" tabindex="-1"></a>  currentTokenIds</span>
-<span id="cb13-822"><a href="#cb13-822" aria-hidden="true" tabindex="-1"></a>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="818" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 817;"><span id="cb13-818"><a href="#cb13-818" aria-hidden="true" tabindex="-1"></a>originalResult <span class="op">=</span> <span class="cf">await</span> <span class="fu">scoreBrowserText</span>(editorState<span class="op">.</span><span class="at">originalText</span>)</span>
+<span id="cb13-819"><a href="#cb13-819" aria-hidden="true" tabindex="-1"></a>currentResult <span class="op">=</span> <span class="cf">await</span> <span class="fu">scoreBrowserText</span>(editorState<span class="op">.</span><span class="at">editedText</span>)</span>
+<span id="cb13-820"><a href="#cb13-820" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-821"><a href="#cb13-821" aria-hidden="true" tabindex="-1"></a>originalTokenIds <span class="op">=</span> originalResult<span class="op">.</span><span class="at">token_ids</span></span>
+<span id="cb13-822"><a href="#cb13-822" aria-hidden="true" tabindex="-1"></a>currentTokenIds <span class="op">=</span> currentResult<span class="op">.</span><span class="at">token_ids</span></span>
 <span id="cb13-823"><a href="#cb13-823" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-824"><a href="#cb13-824" aria-hidden="true" tabindex="-1"></a>fractionChanged <span class="op">=</span> editDistance <span class="op">/</span></span>
-<span id="cb13-825"><a href="#cb13-825" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(</span>
-<span id="cb13-826"><a href="#cb13-826" aria-hidden="true" tabindex="-1"></a>    originalTokenIds<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
-<span id="cb13-827"><a href="#cb13-827" aria-hidden="true" tabindex="-1"></a>    currentTokenIds<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
-<span id="cb13-828"><a href="#cb13-828" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span></span>
-<span id="cb13-829"><a href="#cb13-829" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb13-830"><a href="#cb13-830" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-831"><a href="#cb13-831" aria-hidden="true" tabindex="-1"></a>percentChanged <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(</span>
-<span id="cb13-832"><a href="#cb13-832" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb13-833"><a href="#cb13-833" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(fractionChanged <span class="op">*</span> <span class="dv">100</span>)</span>
-<span id="cb13-834"><a href="#cb13-834" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-824"><a href="#cb13-824" aria-hidden="true" tabindex="-1"></a>editDistance <span class="op">=</span> <span class="fu">tokenEditDistance</span>(</span>
+<span id="cb13-825"><a href="#cb13-825" aria-hidden="true" tabindex="-1"></a>  originalTokenIds<span class="op">,</span></span>
+<span id="cb13-826"><a href="#cb13-826" aria-hidden="true" tabindex="-1"></a>  currentTokenIds</span>
+<span id="cb13-827"><a href="#cb13-827" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-828"><a href="#cb13-828" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-829"><a href="#cb13-829" aria-hidden="true" tabindex="-1"></a>fractionChanged <span class="op">=</span> editDistance <span class="op">/</span></span>
+<span id="cb13-830"><a href="#cb13-830" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(</span>
+<span id="cb13-831"><a href="#cb13-831" aria-hidden="true" tabindex="-1"></a>    originalTokenIds<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
+<span id="cb13-832"><a href="#cb13-832" aria-hidden="true" tabindex="-1"></a>    currentTokenIds<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
+<span id="cb13-833"><a href="#cb13-833" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span></span>
+<span id="cb13-834"><a href="#cb13-834" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb13-835"><a href="#cb13-835" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-836"><a href="#cb13-836" aria-hidden="true" tabindex="-1"></a>shownScore <span class="op">=</span> <span class="fu">displayableScore</span>(currentResult)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-836"><a href="#cb13-836" aria-hidden="true" tabindex="-1"></a>percentChanged <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(</span>
+<span id="cb13-837"><a href="#cb13-837" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb13-838"><a href="#cb13-838" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(fractionChanged <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb13-839"><a href="#cb13-839" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-840"><a href="#cb13-840" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-841"><a href="#cb13-841" aria-hidden="true" tabindex="-1"></a>shownScore <span class="op">=</span> <span class="fu">displayableScore</span>(currentResult)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -1495,48 +1498,48 @@ z_{\mathrm{expected}} \propto \sqrt{n}
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb14" data-startfrom="840" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 839;"><span id="cb14-840"><a href="#cb14-840" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
-<span id="cb14-841"><a href="#cb14-841" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="wm-live-summary"&gt;</span></span>
-<span id="cb14-842"><a href="#cb14-842" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-843"><a href="#cb14-843" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-score-card"&gt;</span></span>
-<span id="cb14-844"><a href="#cb14-844" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;WATERMARK EVIDENCE&lt;/div&gt;</span></span>
-<span id="cb14-845"><a href="#cb14-845" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-846"><a href="#cb14-846" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-score-label"&gt;</span></span>
-<span id="cb14-847"><a href="#cb14-847" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">evidenceLabel</span>(shownScore<span class="op">,</span> currentResult<span class="op">.</span><span class="at">usable_positions</span>)<span class="sc">}</span></span>
-<span id="cb14-848"><a href="#cb14-848" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb14-849"><a href="#cb14-849" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-850"><a href="#cb14-850" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-meter"&gt;</span></span>
-<span id="cb14-851"><a href="#cb14-851" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div</span></span>
-<span id="cb14-852"><a href="#cb14-852" aria-hidden="true" tabindex="-1"></a><span class="vs">        class="wm-live-meter-fill"</span></span>
-<span id="cb14-853"><a href="#cb14-853" aria-hidden="true" tabindex="-1"></a><span class="vs">        style="width: </span><span class="sc">${</span><span class="fu">evidenceWidth</span>(shownScore<span class="op">,</span> currentResult<span class="op">.</span><span class="at">usable_positions</span>)<span class="sc">}</span><span class="vs">%"&gt;</span></span>
-<span id="cb14-854"><a href="#cb14-854" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
-<span id="cb14-855"><a href="#cb14-855" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb14-856"><a href="#cb14-856" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-857"><a href="#cb14-857" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;</span></span>
-<span id="cb14-858"><a href="#cb14-858" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span></span>
-<span id="cb14-859"><a href="#cb14-859" aria-hidden="true" tabindex="-1"></a>        currentResult<span class="op">.</span><span class="at">usable_positions</span> <span class="op">&lt;</span> MIN_USABLE_POSITIONS</span>
-<span id="cb14-860"><a href="#cb14-860" aria-hidden="true" tabindex="-1"></a>          <span class="op">?</span> <span class="vs">`Not enough text to assess reliably. Need about </span><span class="sc">${</span>MIN_USABLE_POSITIONS<span class="sc">}</span><span class="vs"> usable watermark positions.`</span></span>
-<span id="cb14-861"><a href="#cb14-861" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span> <span class="vs">`Demo detector score: </span><span class="sc">${</span>shownScore<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span></span>
-<span id="cb14-862"><a href="#cb14-862" aria-hidden="true" tabindex="-1"></a>      <span class="sc">}</span></span>
-<span id="cb14-863"><a href="#cb14-863" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb14-864"><a href="#cb14-864" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb14-865"><a href="#cb14-865" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-866"><a href="#cb14-866" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-stat"&gt;</span></span>
-<span id="cb14-867"><a href="#cb14-867" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;TEXT CHANGED&lt;/div&gt;</span></span>
-<span id="cb14-868"><a href="#cb14-868" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-stat-value"&gt;</span><span class="sc">${</span>percentChanged<span class="sc">}</span><span class="vs">%&lt;/div&gt;</span></span>
-<span id="cb14-869"><a href="#cb14-869" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;GPT-2 token edit distance&lt;/div&gt;</span></span>
-<span id="cb14-870"><a href="#cb14-870" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb14-871"><a href="#cb14-871" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-872"><a href="#cb14-872" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-stat"&gt;</span></span>
-<span id="cb14-873"><a href="#cb14-873" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;TOKENS&lt;/div&gt;</span></span>
-<span id="cb14-874"><a href="#cb14-874" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-stat-value"&gt;</span><span class="sc">${</span>currentResult<span class="op">.</span><span class="at">tokens</span><span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
-<span id="cb14-875"><a href="#cb14-875" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;</span></span>
-<span id="cb14-876"><a href="#cb14-876" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>currentResult<span class="op">.</span><span class="at">usable_positions</span><span class="sc">}</span><span class="vs"> usable watermark positions</span></span>
-<span id="cb14-877"><a href="#cb14-877" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb14-878"><a href="#cb14-878" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb14-879"><a href="#cb14-879" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-880"><a href="#cb14-880" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
-<span id="cb14-881"><a href="#cb14-881" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb14" data-startfrom="845" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 844;"><span id="cb14-845"><a href="#cb14-845" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
+<span id="cb14-846"><a href="#cb14-846" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="wm-live-summary"&gt;</span></span>
+<span id="cb14-847"><a href="#cb14-847" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-848"><a href="#cb14-848" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-score-card"&gt;</span></span>
+<span id="cb14-849"><a href="#cb14-849" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;WATERMARK EVIDENCE&lt;/div&gt;</span></span>
+<span id="cb14-850"><a href="#cb14-850" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-851"><a href="#cb14-851" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-score-label"&gt;</span></span>
+<span id="cb14-852"><a href="#cb14-852" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">evidenceLabel</span>(shownScore<span class="op">,</span> currentResult<span class="op">.</span><span class="at">usable_positions</span>)<span class="sc">}</span></span>
+<span id="cb14-853"><a href="#cb14-853" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb14-854"><a href="#cb14-854" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-855"><a href="#cb14-855" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-meter"&gt;</span></span>
+<span id="cb14-856"><a href="#cb14-856" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div</span></span>
+<span id="cb14-857"><a href="#cb14-857" aria-hidden="true" tabindex="-1"></a><span class="vs">        class="wm-live-meter-fill"</span></span>
+<span id="cb14-858"><a href="#cb14-858" aria-hidden="true" tabindex="-1"></a><span class="vs">        style="width: </span><span class="sc">${</span><span class="fu">evidenceWidth</span>(shownScore<span class="op">,</span> currentResult<span class="op">.</span><span class="at">usable_positions</span>)<span class="sc">}</span><span class="vs">%"&gt;</span></span>
+<span id="cb14-859"><a href="#cb14-859" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
+<span id="cb14-860"><a href="#cb14-860" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb14-861"><a href="#cb14-861" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-862"><a href="#cb14-862" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;</span></span>
+<span id="cb14-863"><a href="#cb14-863" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span></span>
+<span id="cb14-864"><a href="#cb14-864" aria-hidden="true" tabindex="-1"></a>        currentResult<span class="op">.</span><span class="at">usable_positions</span> <span class="op">&lt;</span> MIN_USABLE_POSITIONS</span>
+<span id="cb14-865"><a href="#cb14-865" aria-hidden="true" tabindex="-1"></a>          <span class="op">?</span> <span class="vs">`Not enough text to assess reliably. Need about </span><span class="sc">${</span>MIN_USABLE_POSITIONS<span class="sc">}</span><span class="vs"> usable watermark positions.`</span></span>
+<span id="cb14-866"><a href="#cb14-866" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span> <span class="vs">`Demo detector score: </span><span class="sc">${</span>shownScore<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb14-867"><a href="#cb14-867" aria-hidden="true" tabindex="-1"></a>      <span class="sc">}</span></span>
+<span id="cb14-868"><a href="#cb14-868" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb14-869"><a href="#cb14-869" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb14-870"><a href="#cb14-870" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-871"><a href="#cb14-871" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-stat"&gt;</span></span>
+<span id="cb14-872"><a href="#cb14-872" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;TEXT CHANGED&lt;/div&gt;</span></span>
+<span id="cb14-873"><a href="#cb14-873" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-stat-value"&gt;</span><span class="sc">${</span>percentChanged<span class="sc">}</span><span class="vs">%&lt;/div&gt;</span></span>
+<span id="cb14-874"><a href="#cb14-874" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;GPT-2 token edit distance&lt;/div&gt;</span></span>
+<span id="cb14-875"><a href="#cb14-875" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb14-876"><a href="#cb14-876" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-877"><a href="#cb14-877" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-stat"&gt;</span></span>
+<span id="cb14-878"><a href="#cb14-878" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;TOKENS&lt;/div&gt;</span></span>
+<span id="cb14-879"><a href="#cb14-879" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-stat-value"&gt;</span><span class="sc">${</span>currentResult<span class="op">.</span><span class="at">tokens</span><span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb14-880"><a href="#cb14-880" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;</span></span>
+<span id="cb14-881"><a href="#cb14-881" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>currentResult<span class="op">.</span><span class="at">usable_positions</span><span class="sc">}</span><span class="vs"> usable watermark positions</span></span>
+<span id="cb14-882"><a href="#cb14-882" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb14-883"><a href="#cb14-883" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb14-884"><a href="#cb14-884" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-885"><a href="#cb14-885" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb14-886"><a href="#cb14-886" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-13" data-nodetype="expression">
@@ -1549,50 +1552,50 @@ z_{\mathrm{expected}} \propto \sqrt{n}
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb15" data-startfrom="893" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 892;"><span id="cb15-893"><a href="#cb15-893" aria-hidden="true" tabindex="-1"></a>referenceTrajectory <span class="op">=</span> browserFixture<span class="op">.</span><span class="at">edit_trajectory</span><span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> ({</span>
-<span id="cb15-894"><a href="#cb15-894" aria-hidden="true" tabindex="-1"></a>  <span class="dt">changed</span><span class="op">:</span> d<span class="op">.</span><span class="at">fraction_changed</span> <span class="op">*</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb15-895"><a href="#cb15-895" aria-hidden="true" tabindex="-1"></a>  <span class="dt">score</span><span class="op">:</span> d<span class="op">.</span><span class="at">detector_score</span></span>
-<span id="cb15-896"><a href="#cb15-896" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb15-897"><a href="#cb15-897" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-898"><a href="#cb15-898" aria-hidden="true" tabindex="-1"></a>currentPoint <span class="op">=</span> <span class="bu">Number</span><span class="op">.</span><span class="fu">isFinite</span>(shownScore)</span>
-<span id="cb15-899"><a href="#cb15-899" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> [{<span class="dt">changed</span><span class="op">:</span> percentChanged<span class="op">,</span> <span class="dt">score</span><span class="op">:</span> shownScore}]</span>
-<span id="cb15-900"><a href="#cb15-900" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> []</span>
-<span id="cb15-901"><a href="#cb15-901" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-902"><a href="#cb15-902" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb15-903"><a href="#cb15-903" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">330</span><span class="op">,</span></span>
-<span id="cb15-904"><a href="#cb15-904" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">65</span><span class="op">,</span></span>
-<span id="cb15-905"><a href="#cb15-905" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
-<span id="cb15-906"><a href="#cb15-906" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb15-907"><a href="#cb15-907" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span><span class="op">,</span></span>
-<span id="cb15-908"><a href="#cb15-908" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span></span>
-<span id="cb15-909"><a href="#cb15-909" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb15-910"><a href="#cb15-910" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb15-911"><a href="#cb15-911" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">55</span>]<span class="op">,</span></span>
-<span id="cb15-912"><a href="#cb15-912" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Text changed (%)"</span></span>
-<span id="cb15-913"><a href="#cb15-913" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb15-914"><a href="#cb15-914" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb15-915"><a href="#cb15-915" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
-<span id="cb15-916"><a href="#cb15-916" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
-<span id="cb15-917"><a href="#cb15-917" aria-hidden="true" tabindex="-1"></a>    <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb15" data-startfrom="898" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 897;"><span id="cb15-898"><a href="#cb15-898" aria-hidden="true" tabindex="-1"></a>referenceTrajectory <span class="op">=</span> browserFixture<span class="op">.</span><span class="at">edit_trajectory</span><span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> ({</span>
+<span id="cb15-899"><a href="#cb15-899" aria-hidden="true" tabindex="-1"></a>  <span class="dt">changed</span><span class="op">:</span> d<span class="op">.</span><span class="at">fraction_changed</span> <span class="op">*</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb15-900"><a href="#cb15-900" aria-hidden="true" tabindex="-1"></a>  <span class="dt">score</span><span class="op">:</span> d<span class="op">.</span><span class="at">detector_score</span></span>
+<span id="cb15-901"><a href="#cb15-901" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb15-902"><a href="#cb15-902" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-903"><a href="#cb15-903" aria-hidden="true" tabindex="-1"></a>currentPoint <span class="op">=</span> <span class="bu">Number</span><span class="op">.</span><span class="fu">isFinite</span>(shownScore)</span>
+<span id="cb15-904"><a href="#cb15-904" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> [{<span class="dt">changed</span><span class="op">:</span> percentChanged<span class="op">,</span> <span class="dt">score</span><span class="op">:</span> shownScore}]</span>
+<span id="cb15-905"><a href="#cb15-905" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> []</span>
+<span id="cb15-906"><a href="#cb15-906" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-907"><a href="#cb15-907" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb15-908"><a href="#cb15-908" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">330</span><span class="op">,</span></span>
+<span id="cb15-909"><a href="#cb15-909" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">65</span><span class="op">,</span></span>
+<span id="cb15-910"><a href="#cb15-910" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb15-911"><a href="#cb15-911" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb15-912"><a href="#cb15-912" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span><span class="op">,</span></span>
+<span id="cb15-913"><a href="#cb15-913" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span></span>
+<span id="cb15-914"><a href="#cb15-914" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb15-915"><a href="#cb15-915" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb15-916"><a href="#cb15-916" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">55</span>]<span class="op">,</span></span>
+<span id="cb15-917"><a href="#cb15-917" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Text changed (%)"</span></span>
 <span id="cb15-918"><a href="#cb15-918" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb15-919"><a href="#cb15-919" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb15-920"><a href="#cb15-920" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(referenceTrajectory<span class="op">,</span> {</span>
-<span id="cb15-921"><a href="#cb15-921" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"changed"</span><span class="op">,</span></span>
-<span id="cb15-922"><a href="#cb15-922" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"score"</span><span class="op">,</span></span>
-<span id="cb15-923"><a href="#cb15-923" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"6,4"</span></span>
-<span id="cb15-924"><a href="#cb15-924" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb15-925"><a href="#cb15-925" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-926"><a href="#cb15-926" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(currentPoint<span class="op">,</span> {</span>
-<span id="cb15-927"><a href="#cb15-927" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"changed"</span><span class="op">,</span></span>
-<span id="cb15-928"><a href="#cb15-928" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"score"</span><span class="op">,</span></span>
-<span id="cb15-929"><a href="#cb15-929" aria-hidden="true" tabindex="-1"></a>      <span class="dt">r</span><span class="op">:</span> <span class="dv">6</span></span>
-<span id="cb15-930"><a href="#cb15-930" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb15-931"><a href="#cb15-931" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-932"><a href="#cb15-932" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([percentChanged]<span class="op">,</span> {</span>
-<span id="cb15-933"><a href="#cb15-933" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.25</span></span>
-<span id="cb15-934"><a href="#cb15-934" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb15-935"><a href="#cb15-935" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb15-936"><a href="#cb15-936" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-919"><a href="#cb15-919" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb15-920"><a href="#cb15-920" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb15-921"><a href="#cb15-921" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
+<span id="cb15-922"><a href="#cb15-922" aria-hidden="true" tabindex="-1"></a>    <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb15-923"><a href="#cb15-923" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb15-924"><a href="#cb15-924" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb15-925"><a href="#cb15-925" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(referenceTrajectory<span class="op">,</span> {</span>
+<span id="cb15-926"><a href="#cb15-926" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"changed"</span><span class="op">,</span></span>
+<span id="cb15-927"><a href="#cb15-927" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"score"</span><span class="op">,</span></span>
+<span id="cb15-928"><a href="#cb15-928" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"6,4"</span></span>
+<span id="cb15-929"><a href="#cb15-929" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb15-930"><a href="#cb15-930" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-931"><a href="#cb15-931" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(currentPoint<span class="op">,</span> {</span>
+<span id="cb15-932"><a href="#cb15-932" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"changed"</span><span class="op">,</span></span>
+<span id="cb15-933"><a href="#cb15-933" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"score"</span><span class="op">,</span></span>
+<span id="cb15-934"><a href="#cb15-934" aria-hidden="true" tabindex="-1"></a>      <span class="dt">r</span><span class="op">:</span> <span class="dv">6</span></span>
+<span id="cb15-935"><a href="#cb15-935" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb15-936"><a href="#cb15-936" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-937"><a href="#cb15-937" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([percentChanged]<span class="op">,</span> {</span>
+<span id="cb15-938"><a href="#cb15-938" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.25</span></span>
+<span id="cb15-939"><a href="#cb15-939" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb15-940"><a href="#cb15-940" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb15-941"><a href="#cb15-941" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -1631,56 +1634,56 @@ z_{\mathrm{expected}} \propto \sqrt{n}
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb16" data-startfrom="960" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 959;"><span id="cb16-960"><a href="#cb16-960" aria-hidden="true" tabindex="-1"></a>constraintExamples <span class="op">=</span> [</span>
-<span id="cb16-961"><a href="#cb16-961" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb16-962"><a href="#cb16-962" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Creative prose"</span><span class="op">,</span></span>
-<span id="cb16-963"><a href="#cb16-963" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.95</span><span class="op">,</span></span>
-<span id="cb16-964"><a href="#cb16-964" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Many plausible ways to express the same idea"</span></span>
-<span id="cb16-965"><a href="#cb16-965" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb16" data-startfrom="965" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 964;"><span id="cb16-965"><a href="#cb16-965" aria-hidden="true" tabindex="-1"></a>constraintExamples <span class="op">=</span> [</span>
 <span id="cb16-966"><a href="#cb16-966" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb16-967"><a href="#cb16-967" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"General explanation"</span><span class="op">,</span></span>
-<span id="cb16-968"><a href="#cb16-968" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span></span>
-<span id="cb16-969"><a href="#cb16-969" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Some freedom, but factual content constrains choices"</span></span>
+<span id="cb16-967"><a href="#cb16-967" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Creative prose"</span><span class="op">,</span></span>
+<span id="cb16-968"><a href="#cb16-968" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.95</span><span class="op">,</span></span>
+<span id="cb16-969"><a href="#cb16-969" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Many plausible ways to express the same idea"</span></span>
 <span id="cb16-970"><a href="#cb16-970" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
 <span id="cb16-971"><a href="#cb16-971" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb16-972"><a href="#cb16-972" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Proofreading"</span><span class="op">,</span></span>
-<span id="cb16-973"><a href="#cb16-973" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.32</span><span class="op">,</span></span>
-<span id="cb16-974"><a href="#cb16-974" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Most of the original words may remain untouched"</span></span>
+<span id="cb16-972"><a href="#cb16-972" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"General explanation"</span><span class="op">,</span></span>
+<span id="cb16-973"><a href="#cb16-973" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span></span>
+<span id="cb16-974"><a href="#cb16-974" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Some freedom, but factual content constrains choices"</span></span>
 <span id="cb16-975"><a href="#cb16-975" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
 <span id="cb16-976"><a href="#cb16-976" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb16-977"><a href="#cb16-977" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Exact code"</span><span class="op">,</span></span>
-<span id="cb16-978"><a href="#cb16-978" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.14</span><span class="op">,</span></span>
-<span id="cb16-979"><a href="#cb16-979" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Many tokens are determined by correctness or syntax"</span></span>
-<span id="cb16-980"><a href="#cb16-980" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb16-981"><a href="#cb16-981" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb16-982"><a href="#cb16-982" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-983"><a href="#cb16-983" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb16-984"><a href="#cb16-984" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">290</span><span class="op">,</span></span>
-<span id="cb16-985"><a href="#cb16-985" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">125</span><span class="op">,</span></span>
-<span id="cb16-986"><a href="#cb16-986" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
-<span id="cb16-987"><a href="#cb16-987" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb16-988"><a href="#cb16-988" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span><span class="op">,</span></span>
-<span id="cb16-989"><a href="#cb16-989" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span></span>
-<span id="cb16-990"><a href="#cb16-990" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb16-991"><a href="#cb16-991" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb16-992"><a href="#cb16-992" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
-<span id="cb16-993"><a href="#cb16-993" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Illustrative freedom of choice"</span><span class="op">,</span></span>
-<span id="cb16-994"><a href="#cb16-994" aria-hidden="true" tabindex="-1"></a>    <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(d <span class="op">*</span> <span class="dv">100</span>)<span class="sc">}</span><span class="vs">%`</span></span>
+<span id="cb16-977"><a href="#cb16-977" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Proofreading"</span><span class="op">,</span></span>
+<span id="cb16-978"><a href="#cb16-978" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.32</span><span class="op">,</span></span>
+<span id="cb16-979"><a href="#cb16-979" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Most of the original words may remain untouched"</span></span>
+<span id="cb16-980"><a href="#cb16-980" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb16-981"><a href="#cb16-981" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb16-982"><a href="#cb16-982" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Exact code"</span><span class="op">,</span></span>
+<span id="cb16-983"><a href="#cb16-983" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.14</span><span class="op">,</span></span>
+<span id="cb16-984"><a href="#cb16-984" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Many tokens are determined by correctness or syntax"</span></span>
+<span id="cb16-985"><a href="#cb16-985" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-986"><a href="#cb16-986" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb16-987"><a href="#cb16-987" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-988"><a href="#cb16-988" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb16-989"><a href="#cb16-989" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">290</span><span class="op">,</span></span>
+<span id="cb16-990"><a href="#cb16-990" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">125</span><span class="op">,</span></span>
+<span id="cb16-991"><a href="#cb16-991" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
+<span id="cb16-992"><a href="#cb16-992" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb16-993"><a href="#cb16-993" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span><span class="op">,</span></span>
+<span id="cb16-994"><a href="#cb16-994" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span></span>
 <span id="cb16-995"><a href="#cb16-995" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb16-996"><a href="#cb16-996" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb16-997"><a href="#cb16-997" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> constraintExamples<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">type</span>)<span class="op">,</span></span>
-<span id="cb16-998"><a href="#cb16-998" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span></span>
-<span id="cb16-999"><a href="#cb16-999" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb16-1000"><a href="#cb16-1000" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb16-1001"><a href="#cb16-1001" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(constraintExamples<span class="op">,</span> {</span>
-<span id="cb16-1002"><a href="#cb16-1002" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"freedom"</span><span class="op">,</span></span>
-<span id="cb16-1003"><a href="#cb16-1003" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"type"</span><span class="op">,</span></span>
-<span id="cb16-1004"><a href="#cb16-1004" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
-<span id="cb16-1005"><a href="#cb16-1005" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">description</span></span>
-<span id="cb16-1006"><a href="#cb16-1006" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb16-1007"><a href="#cb16-1007" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
-<span id="cb16-1008"><a href="#cb16-1008" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb16-1009"><a href="#cb16-1009" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-996"><a href="#cb16-996" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb16-997"><a href="#cb16-997" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb16-998"><a href="#cb16-998" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Illustrative freedom of choice"</span><span class="op">,</span></span>
+<span id="cb16-999"><a href="#cb16-999" aria-hidden="true" tabindex="-1"></a>    <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(d <span class="op">*</span> <span class="dv">100</span>)<span class="sc">}</span><span class="vs">%`</span></span>
+<span id="cb16-1000"><a href="#cb16-1000" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb16-1001"><a href="#cb16-1001" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb16-1002"><a href="#cb16-1002" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> constraintExamples<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">type</span>)<span class="op">,</span></span>
+<span id="cb16-1003"><a href="#cb16-1003" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span></span>
+<span id="cb16-1004"><a href="#cb16-1004" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb16-1005"><a href="#cb16-1005" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb16-1006"><a href="#cb16-1006" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(constraintExamples<span class="op">,</span> {</span>
+<span id="cb16-1007"><a href="#cb16-1007" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"freedom"</span><span class="op">,</span></span>
+<span id="cb16-1008"><a href="#cb16-1008" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"type"</span><span class="op">,</span></span>
+<span id="cb16-1009"><a href="#cb16-1009" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb16-1010"><a href="#cb16-1010" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">description</span></span>
+<span id="cb16-1011"><a href="#cb16-1011" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb16-1012"><a href="#cb16-1012" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
+<span id="cb16-1013"><a href="#cb16-1013" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb16-1014"><a href="#cb16-1014" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -1720,29 +1723,29 @@ z_{\mathrm{expected}} \propto \sqrt{n}
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb17" data-startfrom="1040" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1039;"><span id="cb17-1040"><a href="#cb17-1040" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
-<span id="cb17-1041"><a href="#cb17-1041" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="wm-two-view"&gt;</span></span>
-<span id="cb17-1042"><a href="#cb17-1042" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-1043"><a href="#cb17-1043" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-card"&gt;</span></span>
-<span id="cb17-1044"><a href="#cb17-1044" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;OUR DEMO&lt;/div&gt;</span></span>
-<span id="cb17-1045"><a href="#cb17-1045" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-bitline"&gt;text + our key → testable&lt;/p&gt;</span></span>
-<span id="cb17-1046"><a href="#cb17-1046" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-muted"&gt;</span></span>
-<span id="cb17-1047"><a href="#cb17-1047" aria-hidden="true" tabindex="-1"></a><span class="vs">      We control the generation rule and the detector.</span></span>
-<span id="cb17-1048"><a href="#cb17-1048" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/p&gt;</span></span>
-<span id="cb17-1049"><a href="#cb17-1049" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb17-1050"><a href="#cb17-1050" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-1051"><a href="#cb17-1051" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-arrow"&gt;≠&lt;/div&gt;</span></span>
-<span id="cb17-1052"><a href="#cb17-1052" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-1053"><a href="#cb17-1053" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-card"&gt;</span></span>
-<span id="cb17-1054"><a href="#cb17-1054" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;CLAUDE&lt;/div&gt;</span></span>
-<span id="cb17-1055"><a href="#cb17-1055" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-bitline"&gt;text + unknown key → ?&lt;/p&gt;</span></span>
-<span id="cb17-1056"><a href="#cb17-1056" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-muted"&gt;</span></span>
-<span id="cb17-1057"><a href="#cb17-1057" aria-hidden="true" tabindex="-1"></a><span class="vs">      The text alone does not give us Anthropic's verification mechanism.</span></span>
-<span id="cb17-1058"><a href="#cb17-1058" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/p&gt;</span></span>
-<span id="cb17-1059"><a href="#cb17-1059" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb17-1060"><a href="#cb17-1060" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-1061"><a href="#cb17-1061" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
-<span id="cb17-1062"><a href="#cb17-1062" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb17" data-startfrom="1045" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1044;"><span id="cb17-1045"><a href="#cb17-1045" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
+<span id="cb17-1046"><a href="#cb17-1046" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="wm-two-view"&gt;</span></span>
+<span id="cb17-1047"><a href="#cb17-1047" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-1048"><a href="#cb17-1048" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-card"&gt;</span></span>
+<span id="cb17-1049"><a href="#cb17-1049" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;OUR DEMO&lt;/div&gt;</span></span>
+<span id="cb17-1050"><a href="#cb17-1050" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-bitline"&gt;text + our key → testable&lt;/p&gt;</span></span>
+<span id="cb17-1051"><a href="#cb17-1051" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-muted"&gt;</span></span>
+<span id="cb17-1052"><a href="#cb17-1052" aria-hidden="true" tabindex="-1"></a><span class="vs">      We control the generation rule and the detector.</span></span>
+<span id="cb17-1053"><a href="#cb17-1053" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/p&gt;</span></span>
+<span id="cb17-1054"><a href="#cb17-1054" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb17-1055"><a href="#cb17-1055" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-1056"><a href="#cb17-1056" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-arrow"&gt;≠&lt;/div&gt;</span></span>
+<span id="cb17-1057"><a href="#cb17-1057" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-1058"><a href="#cb17-1058" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-card"&gt;</span></span>
+<span id="cb17-1059"><a href="#cb17-1059" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;CLAUDE&lt;/div&gt;</span></span>
+<span id="cb17-1060"><a href="#cb17-1060" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-bitline"&gt;text + unknown key → ?&lt;/p&gt;</span></span>
+<span id="cb17-1061"><a href="#cb17-1061" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-muted"&gt;</span></span>
+<span id="cb17-1062"><a href="#cb17-1062" aria-hidden="true" tabindex="-1"></a><span class="vs">      The text alone does not give us Anthropic's verification mechanism.</span></span>
+<span id="cb17-1063"><a href="#cb17-1063" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/p&gt;</span></span>
+<span id="cb17-1064"><a href="#cb17-1064" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb17-1065"><a href="#cb17-1065" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-1066"><a href="#cb17-1066" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb17-1067"><a href="#cb17-1067" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-16" data-nodetype="expression">
@@ -3075,306 +3078,311 @@ window._ojs.runtime.interpretFromScriptTags();
 <span id="cb18-827"><a href="#cb18-827" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb18-828"><a href="#cb18-828" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-829"><a href="#cb18-829" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-830"><a href="#cb18-830" aria-hidden="true" tabindex="-1"></a>Try making a few edits yourself, or use **Apply 20 light edits** to see how a controlled rewrite affects the watermark evidence.</span>
-<span id="cb18-831"><a href="#cb18-831" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-834"><a href="#cb18-834" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-835"><a href="#cb18-835" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-830"><a href="#cb18-830" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"wm-note"</span><span class="dt">&gt;</span></span>
+<span id="cb18-831"><a href="#cb18-831" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">strong</span><span class="dt">&gt;</span>Why does the passage start and end abruptly?<span class="dt">&lt;/</span><span class="kw">strong</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb18-832"><a href="#cb18-832" aria-hidden="true" tabindex="-1"></a>This is the model's generated continuation rather than a polished piece of prose. It begins after a prompt that is not shown here and stops when the generation reaches its token limit. Keeping the original output unchanged means the detector, reference curve and editing experiment are all measuring the same text.</span>
+<span id="cb18-833"><a href="#cb18-833" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb18-834"><a href="#cb18-834" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-835"><a href="#cb18-835" aria-hidden="true" tabindex="-1"></a>Try making a few edits yourself, or use **Apply 20 light edits** to see how a controlled rewrite affects the watermark evidence.</span>
 <span id="cb18-836"><a href="#cb18-836" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-837"><a href="#cb18-837" aria-hidden="true" tabindex="-1"></a>originalResult <span class="op">=</span> <span class="cf">await</span> <span class="fu">scoreBrowserText</span>(editorState<span class="op">.</span><span class="at">originalText</span>)</span>
-<span id="cb18-838"><a href="#cb18-838" aria-hidden="true" tabindex="-1"></a>currentResult <span class="op">=</span> <span class="cf">await</span> <span class="fu">scoreBrowserText</span>(editorState<span class="op">.</span><span class="at">editedText</span>)</span>
-<span id="cb18-839"><a href="#cb18-839" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-840"><a href="#cb18-840" aria-hidden="true" tabindex="-1"></a>originalTokenIds <span class="op">=</span> originalResult<span class="op">.</span><span class="at">token_ids</span></span>
-<span id="cb18-841"><a href="#cb18-841" aria-hidden="true" tabindex="-1"></a>currentTokenIds <span class="op">=</span> currentResult<span class="op">.</span><span class="at">token_ids</span></span>
-<span id="cb18-842"><a href="#cb18-842" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-843"><a href="#cb18-843" aria-hidden="true" tabindex="-1"></a>editDistance <span class="op">=</span> <span class="fu">tokenEditDistance</span>(</span>
-<span id="cb18-844"><a href="#cb18-844" aria-hidden="true" tabindex="-1"></a>  originalTokenIds<span class="op">,</span></span>
-<span id="cb18-845"><a href="#cb18-845" aria-hidden="true" tabindex="-1"></a>  currentTokenIds</span>
-<span id="cb18-846"><a href="#cb18-846" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-839"><a href="#cb18-839" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-840"><a href="#cb18-840" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-841"><a href="#cb18-841" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-842"><a href="#cb18-842" aria-hidden="true" tabindex="-1"></a>originalResult <span class="op">=</span> <span class="cf">await</span> <span class="fu">scoreBrowserText</span>(editorState<span class="op">.</span><span class="at">originalText</span>)</span>
+<span id="cb18-843"><a href="#cb18-843" aria-hidden="true" tabindex="-1"></a>currentResult <span class="op">=</span> <span class="cf">await</span> <span class="fu">scoreBrowserText</span>(editorState<span class="op">.</span><span class="at">editedText</span>)</span>
+<span id="cb18-844"><a href="#cb18-844" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-845"><a href="#cb18-845" aria-hidden="true" tabindex="-1"></a>originalTokenIds <span class="op">=</span> originalResult<span class="op">.</span><span class="at">token_ids</span></span>
+<span id="cb18-846"><a href="#cb18-846" aria-hidden="true" tabindex="-1"></a>currentTokenIds <span class="op">=</span> currentResult<span class="op">.</span><span class="at">token_ids</span></span>
 <span id="cb18-847"><a href="#cb18-847" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-848"><a href="#cb18-848" aria-hidden="true" tabindex="-1"></a>fractionChanged <span class="op">=</span> editDistance <span class="op">/</span></span>
-<span id="cb18-849"><a href="#cb18-849" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(</span>
-<span id="cb18-850"><a href="#cb18-850" aria-hidden="true" tabindex="-1"></a>    originalTokenIds<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
-<span id="cb18-851"><a href="#cb18-851" aria-hidden="true" tabindex="-1"></a>    currentTokenIds<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
-<span id="cb18-852"><a href="#cb18-852" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span></span>
-<span id="cb18-853"><a href="#cb18-853" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-854"><a href="#cb18-854" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-855"><a href="#cb18-855" aria-hidden="true" tabindex="-1"></a>percentChanged <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(</span>
-<span id="cb18-856"><a href="#cb18-856" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb18-857"><a href="#cb18-857" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(fractionChanged <span class="op">*</span> <span class="dv">100</span>)</span>
-<span id="cb18-858"><a href="#cb18-858" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-848"><a href="#cb18-848" aria-hidden="true" tabindex="-1"></a>editDistance <span class="op">=</span> <span class="fu">tokenEditDistance</span>(</span>
+<span id="cb18-849"><a href="#cb18-849" aria-hidden="true" tabindex="-1"></a>  originalTokenIds<span class="op">,</span></span>
+<span id="cb18-850"><a href="#cb18-850" aria-hidden="true" tabindex="-1"></a>  currentTokenIds</span>
+<span id="cb18-851"><a href="#cb18-851" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-852"><a href="#cb18-852" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-853"><a href="#cb18-853" aria-hidden="true" tabindex="-1"></a>fractionChanged <span class="op">=</span> editDistance <span class="op">/</span></span>
+<span id="cb18-854"><a href="#cb18-854" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(</span>
+<span id="cb18-855"><a href="#cb18-855" aria-hidden="true" tabindex="-1"></a>    originalTokenIds<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
+<span id="cb18-856"><a href="#cb18-856" aria-hidden="true" tabindex="-1"></a>    currentTokenIds<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
+<span id="cb18-857"><a href="#cb18-857" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span></span>
+<span id="cb18-858"><a href="#cb18-858" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb18-859"><a href="#cb18-859" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-860"><a href="#cb18-860" aria-hidden="true" tabindex="-1"></a>shownScore <span class="op">=</span> <span class="fu">displayableScore</span>(currentResult)</span>
-<span id="cb18-861"><a href="#cb18-861" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-862"><a href="#cb18-862" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-865"><a href="#cb18-865" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-866"><a href="#cb18-866" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-860"><a href="#cb18-860" aria-hidden="true" tabindex="-1"></a>percentChanged <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(</span>
+<span id="cb18-861"><a href="#cb18-861" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb18-862"><a href="#cb18-862" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(fractionChanged <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb18-863"><a href="#cb18-863" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-864"><a href="#cb18-864" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-865"><a href="#cb18-865" aria-hidden="true" tabindex="-1"></a>shownScore <span class="op">=</span> <span class="fu">displayableScore</span>(currentResult)</span>
+<span id="cb18-866"><a href="#cb18-866" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-867"><a href="#cb18-867" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-868"><a href="#cb18-868" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
-<span id="cb18-869"><a href="#cb18-869" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="wm-live-summary"&gt;</span></span>
-<span id="cb18-870"><a href="#cb18-870" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-871"><a href="#cb18-871" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-score-card"&gt;</span></span>
-<span id="cb18-872"><a href="#cb18-872" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;WATERMARK EVIDENCE&lt;/div&gt;</span></span>
-<span id="cb18-873"><a href="#cb18-873" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-874"><a href="#cb18-874" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-score-label"&gt;</span></span>
-<span id="cb18-875"><a href="#cb18-875" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">evidenceLabel</span>(shownScore<span class="op">,</span> currentResult<span class="op">.</span><span class="at">usable_positions</span>)<span class="sc">}</span></span>
-<span id="cb18-876"><a href="#cb18-876" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb18-877"><a href="#cb18-877" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-878"><a href="#cb18-878" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-meter"&gt;</span></span>
-<span id="cb18-879"><a href="#cb18-879" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div</span></span>
-<span id="cb18-880"><a href="#cb18-880" aria-hidden="true" tabindex="-1"></a><span class="vs">        class="wm-live-meter-fill"</span></span>
-<span id="cb18-881"><a href="#cb18-881" aria-hidden="true" tabindex="-1"></a><span class="vs">        style="width: </span><span class="sc">${</span><span class="fu">evidenceWidth</span>(shownScore<span class="op">,</span> currentResult<span class="op">.</span><span class="at">usable_positions</span>)<span class="sc">}</span><span class="vs">%"&gt;</span></span>
-<span id="cb18-882"><a href="#cb18-882" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
-<span id="cb18-883"><a href="#cb18-883" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb18-884"><a href="#cb18-884" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-885"><a href="#cb18-885" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;</span></span>
-<span id="cb18-886"><a href="#cb18-886" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span></span>
-<span id="cb18-887"><a href="#cb18-887" aria-hidden="true" tabindex="-1"></a>        currentResult<span class="op">.</span><span class="at">usable_positions</span> <span class="op">&lt;</span> MIN_USABLE_POSITIONS</span>
-<span id="cb18-888"><a href="#cb18-888" aria-hidden="true" tabindex="-1"></a>          <span class="op">?</span> <span class="vs">`Not enough text to assess reliably. Need about </span><span class="sc">${</span>MIN_USABLE_POSITIONS<span class="sc">}</span><span class="vs"> usable watermark positions.`</span></span>
-<span id="cb18-889"><a href="#cb18-889" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span> <span class="vs">`Demo detector score: </span><span class="sc">${</span>shownScore<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span></span>
-<span id="cb18-890"><a href="#cb18-890" aria-hidden="true" tabindex="-1"></a>      <span class="sc">}</span></span>
-<span id="cb18-891"><a href="#cb18-891" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb18-892"><a href="#cb18-892" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb18-893"><a href="#cb18-893" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-894"><a href="#cb18-894" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-stat"&gt;</span></span>
-<span id="cb18-895"><a href="#cb18-895" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;TEXT CHANGED&lt;/div&gt;</span></span>
-<span id="cb18-896"><a href="#cb18-896" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-stat-value"&gt;</span><span class="sc">${</span>percentChanged<span class="sc">}</span><span class="vs">%&lt;/div&gt;</span></span>
-<span id="cb18-897"><a href="#cb18-897" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;GPT-2 token edit distance&lt;/div&gt;</span></span>
-<span id="cb18-898"><a href="#cb18-898" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb18-899"><a href="#cb18-899" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-900"><a href="#cb18-900" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-stat"&gt;</span></span>
-<span id="cb18-901"><a href="#cb18-901" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;TOKENS&lt;/div&gt;</span></span>
-<span id="cb18-902"><a href="#cb18-902" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-stat-value"&gt;</span><span class="sc">${</span>currentResult<span class="op">.</span><span class="at">tokens</span><span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
-<span id="cb18-903"><a href="#cb18-903" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;</span></span>
-<span id="cb18-904"><a href="#cb18-904" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>currentResult<span class="op">.</span><span class="at">usable_positions</span><span class="sc">}</span><span class="vs"> usable watermark positions</span></span>
-<span id="cb18-905"><a href="#cb18-905" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb18-906"><a href="#cb18-906" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb18-907"><a href="#cb18-907" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-908"><a href="#cb18-908" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
-<span id="cb18-909"><a href="#cb18-909" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span>
-<span id="cb18-910"><a href="#cb18-910" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-911"><a href="#cb18-911" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-912"><a href="#cb18-912" aria-hidden="true" tabindex="-1"></a>The number above is the output of **our demonstration detector**. It is not a calibrated probability that an AI wrote the passage.</span>
-<span id="cb18-913"><a href="#cb18-913" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-914"><a href="#cb18-914" aria-hidden="true" tabindex="-1"></a>What matters is how the evidence changes as you disturb the token sequence.</span>
-<span id="cb18-915"><a href="#cb18-915" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-918"><a href="#cb18-918" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-919"><a href="#cb18-919" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-870"><a href="#cb18-870" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-871"><a href="#cb18-871" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-872"><a href="#cb18-872" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-873"><a href="#cb18-873" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
+<span id="cb18-874"><a href="#cb18-874" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="wm-live-summary"&gt;</span></span>
+<span id="cb18-875"><a href="#cb18-875" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-876"><a href="#cb18-876" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-score-card"&gt;</span></span>
+<span id="cb18-877"><a href="#cb18-877" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;WATERMARK EVIDENCE&lt;/div&gt;</span></span>
+<span id="cb18-878"><a href="#cb18-878" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-879"><a href="#cb18-879" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-score-label"&gt;</span></span>
+<span id="cb18-880"><a href="#cb18-880" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">evidenceLabel</span>(shownScore<span class="op">,</span> currentResult<span class="op">.</span><span class="at">usable_positions</span>)<span class="sc">}</span></span>
+<span id="cb18-881"><a href="#cb18-881" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb18-882"><a href="#cb18-882" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-883"><a href="#cb18-883" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-meter"&gt;</span></span>
+<span id="cb18-884"><a href="#cb18-884" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div</span></span>
+<span id="cb18-885"><a href="#cb18-885" aria-hidden="true" tabindex="-1"></a><span class="vs">        class="wm-live-meter-fill"</span></span>
+<span id="cb18-886"><a href="#cb18-886" aria-hidden="true" tabindex="-1"></a><span class="vs">        style="width: </span><span class="sc">${</span><span class="fu">evidenceWidth</span>(shownScore<span class="op">,</span> currentResult<span class="op">.</span><span class="at">usable_positions</span>)<span class="sc">}</span><span class="vs">%"&gt;</span></span>
+<span id="cb18-887"><a href="#cb18-887" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
+<span id="cb18-888"><a href="#cb18-888" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb18-889"><a href="#cb18-889" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-890"><a href="#cb18-890" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;</span></span>
+<span id="cb18-891"><a href="#cb18-891" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span></span>
+<span id="cb18-892"><a href="#cb18-892" aria-hidden="true" tabindex="-1"></a>        currentResult<span class="op">.</span><span class="at">usable_positions</span> <span class="op">&lt;</span> MIN_USABLE_POSITIONS</span>
+<span id="cb18-893"><a href="#cb18-893" aria-hidden="true" tabindex="-1"></a>          <span class="op">?</span> <span class="vs">`Not enough text to assess reliably. Need about </span><span class="sc">${</span>MIN_USABLE_POSITIONS<span class="sc">}</span><span class="vs"> usable watermark positions.`</span></span>
+<span id="cb18-894"><a href="#cb18-894" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span> <span class="vs">`Demo detector score: </span><span class="sc">${</span>shownScore<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb18-895"><a href="#cb18-895" aria-hidden="true" tabindex="-1"></a>      <span class="sc">}</span></span>
+<span id="cb18-896"><a href="#cb18-896" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb18-897"><a href="#cb18-897" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb18-898"><a href="#cb18-898" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-899"><a href="#cb18-899" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-stat"&gt;</span></span>
+<span id="cb18-900"><a href="#cb18-900" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;TEXT CHANGED&lt;/div&gt;</span></span>
+<span id="cb18-901"><a href="#cb18-901" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-stat-value"&gt;</span><span class="sc">${</span>percentChanged<span class="sc">}</span><span class="vs">%&lt;/div&gt;</span></span>
+<span id="cb18-902"><a href="#cb18-902" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;GPT-2 token edit distance&lt;/div&gt;</span></span>
+<span id="cb18-903"><a href="#cb18-903" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb18-904"><a href="#cb18-904" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-905"><a href="#cb18-905" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-live-stat"&gt;</span></span>
+<span id="cb18-906"><a href="#cb18-906" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;TOKENS&lt;/div&gt;</span></span>
+<span id="cb18-907"><a href="#cb18-907" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-live-stat-value"&gt;</span><span class="sc">${</span>currentResult<span class="op">.</span><span class="at">tokens</span><span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb18-908"><a href="#cb18-908" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-muted"&gt;</span></span>
+<span id="cb18-909"><a href="#cb18-909" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>currentResult<span class="op">.</span><span class="at">usable_positions</span><span class="sc">}</span><span class="vs"> usable watermark positions</span></span>
+<span id="cb18-910"><a href="#cb18-910" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb18-911"><a href="#cb18-911" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb18-912"><a href="#cb18-912" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-913"><a href="#cb18-913" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb18-914"><a href="#cb18-914" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span>
+<span id="cb18-915"><a href="#cb18-915" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-916"><a href="#cb18-916" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-917"><a href="#cb18-917" aria-hidden="true" tabindex="-1"></a>The number above is the output of **our demonstration detector**. It is not a calibrated probability that an AI wrote the passage.</span>
+<span id="cb18-918"><a href="#cb18-918" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-919"><a href="#cb18-919" aria-hidden="true" tabindex="-1"></a>What matters is how the evidence changes as you disturb the token sequence.</span>
 <span id="cb18-920"><a href="#cb18-920" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-921"><a href="#cb18-921" aria-hidden="true" tabindex="-1"></a>referenceTrajectory <span class="op">=</span> browserFixture<span class="op">.</span><span class="at">edit_trajectory</span><span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> ({</span>
-<span id="cb18-922"><a href="#cb18-922" aria-hidden="true" tabindex="-1"></a>  <span class="dt">changed</span><span class="op">:</span> d<span class="op">.</span><span class="at">fraction_changed</span> <span class="op">*</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb18-923"><a href="#cb18-923" aria-hidden="true" tabindex="-1"></a>  <span class="dt">score</span><span class="op">:</span> d<span class="op">.</span><span class="at">detector_score</span></span>
-<span id="cb18-924"><a href="#cb18-924" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb18-923"><a href="#cb18-923" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-924"><a href="#cb18-924" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
 <span id="cb18-925"><a href="#cb18-925" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-926"><a href="#cb18-926" aria-hidden="true" tabindex="-1"></a>currentPoint <span class="op">=</span> <span class="bu">Number</span><span class="op">.</span><span class="fu">isFinite</span>(shownScore)</span>
-<span id="cb18-927"><a href="#cb18-927" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> [{<span class="dt">changed</span><span class="op">:</span> percentChanged<span class="op">,</span> <span class="dt">score</span><span class="op">:</span> shownScore}]</span>
-<span id="cb18-928"><a href="#cb18-928" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> []</span>
-<span id="cb18-929"><a href="#cb18-929" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-930"><a href="#cb18-930" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb18-931"><a href="#cb18-931" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">330</span><span class="op">,</span></span>
-<span id="cb18-932"><a href="#cb18-932" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">65</span><span class="op">,</span></span>
-<span id="cb18-933"><a href="#cb18-933" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
-<span id="cb18-934"><a href="#cb18-934" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb18-935"><a href="#cb18-935" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span><span class="op">,</span></span>
-<span id="cb18-936"><a href="#cb18-936" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span></span>
-<span id="cb18-937"><a href="#cb18-937" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb18-938"><a href="#cb18-938" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb18-939"><a href="#cb18-939" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">55</span>]<span class="op">,</span></span>
-<span id="cb18-940"><a href="#cb18-940" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Text changed (%)"</span></span>
-<span id="cb18-941"><a href="#cb18-941" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb18-942"><a href="#cb18-942" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb18-943"><a href="#cb18-943" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
-<span id="cb18-944"><a href="#cb18-944" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
-<span id="cb18-945"><a href="#cb18-945" aria-hidden="true" tabindex="-1"></a>    <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb18-926"><a href="#cb18-926" aria-hidden="true" tabindex="-1"></a>referenceTrajectory <span class="op">=</span> browserFixture<span class="op">.</span><span class="at">edit_trajectory</span><span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> ({</span>
+<span id="cb18-927"><a href="#cb18-927" aria-hidden="true" tabindex="-1"></a>  <span class="dt">changed</span><span class="op">:</span> d<span class="op">.</span><span class="at">fraction_changed</span> <span class="op">*</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb18-928"><a href="#cb18-928" aria-hidden="true" tabindex="-1"></a>  <span class="dt">score</span><span class="op">:</span> d<span class="op">.</span><span class="at">detector_score</span></span>
+<span id="cb18-929"><a href="#cb18-929" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb18-930"><a href="#cb18-930" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-931"><a href="#cb18-931" aria-hidden="true" tabindex="-1"></a>currentPoint <span class="op">=</span> <span class="bu">Number</span><span class="op">.</span><span class="fu">isFinite</span>(shownScore)</span>
+<span id="cb18-932"><a href="#cb18-932" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> [{<span class="dt">changed</span><span class="op">:</span> percentChanged<span class="op">,</span> <span class="dt">score</span><span class="op">:</span> shownScore}]</span>
+<span id="cb18-933"><a href="#cb18-933" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> []</span>
+<span id="cb18-934"><a href="#cb18-934" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-935"><a href="#cb18-935" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb18-936"><a href="#cb18-936" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">330</span><span class="op">,</span></span>
+<span id="cb18-937"><a href="#cb18-937" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">65</span><span class="op">,</span></span>
+<span id="cb18-938"><a href="#cb18-938" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb18-939"><a href="#cb18-939" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb18-940"><a href="#cb18-940" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span><span class="op">,</span></span>
+<span id="cb18-941"><a href="#cb18-941" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span></span>
+<span id="cb18-942"><a href="#cb18-942" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb18-943"><a href="#cb18-943" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb18-944"><a href="#cb18-944" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">55</span>]<span class="op">,</span></span>
+<span id="cb18-945"><a href="#cb18-945" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Text changed (%)"</span></span>
 <span id="cb18-946"><a href="#cb18-946" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb18-947"><a href="#cb18-947" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb18-948"><a href="#cb18-948" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(referenceTrajectory<span class="op">,</span> {</span>
-<span id="cb18-949"><a href="#cb18-949" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"changed"</span><span class="op">,</span></span>
-<span id="cb18-950"><a href="#cb18-950" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"score"</span><span class="op">,</span></span>
-<span id="cb18-951"><a href="#cb18-951" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"6,4"</span></span>
-<span id="cb18-952"><a href="#cb18-952" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb18-953"><a href="#cb18-953" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-954"><a href="#cb18-954" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(currentPoint<span class="op">,</span> {</span>
-<span id="cb18-955"><a href="#cb18-955" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"changed"</span><span class="op">,</span></span>
-<span id="cb18-956"><a href="#cb18-956" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"score"</span><span class="op">,</span></span>
-<span id="cb18-957"><a href="#cb18-957" aria-hidden="true" tabindex="-1"></a>      <span class="dt">r</span><span class="op">:</span> <span class="dv">6</span></span>
-<span id="cb18-958"><a href="#cb18-958" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb18-959"><a href="#cb18-959" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-960"><a href="#cb18-960" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([percentChanged]<span class="op">,</span> {</span>
-<span id="cb18-961"><a href="#cb18-961" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.25</span></span>
-<span id="cb18-962"><a href="#cb18-962" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb18-963"><a href="#cb18-963" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb18-964"><a href="#cb18-964" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb18-965"><a href="#cb18-965" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-966"><a href="#cb18-966" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-967"><a href="#cb18-967" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"wm-note"</span><span class="dt">&gt;</span></span>
-<span id="cb18-968"><a href="#cb18-968" aria-hidden="true" tabindex="-1"></a>The dashed curve is the controlled word-replacement experiment from the notebook. The circle is <span class="dt">&lt;</span><span class="kw">strong</span><span class="dt">&gt;</span>your current edit<span class="dt">&lt;/</span><span class="kw">strong</span><span class="dt">&gt;</span>. Your path does not have to follow the dashed curve because different edits disturb different token contexts.</span>
-<span id="cb18-969"><a href="#cb18-969" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
-<span id="cb18-970"><a href="#cb18-970" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-971"><a href="#cb18-971" aria-hidden="true" tabindex="-1"></a>The watermark behaves less like a switch and more like accumulated evidence.</span>
-<span id="cb18-972"><a href="#cb18-972" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-973"><a href="#cb18-973" aria-hidden="true" tabindex="-1"></a>A few edits can leave most of the signal intact. As more of the original token sequence is replaced, the detector eventually loses the pattern it was looking for.</span>
-<span id="cb18-974"><a href="#cb18-974" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-975"><a href="#cb18-975" aria-hidden="true" tabindex="-1"></a><span class="fu">## Not all text leaves the same room for a watermark</span></span>
-<span id="cb18-976"><a href="#cb18-976" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-977"><a href="#cb18-977" aria-hidden="true" tabindex="-1"></a>A watermark needs choices.</span>
-<span id="cb18-978"><a href="#cb18-978" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-979"><a href="#cb18-979" aria-hidden="true" tabindex="-1"></a>Free-form prose gives a model many opportunities to choose between reasonable continuations.</span>
-<span id="cb18-980"><a href="#cb18-980" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-981"><a href="#cb18-981" aria-hidden="true" tabindex="-1"></a>Other tasks can be much more constrained.</span>
-<span id="cb18-982"><a href="#cb18-982" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-983"><a href="#cb18-983" aria-hidden="true" tabindex="-1"></a>Consider four broad cases:</span>
-<span id="cb18-984"><a href="#cb18-984" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-987"><a href="#cb18-987" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-988"><a href="#cb18-988" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-947"><a href="#cb18-947" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb18-948"><a href="#cb18-948" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb18-949"><a href="#cb18-949" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
+<span id="cb18-950"><a href="#cb18-950" aria-hidden="true" tabindex="-1"></a>    <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb18-951"><a href="#cb18-951" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb18-952"><a href="#cb18-952" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb18-953"><a href="#cb18-953" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(referenceTrajectory<span class="op">,</span> {</span>
+<span id="cb18-954"><a href="#cb18-954" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"changed"</span><span class="op">,</span></span>
+<span id="cb18-955"><a href="#cb18-955" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"score"</span><span class="op">,</span></span>
+<span id="cb18-956"><a href="#cb18-956" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"6,4"</span></span>
+<span id="cb18-957"><a href="#cb18-957" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb18-958"><a href="#cb18-958" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-959"><a href="#cb18-959" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(currentPoint<span class="op">,</span> {</span>
+<span id="cb18-960"><a href="#cb18-960" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"changed"</span><span class="op">,</span></span>
+<span id="cb18-961"><a href="#cb18-961" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"score"</span><span class="op">,</span></span>
+<span id="cb18-962"><a href="#cb18-962" aria-hidden="true" tabindex="-1"></a>      <span class="dt">r</span><span class="op">:</span> <span class="dv">6</span></span>
+<span id="cb18-963"><a href="#cb18-963" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb18-964"><a href="#cb18-964" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-965"><a href="#cb18-965" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([percentChanged]<span class="op">,</span> {</span>
+<span id="cb18-966"><a href="#cb18-966" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.25</span></span>
+<span id="cb18-967"><a href="#cb18-967" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb18-968"><a href="#cb18-968" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb18-969"><a href="#cb18-969" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb18-970"><a href="#cb18-970" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-971"><a href="#cb18-971" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-972"><a href="#cb18-972" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"wm-note"</span><span class="dt">&gt;</span></span>
+<span id="cb18-973"><a href="#cb18-973" aria-hidden="true" tabindex="-1"></a>The dashed curve is the controlled word-replacement experiment from the notebook. The circle is <span class="dt">&lt;</span><span class="kw">strong</span><span class="dt">&gt;</span>your current edit<span class="dt">&lt;/</span><span class="kw">strong</span><span class="dt">&gt;</span>. Your path does not have to follow the dashed curve because different edits disturb different token contexts.</span>
+<span id="cb18-974"><a href="#cb18-974" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb18-975"><a href="#cb18-975" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-976"><a href="#cb18-976" aria-hidden="true" tabindex="-1"></a>The watermark behaves less like a switch and more like accumulated evidence.</span>
+<span id="cb18-977"><a href="#cb18-977" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-978"><a href="#cb18-978" aria-hidden="true" tabindex="-1"></a>A few edits can leave most of the signal intact. As more of the original token sequence is replaced, the detector eventually loses the pattern it was looking for.</span>
+<span id="cb18-979"><a href="#cb18-979" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-980"><a href="#cb18-980" aria-hidden="true" tabindex="-1"></a><span class="fu">## Not all text leaves the same room for a watermark</span></span>
+<span id="cb18-981"><a href="#cb18-981" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-982"><a href="#cb18-982" aria-hidden="true" tabindex="-1"></a>A watermark needs choices.</span>
+<span id="cb18-983"><a href="#cb18-983" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-984"><a href="#cb18-984" aria-hidden="true" tabindex="-1"></a>Free-form prose gives a model many opportunities to choose between reasonable continuations.</span>
+<span id="cb18-985"><a href="#cb18-985" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-986"><a href="#cb18-986" aria-hidden="true" tabindex="-1"></a>Other tasks can be much more constrained.</span>
+<span id="cb18-987"><a href="#cb18-987" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-988"><a href="#cb18-988" aria-hidden="true" tabindex="-1"></a>Consider four broad cases:</span>
 <span id="cb18-989"><a href="#cb18-989" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-990"><a href="#cb18-990" aria-hidden="true" tabindex="-1"></a>constraintExamples <span class="op">=</span> [</span>
-<span id="cb18-991"><a href="#cb18-991" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb18-992"><a href="#cb18-992" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Creative prose"</span><span class="op">,</span></span>
-<span id="cb18-993"><a href="#cb18-993" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.95</span><span class="op">,</span></span>
-<span id="cb18-994"><a href="#cb18-994" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Many plausible ways to express the same idea"</span></span>
-<span id="cb18-995"><a href="#cb18-995" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb18-992"><a href="#cb18-992" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-993"><a href="#cb18-993" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-994"><a href="#cb18-994" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-995"><a href="#cb18-995" aria-hidden="true" tabindex="-1"></a>constraintExamples <span class="op">=</span> [</span>
 <span id="cb18-996"><a href="#cb18-996" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb18-997"><a href="#cb18-997" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"General explanation"</span><span class="op">,</span></span>
-<span id="cb18-998"><a href="#cb18-998" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span></span>
-<span id="cb18-999"><a href="#cb18-999" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Some freedom, but factual content constrains choices"</span></span>
+<span id="cb18-997"><a href="#cb18-997" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Creative prose"</span><span class="op">,</span></span>
+<span id="cb18-998"><a href="#cb18-998" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.95</span><span class="op">,</span></span>
+<span id="cb18-999"><a href="#cb18-999" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Many plausible ways to express the same idea"</span></span>
 <span id="cb18-1000"><a href="#cb18-1000" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
 <span id="cb18-1001"><a href="#cb18-1001" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb18-1002"><a href="#cb18-1002" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Proofreading"</span><span class="op">,</span></span>
-<span id="cb18-1003"><a href="#cb18-1003" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.32</span><span class="op">,</span></span>
-<span id="cb18-1004"><a href="#cb18-1004" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Most of the original words may remain untouched"</span></span>
+<span id="cb18-1002"><a href="#cb18-1002" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"General explanation"</span><span class="op">,</span></span>
+<span id="cb18-1003"><a href="#cb18-1003" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span></span>
+<span id="cb18-1004"><a href="#cb18-1004" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Some freedom, but factual content constrains choices"</span></span>
 <span id="cb18-1005"><a href="#cb18-1005" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
 <span id="cb18-1006"><a href="#cb18-1006" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb18-1007"><a href="#cb18-1007" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Exact code"</span><span class="op">,</span></span>
-<span id="cb18-1008"><a href="#cb18-1008" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.14</span><span class="op">,</span></span>
-<span id="cb18-1009"><a href="#cb18-1009" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Many tokens are determined by correctness or syntax"</span></span>
-<span id="cb18-1010"><a href="#cb18-1010" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb18-1011"><a href="#cb18-1011" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb18-1012"><a href="#cb18-1012" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1013"><a href="#cb18-1013" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb18-1014"><a href="#cb18-1014" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">290</span><span class="op">,</span></span>
-<span id="cb18-1015"><a href="#cb18-1015" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">125</span><span class="op">,</span></span>
-<span id="cb18-1016"><a href="#cb18-1016" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
-<span id="cb18-1017"><a href="#cb18-1017" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb18-1018"><a href="#cb18-1018" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span><span class="op">,</span></span>
-<span id="cb18-1019"><a href="#cb18-1019" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span></span>
-<span id="cb18-1020"><a href="#cb18-1020" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb18-1021"><a href="#cb18-1021" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb18-1022"><a href="#cb18-1022" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
-<span id="cb18-1023"><a href="#cb18-1023" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Illustrative freedom of choice"</span><span class="op">,</span></span>
-<span id="cb18-1024"><a href="#cb18-1024" aria-hidden="true" tabindex="-1"></a>    <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(d <span class="op">*</span> <span class="dv">100</span>)<span class="sc">}</span><span class="vs">%`</span></span>
+<span id="cb18-1007"><a href="#cb18-1007" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Proofreading"</span><span class="op">,</span></span>
+<span id="cb18-1008"><a href="#cb18-1008" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.32</span><span class="op">,</span></span>
+<span id="cb18-1009"><a href="#cb18-1009" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Most of the original words may remain untouched"</span></span>
+<span id="cb18-1010"><a href="#cb18-1010" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb18-1011"><a href="#cb18-1011" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb18-1012"><a href="#cb18-1012" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">"Exact code"</span><span class="op">,</span></span>
+<span id="cb18-1013"><a href="#cb18-1013" aria-hidden="true" tabindex="-1"></a>    <span class="dt">freedom</span><span class="op">:</span> <span class="fl">0.14</span><span class="op">,</span></span>
+<span id="cb18-1014"><a href="#cb18-1014" aria-hidden="true" tabindex="-1"></a>    <span class="dt">description</span><span class="op">:</span> <span class="st">"Many tokens are determined by correctness or syntax"</span></span>
+<span id="cb18-1015"><a href="#cb18-1015" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-1016"><a href="#cb18-1016" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb18-1017"><a href="#cb18-1017" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1018"><a href="#cb18-1018" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb18-1019"><a href="#cb18-1019" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">290</span><span class="op">,</span></span>
+<span id="cb18-1020"><a href="#cb18-1020" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">125</span><span class="op">,</span></span>
+<span id="cb18-1021"><a href="#cb18-1021" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
+<span id="cb18-1022"><a href="#cb18-1022" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb18-1023"><a href="#cb18-1023" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span><span class="op">,</span></span>
+<span id="cb18-1024"><a href="#cb18-1024" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span></span>
 <span id="cb18-1025"><a href="#cb18-1025" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb18-1026"><a href="#cb18-1026" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb18-1027"><a href="#cb18-1027" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> constraintExamples<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">type</span>)<span class="op">,</span></span>
-<span id="cb18-1028"><a href="#cb18-1028" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span></span>
-<span id="cb18-1029"><a href="#cb18-1029" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb18-1030"><a href="#cb18-1030" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb18-1031"><a href="#cb18-1031" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(constraintExamples<span class="op">,</span> {</span>
-<span id="cb18-1032"><a href="#cb18-1032" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"freedom"</span><span class="op">,</span></span>
-<span id="cb18-1033"><a href="#cb18-1033" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"type"</span><span class="op">,</span></span>
-<span id="cb18-1034"><a href="#cb18-1034" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
-<span id="cb18-1035"><a href="#cb18-1035" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">description</span></span>
-<span id="cb18-1036"><a href="#cb18-1036" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb18-1037"><a href="#cb18-1037" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
-<span id="cb18-1038"><a href="#cb18-1038" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb18-1039"><a href="#cb18-1039" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb18-1040"><a href="#cb18-1040" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-1041"><a href="#cb18-1041" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1042"><a href="#cb18-1042" aria-hidden="true" tabindex="-1"></a>These numbers are illustrative, not measured quantities.</span>
-<span id="cb18-1043"><a href="#cb18-1043" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1044"><a href="#cb18-1044" aria-hidden="true" tabindex="-1"></a>The point is conceptual.</span>
-<span id="cb18-1045"><a href="#cb18-1045" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1046"><a href="#cb18-1046" aria-hidden="true" tabindex="-1"></a>If the model has very little freedom about what comes next, there may be fewer low-stakes choices available for a watermark to use.</span>
-<span id="cb18-1047"><a href="#cb18-1047" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1048"><a href="#cb18-1048" aria-hidden="true" tabindex="-1"></a>This gives us another experiment to run later:</span>
-<span id="cb18-1049"><a href="#cb18-1049" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1050"><a href="#cb18-1050" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **What happens to detectability as we constrain the model's freedom?**</span></span>
-<span id="cb18-1051"><a href="#cb18-1051" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1052"><a href="#cb18-1052" aria-hidden="true" tabindex="-1"></a>We can compare different types of text while controlling passage length and watermarking method.</span>
-<span id="cb18-1053"><a href="#cb18-1053" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1054"><a href="#cb18-1054" aria-hidden="true" tabindex="-1"></a>That gives us a way to separate two effects:</span>
-<span id="cb18-1055"><a href="#cb18-1055" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1056"><a href="#cb18-1056" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>how much text the detector receives;</span>
-<span id="cb18-1057"><a href="#cb18-1057" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>how many useful watermark-bearing decisions were available during generation.</span>
+<span id="cb18-1026"><a href="#cb18-1026" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb18-1027"><a href="#cb18-1027" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb18-1028"><a href="#cb18-1028" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Illustrative freedom of choice"</span><span class="op">,</span></span>
+<span id="cb18-1029"><a href="#cb18-1029" aria-hidden="true" tabindex="-1"></a>    <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(d <span class="op">*</span> <span class="dv">100</span>)<span class="sc">}</span><span class="vs">%`</span></span>
+<span id="cb18-1030"><a href="#cb18-1030" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb18-1031"><a href="#cb18-1031" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb18-1032"><a href="#cb18-1032" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> constraintExamples<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">type</span>)<span class="op">,</span></span>
+<span id="cb18-1033"><a href="#cb18-1033" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span></span>
+<span id="cb18-1034"><a href="#cb18-1034" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb18-1035"><a href="#cb18-1035" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb18-1036"><a href="#cb18-1036" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(constraintExamples<span class="op">,</span> {</span>
+<span id="cb18-1037"><a href="#cb18-1037" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"freedom"</span><span class="op">,</span></span>
+<span id="cb18-1038"><a href="#cb18-1038" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"type"</span><span class="op">,</span></span>
+<span id="cb18-1039"><a href="#cb18-1039" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb18-1040"><a href="#cb18-1040" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">description</span></span>
+<span id="cb18-1041"><a href="#cb18-1041" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb18-1042"><a href="#cb18-1042" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
+<span id="cb18-1043"><a href="#cb18-1043" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb18-1044"><a href="#cb18-1044" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb18-1045"><a href="#cb18-1045" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-1046"><a href="#cb18-1046" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1047"><a href="#cb18-1047" aria-hidden="true" tabindex="-1"></a>These numbers are illustrative, not measured quantities.</span>
+<span id="cb18-1048"><a href="#cb18-1048" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1049"><a href="#cb18-1049" aria-hidden="true" tabindex="-1"></a>The point is conceptual.</span>
+<span id="cb18-1050"><a href="#cb18-1050" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1051"><a href="#cb18-1051" aria-hidden="true" tabindex="-1"></a>If the model has very little freedom about what comes next, there may be fewer low-stakes choices available for a watermark to use.</span>
+<span id="cb18-1052"><a href="#cb18-1052" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1053"><a href="#cb18-1053" aria-hidden="true" tabindex="-1"></a>This gives us another experiment to run later:</span>
+<span id="cb18-1054"><a href="#cb18-1054" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1055"><a href="#cb18-1055" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **What happens to detectability as we constrain the model's freedom?**</span></span>
+<span id="cb18-1056"><a href="#cb18-1056" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1057"><a href="#cb18-1057" aria-hidden="true" tabindex="-1"></a>We can compare different types of text while controlling passage length and watermarking method.</span>
 <span id="cb18-1058"><a href="#cb18-1058" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1059"><a href="#cb18-1059" aria-hidden="true" tabindex="-1"></a><span class="fu">## So can this page tell whether Claude wrote something?</span></span>
+<span id="cb18-1059"><a href="#cb18-1059" aria-hidden="true" tabindex="-1"></a>That gives us a way to separate two effects:</span>
 <span id="cb18-1060"><a href="#cb18-1060" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1061"><a href="#cb18-1061" aria-hidden="true" tabindex="-1"></a>No.</span>
-<span id="cb18-1062"><a href="#cb18-1062" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1063"><a href="#cb18-1063" aria-hidden="true" tabindex="-1"></a>And that is an important distinction.</span>
-<span id="cb18-1064"><a href="#cb18-1064" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1065"><a href="#cb18-1065" aria-hidden="true" tabindex="-1"></a>Claude motivated this essay, but the interactive detector we build here will know the key used by **our own demonstration watermark**.</span>
-<span id="cb18-1066"><a href="#cb18-1066" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1067"><a href="#cb18-1067" aria-hidden="true" tabindex="-1"></a>It will not know Anthropic's key.</span>
-<span id="cb18-1068"><a href="#cb18-1068" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1071"><a href="#cb18-1071" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb18-1072"><a href="#cb18-1072" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-1061"><a href="#cb18-1061" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>how much text the detector receives;</span>
+<span id="cb18-1062"><a href="#cb18-1062" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>how many useful watermark-bearing decisions were available during generation.</span>
+<span id="cb18-1063"><a href="#cb18-1063" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1064"><a href="#cb18-1064" aria-hidden="true" tabindex="-1"></a><span class="fu">## So can this page tell whether Claude wrote something?</span></span>
+<span id="cb18-1065"><a href="#cb18-1065" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1066"><a href="#cb18-1066" aria-hidden="true" tabindex="-1"></a>No.</span>
+<span id="cb18-1067"><a href="#cb18-1067" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1068"><a href="#cb18-1068" aria-hidden="true" tabindex="-1"></a>And that is an important distinction.</span>
+<span id="cb18-1069"><a href="#cb18-1069" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1070"><a href="#cb18-1070" aria-hidden="true" tabindex="-1"></a>Claude motivated this essay, but the interactive detector we build here will know the key used by **our own demonstration watermark**.</span>
+<span id="cb18-1071"><a href="#cb18-1071" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1072"><a href="#cb18-1072" aria-hidden="true" tabindex="-1"></a>It will not know Anthropic's key.</span>
 <span id="cb18-1073"><a href="#cb18-1073" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1074"><a href="#cb18-1074" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
-<span id="cb18-1075"><a href="#cb18-1075" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="wm-two-view"&gt;</span></span>
-<span id="cb18-1076"><a href="#cb18-1076" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1077"><a href="#cb18-1077" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-card"&gt;</span></span>
-<span id="cb18-1078"><a href="#cb18-1078" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;OUR DEMO&lt;/div&gt;</span></span>
-<span id="cb18-1079"><a href="#cb18-1079" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-bitline"&gt;text + our key → testable&lt;/p&gt;</span></span>
-<span id="cb18-1080"><a href="#cb18-1080" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-muted"&gt;</span></span>
-<span id="cb18-1081"><a href="#cb18-1081" aria-hidden="true" tabindex="-1"></a><span class="vs">      We control the generation rule and the detector.</span></span>
-<span id="cb18-1082"><a href="#cb18-1082" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/p&gt;</span></span>
-<span id="cb18-1083"><a href="#cb18-1083" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb18-1084"><a href="#cb18-1084" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1085"><a href="#cb18-1085" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-arrow"&gt;≠&lt;/div&gt;</span></span>
-<span id="cb18-1086"><a href="#cb18-1086" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1087"><a href="#cb18-1087" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-card"&gt;</span></span>
-<span id="cb18-1088"><a href="#cb18-1088" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;CLAUDE&lt;/div&gt;</span></span>
-<span id="cb18-1089"><a href="#cb18-1089" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-bitline"&gt;text + unknown key → ?&lt;/p&gt;</span></span>
-<span id="cb18-1090"><a href="#cb18-1090" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-muted"&gt;</span></span>
-<span id="cb18-1091"><a href="#cb18-1091" aria-hidden="true" tabindex="-1"></a><span class="vs">      The text alone does not give us Anthropic's verification mechanism.</span></span>
-<span id="cb18-1092"><a href="#cb18-1092" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/p&gt;</span></span>
-<span id="cb18-1093"><a href="#cb18-1093" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
-<span id="cb18-1094"><a href="#cb18-1094" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1095"><a href="#cb18-1095" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
-<span id="cb18-1096"><a href="#cb18-1096" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span>
-<span id="cb18-1097"><a href="#cb18-1097" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-1098"><a href="#cb18-1098" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1099"><a href="#cb18-1099" aria-hidden="true" tabindex="-1"></a>So if you paste arbitrary text into this page, it cannot truthfully tell you whether Claude generated it.</span>
-<span id="cb18-1100"><a href="#cb18-1100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1101"><a href="#cb18-1101" aria-hidden="true" tabindex="-1"></a>It can only test for a watermark whose verification rule it actually knows.</span>
-<span id="cb18-1102"><a href="#cb18-1102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1103"><a href="#cb18-1103" aria-hidden="true" tabindex="-1"></a>That is very different from saying:</span>
-<span id="cb18-1104"><a href="#cb18-1104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1105"><a href="#cb18-1105" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "This text looks like Claude."</span></span>
-<span id="cb18-1106"><a href="#cb18-1106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1107"><a href="#cb18-1107" aria-hidden="true" tabindex="-1"></a><span class="fu">## What a watermark can (and cannot) tell us</span></span>
-<span id="cb18-1108"><a href="#cb18-1108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1109"><a href="#cb18-1109" aria-hidden="true" tabindex="-1"></a>A statistical watermark is evidence, not a visible stamp.</span>
-<span id="cb18-1110"><a href="#cb18-1110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1111"><a href="#cb18-1111" aria-hidden="true" tabindex="-1"></a>Its strength can depend on:</span>
-<span id="cb18-1112"><a href="#cb18-1112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1113"><a href="#cb18-1113" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>how much text there is;</span>
-<span id="cb18-1114"><a href="#cb18-1114" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>how many watermark-bearing choices were available;</span>
-<span id="cb18-1115"><a href="#cb18-1115" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>what happened to the text afterwards;</span>
-<span id="cb18-1116"><a href="#cb18-1116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>which watermarking scheme was used;</span>
-<span id="cb18-1117"><a href="#cb18-1117" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>whether the verifier has access to the corresponding detection mechanism.</span>
-<span id="cb18-1118"><a href="#cb18-1118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1119"><a href="#cb18-1119" aria-hidden="true" tabindex="-1"></a>Even a positive detection does not necessarily settle conventional questions of authorship.</span>
-<span id="cb18-1120"><a href="#cb18-1120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1121"><a href="#cb18-1121" aria-hidden="true" tabindex="-1"></a>Claude might have generated an entire passage.</span>
-<span id="cb18-1122"><a href="#cb18-1122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1123"><a href="#cb18-1123" aria-hidden="true" tabindex="-1"></a>It might have heavily rewritten something written by a person.</span>
-<span id="cb18-1124"><a href="#cb18-1124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1125"><a href="#cb18-1125" aria-hidden="true" tabindex="-1"></a>Or it might have contributed only part of a larger document.</span>
-<span id="cb18-1126"><a href="#cb18-1126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1127"><a href="#cb18-1127" aria-hidden="true" tabindex="-1"></a>So the useful question is not simply:</span>
-<span id="cb18-1128"><a href="#cb18-1128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1129"><a href="#cb18-1129" aria-hidden="true" tabindex="-1"></a>**Is this AI-generated?**</span>
-<span id="cb18-1130"><a href="#cb18-1130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1131"><a href="#cb18-1131" aria-hidden="true" tabindex="-1"></a>It is closer to:</span>
-<span id="cb18-1132"><a href="#cb18-1132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1133"><a href="#cb18-1133" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **How much statistical evidence is there that this text passed through a particular generation process?**</span></span>
-<span id="cb18-1134"><a href="#cb18-1134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1135"><a href="#cb18-1135" aria-hidden="true" tabindex="-1"></a>That is a much stranger kind of watermark.</span>
-<span id="cb18-1136"><a href="#cb18-1136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1137"><a href="#cb18-1137" aria-hidden="true" tabindex="-1"></a>There is no hidden text to find.</span>
-<span id="cb18-1138"><a href="#cb18-1138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-1139"><a href="#cb18-1139" aria-hidden="true" tabindex="-1"></a>The evidence is distributed through the choices that created it.</span>
+<span id="cb18-1076"><a href="#cb18-1076" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb18-1077"><a href="#cb18-1077" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb18-1078"><a href="#cb18-1078" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1079"><a href="#cb18-1079" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
+<span id="cb18-1080"><a href="#cb18-1080" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="wm-two-view"&gt;</span></span>
+<span id="cb18-1081"><a href="#cb18-1081" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1082"><a href="#cb18-1082" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-card"&gt;</span></span>
+<span id="cb18-1083"><a href="#cb18-1083" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;OUR DEMO&lt;/div&gt;</span></span>
+<span id="cb18-1084"><a href="#cb18-1084" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-bitline"&gt;text + our key → testable&lt;/p&gt;</span></span>
+<span id="cb18-1085"><a href="#cb18-1085" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-muted"&gt;</span></span>
+<span id="cb18-1086"><a href="#cb18-1086" aria-hidden="true" tabindex="-1"></a><span class="vs">      We control the generation rule and the detector.</span></span>
+<span id="cb18-1087"><a href="#cb18-1087" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/p&gt;</span></span>
+<span id="cb18-1088"><a href="#cb18-1088" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb18-1089"><a href="#cb18-1089" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1090"><a href="#cb18-1090" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-arrow"&gt;≠&lt;/div&gt;</span></span>
+<span id="cb18-1091"><a href="#cb18-1091" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1092"><a href="#cb18-1092" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="wm-view-card"&gt;</span></span>
+<span id="cb18-1093"><a href="#cb18-1093" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="wm-view-kicker"&gt;CLAUDE&lt;/div&gt;</span></span>
+<span id="cb18-1094"><a href="#cb18-1094" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-bitline"&gt;text + unknown key → ?&lt;/p&gt;</span></span>
+<span id="cb18-1095"><a href="#cb18-1095" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="wm-muted"&gt;</span></span>
+<span id="cb18-1096"><a href="#cb18-1096" aria-hidden="true" tabindex="-1"></a><span class="vs">      The text alone does not give us Anthropic's verification mechanism.</span></span>
+<span id="cb18-1097"><a href="#cb18-1097" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/p&gt;</span></span>
+<span id="cb18-1098"><a href="#cb18-1098" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb18-1099"><a href="#cb18-1099" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1100"><a href="#cb18-1100" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb18-1101"><a href="#cb18-1101" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span>
+<span id="cb18-1102"><a href="#cb18-1102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-1103"><a href="#cb18-1103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1104"><a href="#cb18-1104" aria-hidden="true" tabindex="-1"></a>So if you paste arbitrary text into this page, it cannot truthfully tell you whether Claude generated it.</span>
+<span id="cb18-1105"><a href="#cb18-1105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1106"><a href="#cb18-1106" aria-hidden="true" tabindex="-1"></a>It can only test for a watermark whose verification rule it actually knows.</span>
+<span id="cb18-1107"><a href="#cb18-1107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1108"><a href="#cb18-1108" aria-hidden="true" tabindex="-1"></a>That is very different from saying:</span>
+<span id="cb18-1109"><a href="#cb18-1109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1110"><a href="#cb18-1110" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "This text looks like Claude."</span></span>
+<span id="cb18-1111"><a href="#cb18-1111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1112"><a href="#cb18-1112" aria-hidden="true" tabindex="-1"></a><span class="fu">## What a watermark can (and cannot) tell us</span></span>
+<span id="cb18-1113"><a href="#cb18-1113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1114"><a href="#cb18-1114" aria-hidden="true" tabindex="-1"></a>A statistical watermark is evidence, not a visible stamp.</span>
+<span id="cb18-1115"><a href="#cb18-1115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1116"><a href="#cb18-1116" aria-hidden="true" tabindex="-1"></a>Its strength can depend on:</span>
+<span id="cb18-1117"><a href="#cb18-1117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1118"><a href="#cb18-1118" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>how much text there is;</span>
+<span id="cb18-1119"><a href="#cb18-1119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>how many watermark-bearing choices were available;</span>
+<span id="cb18-1120"><a href="#cb18-1120" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>what happened to the text afterwards;</span>
+<span id="cb18-1121"><a href="#cb18-1121" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>which watermarking scheme was used;</span>
+<span id="cb18-1122"><a href="#cb18-1122" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>whether the verifier has access to the corresponding detection mechanism.</span>
+<span id="cb18-1123"><a href="#cb18-1123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1124"><a href="#cb18-1124" aria-hidden="true" tabindex="-1"></a>Even a positive detection does not necessarily settle conventional questions of authorship.</span>
+<span id="cb18-1125"><a href="#cb18-1125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1126"><a href="#cb18-1126" aria-hidden="true" tabindex="-1"></a>Claude might have generated an entire passage.</span>
+<span id="cb18-1127"><a href="#cb18-1127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1128"><a href="#cb18-1128" aria-hidden="true" tabindex="-1"></a>It might have heavily rewritten something written by a person.</span>
+<span id="cb18-1129"><a href="#cb18-1129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1130"><a href="#cb18-1130" aria-hidden="true" tabindex="-1"></a>Or it might have contributed only part of a larger document.</span>
+<span id="cb18-1131"><a href="#cb18-1131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1132"><a href="#cb18-1132" aria-hidden="true" tabindex="-1"></a>So the useful question is not simply:</span>
+<span id="cb18-1133"><a href="#cb18-1133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1134"><a href="#cb18-1134" aria-hidden="true" tabindex="-1"></a>**Is this AI-generated?**</span>
+<span id="cb18-1135"><a href="#cb18-1135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1136"><a href="#cb18-1136" aria-hidden="true" tabindex="-1"></a>It is closer to:</span>
+<span id="cb18-1137"><a href="#cb18-1137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1138"><a href="#cb18-1138" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **How much statistical evidence is there that this text passed through a particular generation process?**</span></span>
+<span id="cb18-1139"><a href="#cb18-1139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1140"><a href="#cb18-1140" aria-hidden="true" tabindex="-1"></a>That is a much stranger kind of watermark.</span>
+<span id="cb18-1141"><a href="#cb18-1141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1142"><a href="#cb18-1142" aria-hidden="true" tabindex="-1"></a>There is no hidden text to find.</span>
+<span id="cb18-1143"><a href="#cb18-1143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1144"><a href="#cb18-1144" aria-hidden="true" tabindex="-1"></a>The evidence is distributed through the choices that created it.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
