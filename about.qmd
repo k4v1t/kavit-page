@@ -8,11 +8,11 @@ I spent 12 years in asset management, working with quantitative models, data, un
 
 Over time, I found myself increasingly drawn to the mathematics and mechanics underneath the decisions: how models represent the world, what information they capture, and where their assumptions begin to break down.
 
-That curiosity eventually led me to step away from finance and pursue an MSc in Artificial Intelligence and Machine Learning in Science. I am now preparing to begin a PhD and continue exploring the relationship between mathematics, machine learning and scientific inference.
+That curiosity eventually led me to step away from finance and pursue an MSc in Artificial Intelligence and Machine Learning in Science. I am now a PhD researcher at Queen Mary University of London, funded by EPSRC, working on autonomous optical networks: how reinforcement learning and generative AI agents can translate an operator's plain-language intent into the decisions that run a fibre network.
 
 I enjoy trying to understand technical ideas from first principles and finding ways to make their underlying structure easier to see. I do not think difficult subjects need to be made artificially simple, but I do think they can often be explained more clearly.
 
-My current interests include scientific machine learning and inverse problems. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help expose both the strengths and limitations of a model.
+My current interests include reinforcement learning, scientific machine learning and inverse problems, and increasingly the physics of optical fibre, which is new to me. More broadly, I am interested in what models can learn from data, what remains unidentifiable, and how visualisation can help expose both the strengths and limitations of a model.
 
 I am still learning, and I expect my understanding of many of these subjects to change. Part of the reason for building this site is to document that process.
 
