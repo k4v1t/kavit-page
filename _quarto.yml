@@ -5,6 +5,8 @@ project:
     - "!posts/mbhb-redundancies/exploration.ipynb"
     - "!posts/claude-watermark/synthid_interactive_prototype.ipynb"
 
+author: Kavit Tolia
+
 website:
   title: "k4v1t"
   site-url: "https://kavit.page"
