@@ -8,6 +8,8 @@ project:
 website:
   title: "k4v1t"
   site-url: "https://kavit.page"
+  open-graph: true
+  twitter-card: true
   description: "Kavit Tolia's visual explorations of mathematics, artificial intelligence, and scientific discovery."
   plausible-analytics: |
     <!-- Privacy-friendly analytics by Plausible -->
