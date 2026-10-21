@@ -9,6 +9,13 @@
 <link>https://kavit.page/essays.html</link>
 <atom:link href="https://kavit.page/essays.xml" rel="self" type="application/rss+xml"/>
 <description>Mathematical and scientific ideas explored through explanation, computation, and interactive graphics.</description>
+<image>
+<url>https://kavit.page/images/social-card.png</url>
+<title>k4v1t</title>
+<link>https://kavit.page/essays.html</link>
+<height>76</height>
+<width>144</width>
+</image>
 <generator>quarto-1.9.38</generator>
 <lastBuildDate>Sat, 15 Aug 2026 23:00:00 GMT</lastBuildDate>
 <item>
