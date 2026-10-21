@@ -1,5 +1,7 @@
 ---
 title: "About Kavit Tolia"
+include-in-header:
+  text: <meta name="author" content="Kavit Tolia">
 page-layout: article
 toc: false
 ---

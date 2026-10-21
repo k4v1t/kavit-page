@@ -1,5 +1,18 @@
 ---
 page-layout: full
+include-in-header:
+  text: <meta name="author" content="Kavit Tolia">
+listing:
+  id: recent-essays
+  contents: posts
+  sort: "date desc"
+  type: grid
+  grid-columns: 3
+  max-items: 3
+  fields: [title, description, categories]
+  categories: false
+  sort-ui: false
+  filter-ui: false
 ---
 
 ::: {.hero}
@@ -34,7 +47,7 @@ Visual explanations and experiments that let you adjust parameters, test assumpt
 
 ### Research
 
-Research on scientific machine learning, inverse problems and related areas.
+PhD research at Queen Mary University of London on machine learning for autonomous optical networks.
 
 `Coming soon`
 :::
@@ -58,35 +71,12 @@ Code, technical experiments and shorter explorations of ideas that are still dev
 :::
 :::
 
-## Selected work
+## Recent essays
 
-::: {.featured-grid}
-
-::: {.featured-card}
-
-### [There is no hidden text](posts/claude-watermark/index.qmd)
-
-An interactive visual essay about how statistical watermarks can hide in the choices a language model makes.
-
-`Artificial Intelligence` · `Language Models` · `Watermarking` · `Interactive`
+::: {#recent-essays}
 :::
 
-::: {.featured-card}
-
-### [When different black-hole binaries look the same](posts/mbhb-redundancies/index.qmd)
-
-An interactive exploration of parameter degeneracies in gravitational-wave inference.
-
-`Gravitational waves` · `Inverse problems` · `Interactive`
-:::
-
-:::
-
-### More explorations to come
-
-This site will grow gradually as I turn research questions, mathematical ideas and useful explanations into interactive essays.
-
-`Work In Progress` · `Learning in Public`
+[All visual essays →](essays.qmd)
 
 ## Current themes
 
