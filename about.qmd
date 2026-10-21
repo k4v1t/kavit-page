@@ -1,16 +1,18 @@
 ---
 title: "About Kavit Tolia"
-include-in-header:
-  text: <meta name="author" content="Kavit Tolia">
 page-layout: article
 toc: false
+include-in-header:
+  text: <meta name="author" content="Kavit Tolia">
 ---
 
-I spent 12 years in asset management, working with quantitative models, data, uncertainty and investment portfolios.
+I studied mathematics at the University of Cambridge, then spent 12 years in asset management, working with quantitative models, data, uncertainty and investment portfolios.
 
 Over time, I found myself increasingly drawn to the mathematics and mechanics underneath the decisions: how models represent the world, what information they capture, and where their assumptions begin to break down.
 
-That curiosity eventually led me to step away from finance and pursue an MSc in Artificial Intelligence and Machine Learning in Science. I am now a PhD researcher at Queen Mary University of London, funded by EPSRC, working on autonomous optical networks: how reinforcement learning and generative AI agents can translate an operator's plain-language intent into the decisions that run a fibre network.
+That curiosity eventually led me to step away from finance and pursue an MSc in Artificial Intelligence and Machine Learning in Science. My dissertation used simulation-based inference to estimate the properties of black-hole binaries from their gravitational-wave signals, which is where the [black-hole degeneracy essay](posts/mbhb-redundancies/index.qmd) comes from.
+
+I am now a PhD researcher at Queen Mary University of London, funded by EPSRC and supervised by [Dr Paul Haigh](https://www.qmul.ac.uk/eecs/people/profiles/haighpaul.html) and [Dr Antonino Masaracchia](https://www.qmul.ac.uk/eecs/people/profiles/masaracchiaantonino.html). I work on autonomous optical networks: how reinforcement learning and generative AI agents can translate an operator's plain-language intent into the decisions that run a fibre network.
 
 I enjoy trying to understand technical ideas from first principles and finding ways to make their underlying structure easier to see. I do not think difficult subjects need to be made artificially simple, but I do think they can often be explained more clearly.
 
@@ -22,3 +24,4 @@ I am still learning, and I expect my understanding of many of these subjects to 
 
 [LinkedIn](https://www.linkedin.com/in/kavittolia/){.btn .btn-outline-primary target="_blank"}
 [GitHub](https://github.com/k4v1t){.btn .btn-outline-primary target="_blank"}
+[ORCID](https://orcid.org/0009-0006-7801-6194){.btn .btn-outline-primary target="_blank"}
