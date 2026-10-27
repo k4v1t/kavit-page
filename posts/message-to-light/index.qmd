@@ -1,0 +1,672 @@
+---
+title: "How a message becomes light"
+description: "An interactive visual essay following one tiny message as it turns into bits, then flashes of light, then back again, and what goes wrong on the way."
+date: 2026-10-28
+categories:
+  - Optical communications
+  - Information theory
+  - Interactive
+page-layout: article
+---
+
+You press send.
+
+A fraction of a second later, someone else reads your message.
+
+In between, for most of its journey, your message was not text at all.
+
+It was light, travelling through a glass thread thinner than a hair.
+
+This essay follows one tiny message on that journey: from the thing you typed, to numbers, to flashes of light, and back again.
+
+To keep things clear, we will make one big simplification. The sender and the receiver are joined by a single fibre-optic cable. No routers, no exchanges, no undersea links. Just one strand of glass.
+
+Even with that simplification, something interesting happens.
+
+> **Sending is easy. The hard part is the receiver deciding what was sent.**
+
+## Pick a message
+
+Choose something small to send.
+
+Each option is only a few bytes long, so we can follow every piece of it.
+
+```{ojs}
+//| echo: false
+
+viewof messageChoice = Inputs.radio(
+  ["Hi", "👋", "8×8 icon"],
+  {label: "Message", value: "Hi"}
+)
+```
+
+## Everything becomes a number
+
+A computer cannot store a letter.
+
+It can only store numbers, and in the end, only one kind: a **bit**, something that is either 0 or 1.
+
+A single bit can only answer one yes-or-no question. But eight bits together, a **byte**, can take 2⁸ = 256 different patterns. That is enough to give every letter, digit and punctuation mark its own pattern.
+
+So the letter **H** becomes the number 72, and 72 becomes the byte `01001000`.
+
+Here is your message, written out the way a computer stores it:
+
+```{ojs}
+//| echo: false
+
+ICON_ROWS = [
+  "00000011",
+  "00001100",
+  "00110000",
+  "11111111",
+  "00110000",
+  "00001100",
+  "00000011",
+  "00000000"
+]
+
+isIcon = messageChoice === "8×8 icon"
+
+function byteToBits(byte) {
+  return Array.from({length: 8}, (_, i) => (byte >> (7 - i)) & 1)
+}
+
+messageParts = isIcon
+  ? ICON_ROWS.map((row, i) => ({
+      label: `row ${i + 1}`,
+      detail: "one bit per pixel",
+      bits: row.split("").map(Number)
+    }))
+  : Array.from(messageChoice).map(ch => {
+      const bytes = Array.from(new TextEncoder().encode(ch))
+      const cp = ch.codePointAt(0)
+      return {
+        label: ch,
+        detail: bytes.length === 1
+          ? `number ${cp}`
+          : `code point U+${cp.toString(16).toUpperCase()}, stored as ${bytes.length} bytes`,
+        bits: bytes.flatMap(byteToBits)
+      }
+    })
+
+messageBits = messageParts.flatMap(d => d.bits)
+
+function bitChips(bits, errors = null) {
+  return html`<span class="ml-bits">${bits.map((b, i) => html`<span class="ml-bit ${b ? "ml-one" : ""} ${errors && errors[i] ? "ml-err" : ""}">${b}</span>`)}</span>`
+}
+
+function iconGrid(bits, errors = null) {
+  return html`<div class="ml-icon">${bits.map((b, i) => html`<span class="ml-px ${b ? "ml-px-on" : ""} ${errors && errors[i] ? "ml-px-err" : ""}"></span>`)}</div>`
+}
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="ml-encode">
+  ${isIcon ? html`<div class="ml-encode-icon">${iconGrid(messageBits)}</div>` : ""}
+  <div class="ml-encode-rows">
+    ${messageParts.map(d => html`
+      <div class="ml-encode-row">
+        <div class="ml-encode-label">${d.label}</div>
+        <div class="wm-muted ml-encode-detail">${d.detail}</div>
+        <div>${bitChips(d.bits)}</div>
+      </div>
+    `)}
+  </div>
+</div>
+<p class="wm-muted">Total: <strong>${messageBits.length} bits</strong>.</p>
+`
+```
+
+Notice what the emoji costs.
+
+👋 is one symbol on your screen, but it takes four bytes: as many as four letters. Text on the web is stored with a scheme called UTF-8, which keeps common characters short and gives rarer ones longer codes.
+
+The icon is simpler still: one bit per pixel, 1 for lit and 0 for dark.
+
+The important point is that none of these numbers is natural.
+
+> **The bits mean nothing on their own. They mean "H" only because sender and receiver have agreed on the same table.**
+
+## Bits become light
+
+Now the bits have to travel.
+
+The simplest way to send them through a fibre is also the oldest: switch a laser on for a 1 and off for a 0.
+
+This is called **on–off keying**. It is still used in many shorter links, such as the fibre that brings broadband into homes.
+
+```{ojs}
+//| echo: false
+
+SAMPLES_PER_BIT = 32
+CARTOON_CYCLES = 3
+STRIP_MARGIN_LEFT = 2
+STRIP_WIDTH = Math.min(width, 720)
+
+function labelled(label, plot) {
+  return html`<div class="ml-strip"><div class="wm-view-kicker ml-strip-label">${label}</div>${plot}</div>`
+}
+
+nBits = messageBits.length
+
+function bitStrip(bits, {label, errors = null} = {}) {
+  const cells = bits.map((b, k) => ({k, b, err: errors ? errors[k] : false}))
+  return Plot.plot({
+    height: 54,
+    width: STRIP_WIDTH,
+    marginLeft: STRIP_MARGIN_LEFT,
+    marginRight: 2,
+    marginTop: 6,
+    marginBottom: 6,
+    style: {fontSize: "14px", background: "transparent"},
+    x: {domain: [0, bits.length], axis: null},
+    y: {domain: [0, 1], axis: null},
+    marks: [
+      Plot.rect(cells, {
+        x1: d => d.k + 0.06,
+        x2: d => d.k + 0.94,
+        y1: 0.1,
+        y2: 0.9,
+        fill: d => d.err ? "#e8710a" : "currentColor",
+        fillOpacity: d => d.err ? 0.9 : d.b ? 0.75 : 0.12
+      }),
+      bits.length <= 32
+        ? Plot.text(cells, {
+            x: d => d.k + 0.5,
+            y: 0.5,
+            text: d => String(d.b),
+            fill: d => d.b && !d.err ? "var(--bs-body-bg, #fff)" : "currentColor",
+            fontSize: 12
+          })
+        : null
+    ]
+  })
+}
+
+function carrierStrip(bits, {label = "Light sent"} = {}) {
+  const pts = []
+  for (let k = 0; k < bits.length; k++) {
+    for (let j = 0; j <= SAMPLES_PER_BIT; j++) {
+      const t = k + j / SAMPLES_PER_BIT
+      pts.push({t, y: bits[k] ? Math.sin(2 * Math.PI * CARTOON_CYCLES * t) : 0})
+    }
+  }
+  return Plot.plot({
+    height: 90,
+    width: STRIP_WIDTH,
+    marginLeft: STRIP_MARGIN_LEFT,
+    marginRight: 2,
+    marginTop: 8,
+    marginBottom: 8,
+    style: {fontSize: "14px", background: "transparent"},
+    x: {domain: [0, bits.length], axis: null},
+    y: {domain: [-1.2, 1.2], axis: null},
+    marks: [
+      Plot.ruleX(d3.range(1, bits.length), {strokeOpacity: 0.12}),
+      Plot.line(pts, {x: "t", y: "y", strokeWidth: 1.4})
+    ]
+  })
+}
+```
+
+```{ojs}
+//| echo: false
+
+html`<div class="ml-stack">
+  ${labelled("Bits", bitStrip(messageBits))}
+  ${labelled("Light sent", carrierStrip(messageBits))}
+</div>`
+```
+
+Each 1 becomes a short burst of light. Each 0 is a gap.
+
+The receiver's job will be to look at the light that arrives and work out, slot by slot, whether the laser was on or off.
+
+## The drawing is a lie
+
+There is a problem with the picture above.
+
+It shows three wiggles of light per bit. The real number is very different.
+
+Long-distance fibre links use infrared light with a wavelength of around 1550 nanometres. That light oscillates about **193 trillion** times per second.
+
+Even at a modest 10 billion bits per second, each bit lasts long enough for about 19,000 of those oscillations.
+
+```{ojs}
+//| echo: false
+
+viewof trueScale = Inputs.toggle({label: "Show one bit at true scale", value: false})
+```
+
+```{ojs}
+//| echo: false
+
+LIGHT_FREQ_HZ = 299792458 / 1550e-9
+BIT_RATE = 10e9
+cyclesPerBit = LIGHT_FREQ_HZ / BIT_RATE
+
+oneBit = trueScale
+  ? []
+  : d3.range(0, 1.0001, 1 / 400).map(t => ({t, y: Math.sin(2 * Math.PI * CARTOON_CYCLES * t)}))
+
+Plot.plot({
+  height: 160,
+  marginLeft: 20,
+  marginBottom: 40,
+  style: {fontSize: "14px", background: "transparent"},
+  x: {domain: [0, 1], label: "One bit (0.1 nanoseconds)", ticks: 0},
+  y: {domain: [-1.2, 1.2], axis: null},
+  marks: [
+    trueScale
+      ? Plot.areaY([{t: 0}, {t: 1}], {x: "t", y1: -1, y2: 1, fillOpacity: 0.85})
+      : Plot.line(oneBit, {x: "t", y: "y", strokeWidth: 2}),
+    Plot.ruleY([0], {strokeOpacity: 0.2})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+
+html`<p class="wm-muted">${trueScale
+  ? `About ${Math.round(cyclesPerBit).toLocaleString("en-GB")} oscillations in this one bit. At this scale they merge into a solid band.`
+  : `The cartoon: ${CARTOON_CYCLES} oscillations per bit.`}</p>`
+```
+
+So the wiggles in the rest of this essay are a cartoon.
+
+What matters is the overall brightness in each bit slot, not the individual oscillations. That turns out to be exactly what the receiver measures.
+
+## The fibre fights back
+
+Light does not cross a fibre for free.
+
+Even the purest glass absorbs and scatters a little of it. A typical modern fibre loses about 0.2 decibels per kilometre, which means the light halves in power roughly every 15 km.
+
+After 100 km, only about 1% of the light is left.
+
+Meanwhile, the receiver has its own noise: tiny random fluctuations from its electronics. That noise does not care how far the light has come. It is the same at 1 km as at 200 km.
+
+So the receiver turns the volume up. It amplifies whatever arrives until the "on" level is the same size as before.
+
+But amplifying the signal also amplifies the noise.
+
+Drag the slider to lengthen the fibre.
+
+**Send again** transmits the same message over the same fibre, with fresh random noise. Near the edge, try it a few times: sometimes the message survives, sometimes it does not.
+
+```{ojs}
+//| echo: false
+
+viewof distanceKm = Inputs.range([0, 200], {
+  label: "Fibre length (km)",
+  value: 60,
+  step: 1
+})
+
+viewof sendCount = Inputs.button("Send again", {value: 0, reduce: v => v + 1})
+```
+
+```{ojs}
+//| echo: false
+
+// Illustrative link parameters (see "What this simplifies").
+LAUNCH_DBM = 0          // 1 mW launched into the fibre
+ALPHA_DB_PER_KM = 0.2   // standard single-mode fibre near 1550 nm
+Q_AT_REF = 6            // receiver noise chosen so Q = 6 at...
+REF_KM = 100            // ...100 km of fibre
+
+function erfc(x) {
+  // Numerical Recipes erfcc: fractional error below 1.2e-7.
+  const z = Math.abs(x)
+  const t = 1 / (1 + 0.5 * z)
+  const r = t * Math.exp(-z * z - 1.26551223 + t * (1.00002368 + t * (0.37409196 +
+    t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 +
+    t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))))
+  return x >= 0 ? r : 2 - r
+}
+
+function mulberry32(seed) {
+  return function () {
+    seed |= 0
+    seed = (seed + 0x6d2b79f5) | 0
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function gaussians(n, seed) {
+  const rand = mulberry32(seed)
+  const out = new Float64Array(n)
+  for (let i = 0; i < n; i += 2) {
+    const u1 = Math.max(rand(), 1e-12)
+    const u2 = rand()
+    const r = Math.sqrt(-2 * Math.log(u1))
+    out[i] = r * Math.cos(2 * Math.PI * u2)
+    if (i + 1 < n) out[i + 1] = r * Math.sin(2 * Math.PI * u2)
+  }
+  return out
+}
+
+receivedDbm = LAUNCH_DBM - ALPHA_DB_PER_KM * distanceKm
+qFactor = Q_AT_REF * 10 ** (-ALPHA_DB_PER_KM * (distanceKm - REF_KM) / 10)
+
+// After the receiver turns the volume up, "on" sits at 1 and "off" at 0.
+// The noise, measured in those units, is 1 / (2Q).
+noiseSd = 1 / (2 * qFactor)
+predictedBer = 0.5 * erfc(qFactor / Math.SQRT2)
+
+// The underlying random noise depends only on the message and on "Send again",
+// so dragging the slider rescales the same noise rather than redrawing it.
+noiseZ = gaussians(nBits * SAMPLES_PER_BIT + 1, 1234 + 7919 * sendCount + nBits)
+
+receivedTrace = Array.from({length: nBits * SAMPLES_PER_BIT}, (_, i) => {
+  const k = Math.floor(i / SAMPLES_PER_BIT)
+  return {t: i / SAMPLES_PER_BIT, y: messageBits[k] + noiseSd * noiseZ[i]}
+})
+
+decisions = messageBits.map((b, k) => {
+  const i = k * SAMPLES_PER_BIT + SAMPLES_PER_BIT / 2
+  const y = messageBits[k] + noiseSd * noiseZ[i]
+  const decided = y > 0.5 ? 1 : 0
+  return {k, sent: b, y, decided, err: decided !== b}
+})
+
+decodedBits = decisions.map(d => d.decided)
+bitErrors = decisions.map(d => d.err)
+nErrors = bitErrors.filter(Boolean).length
+
+function bitsToBytes(bits) {
+  const bytes = []
+  for (let i = 0; i + 8 <= bits.length; i += 8) {
+    bytes.push(bits.slice(i, i + 8).reduce((acc, b) => (acc << 1) | b, 0))
+  }
+  return Uint8Array.from(bytes)
+}
+
+function decodeText(bits) {
+  const text = new TextDecoder("utf-8", {fatal: false}).decode(bitsToBytes(bits))
+  return text.replace(/[\u0000-\u001f\u007f]/g, "□")
+}
+
+function formatOneIn(p) {
+  if (p >= 0.499) return "a coin toss"
+  if (p < 1e-12) return "fewer than 1 in a trillion"
+  return `about 1 in ${d3.format(",.2r")(1 / p)}`
+}
+
+function receivedStrip() {
+  return Plot.plot({
+    height: 150,
+    width: STRIP_WIDTH,
+    marginLeft: STRIP_MARGIN_LEFT,
+    marginRight: 2,
+    marginTop: 8,
+    marginBottom: 8,
+    style: {fontSize: "14px", background: "transparent"},
+    x: {domain: [0, nBits], axis: null},
+    y: {domain: [-0.9, 1.9], axis: null},
+    marks: [
+      Plot.ruleX(d3.range(1, nBits), {strokeOpacity: 0.12}),
+      Plot.ruleY([0.5], {strokeDasharray: "6,4", strokeOpacity: 0.7}),
+      Plot.line(receivedTrace, {x: "t", y: "y", strokeWidth: 1, strokeOpacity: 0.55, clip: true}),
+      Plot.dot(decisions, {
+        x: d => d.k + 0.5,
+        y: d => Math.max(-0.85, Math.min(1.85, d.y)),
+        r: nBits > 32 ? 3 : 4.5,
+        fill: d => d.err ? "#e8710a" : "currentColor",
+        stroke: "var(--bs-body-bg, #fff)",
+        strokeWidth: 1
+      })
+    ]
+  })
+}
+```
+
+```{ojs}
+//| echo: false
+
+html`<div class="ml-stack">
+  ${labelled("Bits sent", bitStrip(messageBits))}
+  ${labelled("Light sent", carrierStrip(messageBits))}
+  ${labelled("Light received, with the threshold dashed", receivedStrip())}
+  ${labelled("Bits decided", bitStrip(decodedBits, {errors: bitErrors}))}
+</div>`
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="ml-result">
+  <div class="ml-result-card">
+    <div class="wm-view-kicker">SENT</div>
+    ${isIcon
+      ? iconGrid(messageBits)
+      : html`<div class="ml-result-text">${messageChoice}</div>`}
+  </div>
+  <div class="wm-view-arrow">→</div>
+  <div class="ml-result-card">
+    <div class="wm-view-kicker">RECEIVED</div>
+    ${isIcon
+      ? iconGrid(decodedBits, bitErrors)
+      : html`<div class="ml-result-text ${nErrors ? "ml-result-bad" : ""}">${decodeText(decodedBits)}</div>`}
+  </div>
+</div>
+
+<div class="wm-live-summary">
+  <div class="wm-live-score-card">
+    <div class="wm-view-kicker">ERRORS IN YOUR MESSAGE</div>
+    <div class="wm-live-score-label">${nErrors} of ${nBits} bits</div>
+    <div class="wm-muted">Predicted error rate: ${formatOneIn(predictedBer)} bits</div>
+  </div>
+  <div class="wm-live-stat">
+    <div class="wm-view-kicker">LIGHT ARRIVING</div>
+    <div class="wm-live-stat-value">${(100 * 10 ** (receivedDbm / 10) / 10 ** (LAUNCH_DBM / 10)).toPrecision(2)}%</div>
+    <div class="wm-muted">of what was sent (${receivedDbm.toFixed(0)} dBm)</div>
+  </div>
+  <div class="wm-live-stat">
+    <div class="wm-view-kicker">Q-FACTOR</div>
+    <div class="wm-live-stat-value">${qFactor >= 100 ? qFactor.toFixed(0) : qFactor.toFixed(1)}</div>
+    <div class="wm-muted">signal gap ÷ noise</div>
+  </div>
+</div>
+`
+```
+
+<div class="wm-note">
+The received trace is drawn <strong>after</strong> the receiver has turned the volume up, so "on" always sits at the same height. What changes as the fibre gets longer is how much the noise has been amplified along with it.
+</div>
+
+## The receiver has to decide
+
+Look at the third strip again.
+
+The receiver never sees bits. It only sees a brightness that wobbles.
+
+So once per bit, in the middle of each slot, it takes one measurement (the dots) and makes a decision:
+
+- above the dashed **threshold**, call it a 1;
+- below it, call it a 0.
+
+On a short fibre this is trivially easy. The dots sit far from the line and every decision is right.
+
+On a long fibre, the noise is large enough to push some dots across the line. The receiver cannot know that it happened. It simply makes the wrong call, and passes the wrong bit on.
+
+## Two humps
+
+One message is only a handful of bits, so it is a noisy way to judge a link.
+
+Instead, imagine sending a few thousand random bits down the same fibre and plotting every measurement the receiver takes.
+
+```{ojs}
+//| echo: false
+
+N_HIST = 4000
+
+histBits = (() => {
+  const rand = mulberry32(99 + sendCount)
+  return Array.from({length: N_HIST}, () => (rand() < 0.5 ? 0 : 1))
+})()
+
+histZ = gaussians(N_HIST, 4242 + 31 * sendCount)
+
+histSamples = histBits.map((b, i) => {
+  const y = b + noiseSd * histZ[i]
+  return {sent: b ? "Laser was on (1)" : "Laser was off (0)", y, wrong: (y > 0.5 ? 1 : 0) !== b}
+})
+
+histWrong = histSamples.filter(d => d.wrong).length
+
+halfWidth = Math.max(1.5, 4 * noiseSd)
+histLo = 0.5 - halfWidth
+histHi = 0.5 + halfWidth
+
+Plot.plot({
+  height: 300,
+  marginLeft: 50,
+  marginBottom: 45,
+  style: {fontSize: "14px", background: "transparent"},
+  x: {domain: [histLo, histHi], label: "Brightness measured at the centre of each bit"},
+  y: {label: null, ticks: 0},
+  color: {
+    domain: ["Laser was off (0)", "Laser was on (1)"],
+    range: ["#7f8c99", "#e8710a"],
+    legend: true
+  },
+  marks: [
+    Plot.rectY(
+      histSamples.filter(d => d.y >= histLo && d.y <= histHi),
+      Plot.binX(
+        {y2: "count"},
+        {x: "y", fill: "sent", thresholds: d3.range(histLo, histHi, (histHi - histLo) / 70), fillOpacity: 0.55}
+      )
+    ),
+    Plot.ruleX([0.5], {strokeDasharray: "6,4"}),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+
+html`<p class="wm-muted">${histWrong} of ${N_HIST.toLocaleString("en-GB")} measurements landed on the wrong side of the threshold.</p>`
+```
+
+There are two humps: one for every time the laser was off, one for every time it was on.
+
+Each hump has a width, set by the noise. The distance between them is set by the signal.
+
+Errors are the parts of each hump that spill over the threshold into the other's territory.
+
+Engineers summarise this with a single number, the **Q-factor**: the gap between the two levels divided by the spread of the noise. In our simplified receiver,
+
+$$
+Q = \frac{\text{gap between the on and off levels}}{2 \times \text{noise spread}}
+$$
+
+and the fraction of bits that end up on the wrong side is
+
+$$
+\text{error rate} = \tfrac{1}{2}\,\operatorname{erfc}\!\left(\frac{Q}{\sqrt{2}}\right)
+$$
+
+A Q-factor of 6 gives about one error in a billion bits. For decades that was the classic target for a working link.
+
+## The cliff
+
+Every 15 km, the light halves. Because the noise stays fixed, the Q-factor halves too.
+
+But the error rate does not halve. It explodes.
+
+Drag the fibre length slowly from 100 km to 150 km. (This slider is linked to the one above.)
+
+```{ojs}
+//| echo: false
+
+Inputs.bind(
+  Inputs.range([0, 200], {label: "Fibre length (km)", step: 1}),
+  viewof distanceKm
+)
+```
+
+```{ojs}
+//| echo: false
+
+BER_FLOOR = 1e-15
+
+berCurve = d3.range(60, 200.5, 0.5).map(km => {
+  const q = Q_AT_REF * 10 ** (-ALPHA_DB_PER_KM * (km - REF_KM) / 10)
+  return {km, ber: Math.max(BER_FLOOR, 0.5 * erfc(q / Math.SQRT2))}
+})
+
+Plot.plot({
+  height: 320,
+  marginLeft: 70,
+  marginBottom: 45,
+  style: {fontSize: "14px", background: "transparent"},
+  x: {domain: [60, 200], label: "Fibre length (km)"},
+  y: {
+    type: "log",
+    domain: [BER_FLOOR, 1],
+    label: "↑ Fraction of bits in error",
+    ticks: [1e-15, 1e-12, 1e-9, 1e-6, 1e-3, 1],
+    tickFormat: d => d === 1 ? "1" : `10${String(Math.round(Math.log10(d))).replace("-", "⁻").replace(/\d/g, c => "⁰¹²³⁴⁵⁶⁷⁸⁹"[c])}`,
+    grid: true
+  },
+  marks: [
+    Plot.ruleY([1e-9], {strokeDasharray: "6,4", strokeOpacity: 0.6}),
+    Plot.text([{km: 62, ber: 1e-9}], {x: "km", y: "ber", text: () => "Q = 6: one error in a billion", textAnchor: "start", dy: -9, fontSize: 12, fillOpacity: 0.8}),
+    Plot.line(berCurve, {x: "km", y: "ber", strokeWidth: 2}),
+    distanceKm >= 60
+      ? Plot.dot([{km: distanceKm, ber: Math.max(BER_FLOOR, predictedBer)}], {x: "km", y: "ber", r: 6, fill: "#e8710a"})
+      : null
+  ]
+})
+```
+
+For shorter fibres, the error rate is too small to draw. Then it climbs a wall.
+
+Over the same 45 km in which the light merely fades to an eighth, the error rate goes from one in a billion to one in four:
+
+| Fibre length | Q-factor | Errors |
+|---|---|---|
+| 100 km | 6 | about 1 in a billion |
+| 115 km | 3 | about 1 in 700 |
+| 130 km | 1.5 | about 1 in 15 |
+| 145 km | 0.75 | about 1 in 4 |
+
+So a link does not fade gracefully, the way a radio station slowly turns to hiss.
+
+> **A digital link works almost perfectly, until quite suddenly it does not.**
+
+That is why so much of optical engineering is about staying well away from the edge of that cliff, with margin to spare.
+
+## What this simplifies
+
+A real link is more complicated than the one on this page in almost every way. The main simplifications:
+
+- **One fibre, no amplifiers.** Long links put an optical amplifier every 80 km or so, boosting the light before it falls off the cliff. Each amplifier adds a little noise of its own.
+- **No error correction.** Real links add carefully designed redundant bits, so the receiver can find and fix most errors. A garbled "Hi" would usually be repaired before anyone saw it.
+- **No packets or routing.** On the real internet, your message is split into packets, wrapped in addresses, and passed between many links.
+- **A perfect clock.** We assumed the receiver knows exactly where each bit starts. Recovering that timing from the signal itself is a problem of its own.
+- **A perfect laser.** Real transmitters never switch fully off, and the pulses spread out as they travel (dispersion).
+- **One kind of noise.** We used fixed electronic noise only. Real receivers also have noise that grows with the signal.
+
+The numbers are illustrative but realistic in scale: 1 mW of light launched, 0.2 dB of loss per kilometre, and receiver noise chosen so that Q = 6 at exactly 100 km.
+
+## One bit at a time is wasteful
+
+On–off keying sends one bit per time slot.
+
+But light has more to it than brightness. It also has a **phase**, the point in its oscillation at any instant.
+
+Long-distance links use both at once, packing several bits into every slot. That raises a new question: how close together can you pack the possibilities before noise starts confusing them?
+
+That is the next essay.

@@ -705,3 +705,153 @@ body.quarto-dark {
     margin-left: 0;
   }
 }
+
+/* =========================================================
+   "How a message becomes light" essay
+   ========================================================= */
+
+.ml-encode {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.ml-encode-rows {
+  display: grid;
+  gap: 0.6rem;
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.ml-encode-row {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  grid-template-areas:
+    "label detail"
+    "label bits";
+  column-gap: 1rem;
+  align-items: center;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--site-line);
+  border-radius: 0.8rem;
+  background: var(--site-panel);
+}
+
+.ml-encode-label {
+  grid-area: label;
+  font-size: 1.6rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.ml-encode-detail {
+  grid-area: detail;
+  font-size: 0.82rem;
+}
+
+.ml-encode-row > div:last-child {
+  grid-area: bits;
+}
+
+.ml-bits {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  font-family: var(--bs-font-monospace, monospace);
+}
+
+.ml-bit {
+  display: inline-block;
+  min-width: 1.35em;
+  padding: 0.05em 0.25em;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 0.3em;
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.ml-bit.ml-one {
+  opacity: 1;
+  font-weight: 650;
+}
+
+.ml-bit.ml-err {
+  border-color: #e8710a;
+  color: #e8710a;
+  opacity: 1;
+}
+
+.ml-icon {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  width: 112px;
+}
+
+.ml-px {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.ml-px-on {
+  background: currentColor;
+}
+
+.ml-px-err {
+  background: #e8710a;
+  outline: 2px solid #e8710a;
+}
+
+.ml-stack {
+  margin: 1.25rem 0 1.5rem;
+}
+
+.ml-stack > * {
+  display: block;
+}
+
+.ml-result {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem 0 1.25rem;
+}
+
+.ml-result-card {
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--site-line);
+  border-radius: 0.8rem;
+  background: var(--site-panel);
+  min-height: 7.5rem;
+}
+
+.ml-result-text {
+  font-size: 2.4rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  word-break: break-all;
+}
+
+.ml-result-bad {
+  color: #e8710a;
+}
+
+@media (max-width: 760px) {
+  .ml-result {
+    grid-template-columns: 1fr;
+  }
+
+  .ml-result .wm-view-arrow {
+    text-align: center;
+    transform: rotate(90deg);
+  }
+}
+
+.ml-strip-label {
+  margin: 0.7rem 0 0.15rem;
+}
