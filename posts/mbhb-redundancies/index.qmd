@@ -2,6 +2,8 @@
 title: "When different black-hole binaries look the same"
 description: "An interactive exploration of parameter degeneracies in gravitational-wave inference."
 date: 2026-08-15
+image: thumbnail.png
+image-alt: "A heatmap of distance against inclination with a bright valley of near-identical waveforms running through the reference source"
 categories:
   - Gravitational waves
   - Inverse problems

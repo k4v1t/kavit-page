@@ -2,6 +2,8 @@
 title: "How a message becomes light"
 description: "An interactive visual essay following one tiny message as it turns into bits, then flashes of light, then back again, and what goes wrong on the way."
 date: 2026-10-28
+image: thumbnail.png
+image-alt: "Bits sent as flashes of light arrive noisy, and the message Hi is received as Ji"
 categories:
   - Optical communications
   - Information theory

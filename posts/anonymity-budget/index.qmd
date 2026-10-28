@@ -2,6 +2,8 @@
 title: "Anonymity is not binary"
 description: "Why workplace surveys spend an anonymity budget and why the cost is not the same for everyone."
 date: 2026-08-13
+image: thumbnail.png
+image-alt: "A funnel narrowing from a whole company down to a single person as survey answers are added"
 categories:
 - Information theory
 - Privacy

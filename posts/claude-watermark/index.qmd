@@ -2,6 +2,8 @@
 title: "There is no hidden text"
 description: "An interactive visual essay about how statistical watermarks can hide in the choices a language model makes."
 date: 2026-08-16
+image: thumbnail.png
+image-alt: "A row of dots marking word choices that agree with a hidden rule, above a line of evidence that rises as more choices are observed"
 categories:
   - Artificial intelligence
   - Language models
