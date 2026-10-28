@@ -1,15 +1,17 @@
 [
   {
-    "listing": "/essays.html",
+    "listing": "/index.html",
     "items": [
+      "/posts/message-to-light/index.html",
       "/posts/claude-watermark/index.html",
       "/posts/mbhb-redundancies/index.html",
       "/posts/anonymity-budget/index.html"
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/essays.html",
     "items": [
+      "/posts/message-to-light/index.html",
       "/posts/claude-watermark/index.html",
       "/posts/mbhb-redundancies/index.html",
       "/posts/anonymity-budget/index.html"

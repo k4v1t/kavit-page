@@ -17,7 +17,18 @@
 <width>144</width>
 </image>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Sat, 15 Aug 2026 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 28 Oct 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>How a message becomes light</title>
+  <dc:creator>Kavit Tolia</dc:creator>
+  <link>https://kavit.page/posts/message-to-light/</link>
+  <description><![CDATA[ An interactive visual essay following one tiny message as it turns into bits, then flashes of light, then back again, and what goes wrong on the way. ]]></description>
+  <category>Optical communications</category>
+  <category>Information theory</category>
+  <category>Interactive</category>
+  <guid>https://kavit.page/posts/message-to-light/</guid>
+  <pubDate>Wed, 28 Oct 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>There is no hidden text</title>
   <dc:creator>Kavit Tolia</dc:creator>
