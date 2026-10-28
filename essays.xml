@@ -28,6 +28,7 @@
   <category>Interactive</category>
   <guid>https://kavit.page/posts/message-to-light/</guid>
   <pubDate>Wed, 28 Oct 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://kavit.page/posts/message-to-light/thumbnail.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
   <title>There is no hidden text</title>
@@ -40,6 +41,7 @@
   <category>Interactive</category>
   <guid>https://kavit.page/posts/claude-watermark/</guid>
   <pubDate>Sat, 15 Aug 2026 23:00:00 GMT</pubDate>
+  <media:content url="https://kavit.page/posts/claude-watermark/thumbnail.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
   <title>When different black-hole binaries look the same</title>
@@ -52,6 +54,7 @@
   <category>Interactive</category>
   <guid>https://kavit.page/posts/mbhb-redundancies/</guid>
   <pubDate>Fri, 14 Aug 2026 23:00:00 GMT</pubDate>
+  <media:content url="https://kavit.page/posts/mbhb-redundancies/thumbnail.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
   <title>Anonymity is not binary</title>
@@ -63,6 +66,7 @@
   <category>Interactive</category>
   <guid>https://kavit.page/posts/anonymity-budget/</guid>
   <pubDate>Wed, 12 Aug 2026 23:00:00 GMT</pubDate>
+  <media:content url="https://kavit.page/posts/anonymity-budget/thumbnail.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 </channel>
 </rss>
